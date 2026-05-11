@@ -17,6 +17,7 @@
 
 <br/>
 
+## ✨ "Just Looking Like a Wow" UI/UX
 Sessions is not just another timer app. It's an entire **Study Operating System** built with a premium, neon-cyberpunk, glassmorphic aesthetic. Every click, transition, and timer tick is paired with beautifully smooth micro-animations.
 
 ---
@@ -52,12 +53,11 @@ Built for massive scale at $0 initial cost.
 
 ---
 
-## 💻 Getting Started (Coming Soon)
+## 💻 Getting Started
 
 1. Clone the repository
 2. Install dependencies: `npm install`
-3. Link your Supabase project keys in `.env`
-4. Run the development server: `npm run dev`
+3. Run the development server: `npm run dev`
 
 ---
 
