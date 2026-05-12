@@ -17,7 +17,6 @@
 
 <br/>
 
-## ✨ "Just Looking Like a Wow" UI/UX
 Sessions is not just another timer app. It's an entire **Study Operating System** built with a premium, neon-cyberpunk, glassmorphic aesthetic. Every click, transition, and timer tick is paired with beautifully smooth micro-animations.
 
 ---
