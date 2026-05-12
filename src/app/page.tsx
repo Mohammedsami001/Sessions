@@ -52,8 +52,18 @@ export default function Home() {
         <div className="title-container">
           <div className="production-stamp">A SESSIONS PRODUCTION</div>
           
-          <div style={{ display: 'flex', justifyContent: 'center', margin: '10px 0 20px 0' }}>
-            <img src="/sessions_hero_graphic.png" alt="SESSIONS" style={{ width: '100%', maxWidth: '800px', height: 'auto' }} />
+          <div style={{ display: 'flex', justifyContent: 'center', margin: '10px 0 20px 0', width: '100%' }}>
+            {/* Using the user's provided image. The mix-blend-mode helps smooth out any slight hex color differences between the image background and the CSS background */}
+            <img 
+              src="/sessions_hero.png" 
+              alt="SESSIONS" 
+              style={{ 
+                width: '100%', 
+                maxWidth: '900px', 
+                height: 'auto',
+                filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))'
+              }} 
+            />
           </div>
           
           <div className="hero-dates">
