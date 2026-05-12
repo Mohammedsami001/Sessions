@@ -52,9 +52,9 @@ export default function Home() {
         <div className="title-container">
           <div className="production-stamp">A SESSIONS PRODUCTION</div>
           
-          <h1 className="hero-3d-title">
-            THE FABULOUS<br/>SESSIONS V1
-          </h1>
+          <div style={{ display: 'flex', justifyContent: 'center', margin: '10px 0 20px 0' }}>
+            <img src="/sessions_hero_graphic.png" alt="SESSIONS" style={{ width: '100%', maxWidth: '800px', height: 'auto' }} />
+          </div>
           
           <div className="hero-dates">
             May 13 - 17
