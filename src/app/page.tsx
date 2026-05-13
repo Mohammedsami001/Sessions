@@ -59,10 +59,7 @@ export default function Home() {
               style={{ 
                 width: '100%', 
                 maxWidth: '900px', 
-                height: 'auto',
-                /* Aggressive ellipse mask to completely dissolve the solid blue file background, leaving only the pristine 3D letters floating natively */
-                WebkitMaskImage: 'radial-gradient(ellipse 80% 70% at 50% 50%, black 55%, transparent 100%)',
-                maskImage: 'radial-gradient(ellipse 80% 70% at 50% 50%, black 55%, transparent 100%)'
+                height: 'auto'
               }} 
             />
           </div>
