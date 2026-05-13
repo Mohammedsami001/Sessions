@@ -50,16 +50,19 @@ export default function Home() {
         </div>
 
         <div className="title-container">
+          <div className="production-stamp">✦ HIGH-PERFORMANCE CO-STUDY PROTOCOL ✦</div>
           
           <div style={{ display: 'flex', justifyContent: 'center', margin: '10px 0 20px 0', width: '100%' }}>
-            {/* Using the user's provided image. The mix-blend-mode helps smooth out any slight hex color differences between the image background and the CSS background */}
             <img 
               src="/sessions_hero.png" 
               alt="SESSIONS" 
               style={{ 
                 width: '100%', 
                 maxWidth: '900px', 
-                height: 'auto'
+                height: 'auto',
+                /* Bulletproof masking technique to smoothly dissolve outer rectangular edges into the background */
+                WebkitMaskImage: 'radial-gradient(ellipse 85% 80% at 50% 50%, black 75%, transparent 100%)',
+                maskImage: 'radial-gradient(ellipse 85% 80% at 50% 50%, black 75%, transparent 100%)'
               }} 
             />
           </div>
@@ -69,7 +72,7 @@ export default function Home() {
           </div>
           
           <p className="hero-subtitle">
-            AN ENTIRE PLATFORM OF NEW STUDY FEATURES
+            THE MULTIPLAYER STUDY OS • CRAFTED FOR DEEP FOCUS & REAL-TIME FLOW
           </p>
         </div>
       </main>
