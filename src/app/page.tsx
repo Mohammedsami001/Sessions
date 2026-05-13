@@ -50,7 +50,6 @@ export default function Home() {
         </div>
 
         <div className="title-container">
-          <div className="production-stamp">A SESSIONS PRODUCTION</div>
           
           <div style={{ display: 'flex', justifyContent: 'center', margin: '10px 0 20px 0', width: '100%' }}>
             {/* Using the user's provided image. The mix-blend-mode helps smooth out any slight hex color differences between the image background and the CSS background */}
