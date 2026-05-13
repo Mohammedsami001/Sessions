@@ -50,7 +50,7 @@ export default function Home() {
         </div>
 
         <div className="title-container">
-          <div className="production-stamp">✦ HIGH-PERFORMANCE CO-STUDY PROTOCOL ✦</div>
+          <div className="production-stamp">NEXT-GENERATION STUDY OS</div>
           
           <div style={{ display: 'flex', justifyContent: 'center', margin: '10px 0 20px 0', width: '100%' }}>
             <img 
@@ -60,20 +60,16 @@ export default function Home() {
                 width: '100%', 
                 maxWidth: '900px', 
                 height: 'auto',
-                /* Bulletproof masking technique to smoothly dissolve outer rectangular edges into the background */
-                WebkitMaskImage: 'radial-gradient(ellipse 85% 80% at 50% 50%, black 75%, transparent 100%)',
-                maskImage: 'radial-gradient(ellipse 85% 80% at 50% 50%, black 75%, transparent 100%)'
+                /* Aggressive ellipse mask to completely dissolve the solid blue file background, leaving only the pristine 3D letters floating natively */
+                WebkitMaskImage: 'radial-gradient(ellipse 80% 70% at 50% 50%, black 55%, transparent 100%)',
+                maskImage: 'radial-gradient(ellipse 80% 70% at 50% 50%, black 55%, transparent 100%)'
               }} 
             />
           </div>
           
-          <div className="hero-dates">
-            May 13 - 17
+          <div className="hero-gold-subtitle">
+            The Premium Workspace for Deep Work & Synchronized Focus
           </div>
-          
-          <p className="hero-subtitle">
-            THE MULTIPLAYER STUDY OS • CRAFTED FOR DEEP FOCUS & REAL-TIME FLOW
-          </p>
         </div>
       </main>
 
