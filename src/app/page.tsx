@@ -60,8 +60,7 @@ export default function Home() {
               style={{ 
                 width: '100%', 
                 maxWidth: '900px', 
-                height: 'auto',
-                filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))'
+                height: 'auto'
               }} 
             />
           </div>
