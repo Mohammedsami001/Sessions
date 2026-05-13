@@ -58,6 +58,21 @@ body::after {
   z-index: 10;
 }
 
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  transition: color 0.2s, opacity 0.2s;
+}
+
+.nav-logo:hover {
+  color: rgba(255, 255, 255, 1);
+}
+
 .nav-links {
   display: flex;
   gap: 32px;
