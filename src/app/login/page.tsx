@@ -24,8 +24,8 @@ export default function LoginPage() {
       if (error) {
         setError(error.message);
       } else {
-        // Redirect seamlessly to Lobby/Dashboard upon successful authentication
-        window.location.href = "/";
+        // Redirect seamlessly to active student Dashboard hub upon successful authentication
+        window.location.href = "/dashboard";
       }
     } catch (err: any) {
       setError(err.message || "An unexpected error occurred during authentication.");
