@@ -30,7 +30,7 @@ export default function Home() {
         
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
           <Link href="/login" className="nav-link">Log in</Link>
-          <button className="btn-glass">Get started</button>
+          <Link href="/signup" className="btn-glass" style={{ textDecoration: 'none' }}>Get started</Link>
         </div>
       </nav>
 
