@@ -15,10 +15,7 @@
 
   <p align="center">
     <a href="#-architectural-vision">Vision</a> •
-    <a href="#-core-modules--bento-workspace">Features</a> •
-    <a href="#-production-deployment-guide">Deployment</a> •
-    <a href="#-environment-configuration">Configuration</a> •
-    <a href="#-development-roadmap">Roadmap</a>
+    <a href="#-core-modules--bento-workspace">Features</a>
   </p>
 </div>
 
@@ -62,56 +59,6 @@ Upon authentication, users gain full access to the modular **Study OS Workspace*
 Sessions provides lightning-fast user onboarding optimized for static web exports and edge caching architectures using implicit grant access payloads:
 - **Zero-Friction Authentication**: High-fidelity custom forms supporting professional **GitHub** and **Google** Single Sign-On (SSO) triggers alongside secure standard password strategies.
 - **Client Hash Resolution**: Access parameters are ingested programmatically on root path loading (`/dashboard#access_token=...`), bypassing intermediate server bottlenecks to prevent visual delays or `404` loading deadlocks.
-
----
-
-## 🚀 Production Deployment Guide
-
-Deploying your production instance live to **Vercel** requires configuring standard client-side tokens.
-
-### 1. Clone & Install
-```bash
-git clone https://github.com/your-username/sessions-study-os.git
-cd sessions-study-os
-npm install
-```
-
-### 2. Environment Variables Setup
-Create a new file named `.env.local` in your root repository directory referencing your active Supabase infrastructure parameters:
-```env
-NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-client-anon-key
-```
-
-### 3. Local Development Start
-```bash
-npm run dev
-```
-Access the application directly at `http://localhost:3000`.
-
----
-
-## ⚙️ Production Supabase Configuration
-
-To guarantee flawless redirection compatibility for third-party Single Sign-On configurations across remote cloud deployments:
-1. Log into your **Supabase Dashboard** -> **Authentication** -> **URL Configuration**.
-2. Configure your primary target web address inside the **Site URL** parameter:
-   ```text
-   https://your-custom-production-domain.vercel.app
-   ```
-3. Attach dynamic routing patterns to the **Redirect URLs** list to authorize internal paths:
-   ```text
-   https://your-custom-production-domain.vercel.app/**
-   ```
-
----
-
-## 🗺 Development Roadmap
-
-- [x] **Phase 1**: Core Next.js Setup, Premium UI Tokens Configuration, Singleton Client Authentication Hooks.
-- [x] **Phase 2**: High-Fidelity Bento Grid Workspace Design, Ambient Sliders Integration, Direct Token Hash Consumer Mapping.
-- [ ] **Phase 3**: Supabase Realtime Channels integration syncing shared WebSocket client room loops.
-- [ ] **Phase 4**: Advanced SaaS Gamification Pipelines (Productivity Heatmaps, Neon Profile Cosmetics, Custom Tier Customization).
 
 ---
 
