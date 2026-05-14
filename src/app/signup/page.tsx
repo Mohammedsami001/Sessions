@@ -71,8 +71,11 @@ export default function SignupPage() {
         
         {success && (
           <div style={{ background: 'rgba(16, 185, 129, 0.15)', border: '1px solid rgba(16, 185, 129, 0.3)', color: '#6EE7B7', padding: '16px', borderRadius: '10px', fontSize: '13px', marginBottom: '20px', textAlign: 'center', lineHeight: 1.4 }}>
-            ✦ **Verification Email Sent!** ✦<br />
-            Please check your inbox to activate your profile.
+            ✦ **Registration Successful!** ✦<br />
+            Please check your inbox to verify your profile.<br />
+            <Link href="/dashboard" style={{ color: 'white', fontWeight: 700, display: 'inline-block', marginTop: '10px', textDecoration: 'underline' }}>
+              Launch Study Dashboard →
+            </Link>
           </div>
         )}
 

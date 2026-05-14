@@ -1,12 +1,25 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { supabase } from "../lib/supabase";
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
+  const [sessionActive, setSessionActive] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    async function checkAuth() {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user) {
+          setSessionActive(true);
+        }
+      } catch (err) {
+        // Fallback silently if unconfigured
+      }
+    }
+    checkAuth();
   }, []);
 
   if (!mounted) return null;
@@ -29,8 +42,16 @@ export default function Home() {
         </div>
         
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          <Link href="/login" className="nav-link">Log in</Link>
-          <Link href="/signup" className="btn-glass" style={{ textDecoration: 'none' }}>Get started</Link>
+          {sessionActive ? (
+            <Link href="/dashboard" className="btn-glass" style={{ textDecoration: 'none', background: 'var(--gold)', color: 'black' }}>
+              Launch Dashboard
+            </Link>
+          ) : (
+            <>
+              <Link href="/login" className="nav-link">Log in</Link>
+              <Link href="/signup" className="btn-glass" style={{ textDecoration: 'none' }}>Get started</Link>
+            </>
+          )}
         </div>
       </nav>
 
