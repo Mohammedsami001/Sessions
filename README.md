@@ -1,65 +1,121 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Books.png" alt="Sessions Logo" width="120" />
+  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Books.png" alt="Sessions Study OS Icon" width="130" />
 
-  # 🌟 SESSIONS 🌟
+  # ✦ SESSIONS ✦
   
-  **The Ultimate Real-Time Study OS.**  
-  *Synchronized Pomodoro timers, Live Rooms, Lofi Beats, and Gamified Analytics.*
+  **The Premium Real-Time Multiplayer Study OS**  
+  *Engineered for pure student focus. Powered by Next.js App Router, Supabase Client Infrastructure, and Custom Glassmorphic Ambient Visual Systems.*
   
   <br />
 
-  [![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
-  [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-  [![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
-  [![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white)](https://www.framer.com/motion/)
+  [![Next.js 16](https://img.shields.io/badge/Next.js-16.2-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+  [![Supabase Auth](https://img.shields.io/badge/Supabase_Auth-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
+  [![Vercel Deployment](https://img.shields.io/badge/Vercel_Edge-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
 
+  <p align="center">
+    <a href="#-architectural-vision">Vision</a> •
+    <a href="#-core-modules--bento-workspace">Features</a> •
+    <a href="#-production-deployment-guide">Deployment</a> •
+    <a href="#-environment-configuration">Configuration</a> •
+    <a href="#-development-roadmap">Roadmap</a>
+  </p>
 </div>
 
-<br/>
+---
 
-Sessions is not just another timer app. It's an entire **Study Operating System**.
+## 🎬 Architectural Vision
+
+**Sessions** reimagines traditional digital timers into an immersive, premium workspace environment. Inspired by the **Resend Launch Week 6** retro-cinema design language, the interface incorporates deep electric blue backgrounds (`#0651E3`), dynamic cinematic grain overlays, subtle dark vignettes, and high-fidelity layered glassmorphism (`backdrop-filter`). 
+
+Designed specifically as a scalable multi-tenant SaaS application, it establishes a reliable zero-lag single-page authentication lifecycle paired directly with modular focus applications.
 
 ---
 
-## 🚀 Features
+## 🍱 Core Modules & Bento Workspace
 
-### 🕒 Live Synchronized Study Rooms
-Join public rooms from the Discovery Lobby or create private invite-only rooms. Experience the magic of **perfectly synced Pomodoro timers** across the globe. When the host hits start, everyone focuses together.
+Upon authentication, users gain full access to the modular **Study OS Workspace**, structurally arranged via a highly optimized, fully responsive **Bento Grid**:
 
-### 🎧 Built-In "Study OS" Toolbelt
-No need to open multiple tabs. Everything you need is inside your live room:
-- **Lofi & Ambient Mixer**: Mix Rain, Fireplace, and Café sounds with a curated Lofi radio, directly inside the app.
-- **Session To-Dos**: Ephemeral checklists for your 25-minute focus blocks.
+### 🌐 1. Public Discovery Lobby
+- Live metrics listing multi-user shared study rooms categorized by academic discipline.
+- Real-time peer counters paired with responsive connectivity node feedback indicators.
 
-### 💬 Real-Time Chat
-Connect with other students in your room. Discuss coding problems, share content writing tips, and hold each other accountable during the focus sessions.
+### ⏱ 2. Synchronous Pomodoro Engine
+- Highly visible custom timer components simulating global synchronous cycles.
+- Dedicated state controllers toggling seamlessly between **Focus Cycles** (`25:00`) and **Short Rest Intervals** (`05:00`).
 
-### 🎮 Gamification & Analytics (Freemium SaaS)
-Level up your study habits!
-- **Free Tier**: Track lifetime hours and total sessions completed.
-- **Sessions Pro**: Unlock custom neon themes, animated profile borders, and a GitHub-style "Productivity Heatmap" showing exactly when you are most focused.
+### 🎧 3. Lofi & Ambient Sound Deck
+- Embedded audio mixing sliders enabling custom multi-layered soundscape generation.
+- Simultaneous mixing controls for **Soft Rain**, **Café Ambiance**, and **Crackling Fire** audio channels paired directly with curated study lofi radio streams.
 
----
+### 💬 4. Global Discovery Stream
+- Real-time mock telemetry messaging feed connecting active peer groups.
+- Custom gold typography sender badges with auto-scrolling line outputs.
 
-## 🛠 Tech Stack
-
-Built for massive scale at $0 initial cost.
-- **Frontend**: Next.js (App Router) + TypeScript
-- **Styling**: Vanilla CSS (Glassmorphism + Dark Mode) & Framer Motion
-- **Backend & Database**: Supabase PostgreSQL
-- **Real-time Engine**: Supabase Realtime (WebSockets)
-- **Hosting**: Vercel
+### ✓ 5. Ephemeral Session Checklist
+- Integrated micro-task manager enabling inline checklist updates designed to refresh dynamically upon cycle conclusions.
 
 ---
 
-## 💻 Getting Started
+## 🔒 Multi-Provider OAuth Infrastructure
 
-1. Clone the repository
-2. Install dependencies: `npm install`
-3. Run the development server: `npm run dev`
+Sessions provides lightning-fast user onboarding optimized for static web exports and edge caching architectures using implicit grant access payloads:
+- **Zero-Friction Authentication**: High-fidelity custom forms supporting professional **GitHub** and **Google** Single Sign-On (SSO) triggers alongside secure standard password strategies.
+- **Client Hash Resolution**: Access parameters are ingested programmatically on root path loading (`/dashboard#access_token=...`), bypassing intermediate server bottlenecks to prevent visual delays or `404` loading deadlocks.
+
+---
+
+## 🚀 Production Deployment Guide
+
+Deploying your production instance live to **Vercel** requires configuring standard client-side tokens.
+
+### 1. Clone & Install
+```bash
+git clone https://github.com/your-username/sessions-study-os.git
+cd sessions-study-os
+npm install
+```
+
+### 2. Environment Variables Setup
+Create a new file named `.env.local` in your root repository directory referencing your active Supabase infrastructure parameters:
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-client-anon-key
+```
+
+### 3. Local Development Start
+```bash
+npm run dev
+```
+Access the application directly at `http://localhost:3000`.
+
+---
+
+## ⚙️ Production Supabase Configuration
+
+To guarantee flawless redirection compatibility for third-party Single Sign-On configurations across remote cloud deployments:
+1. Log into your **Supabase Dashboard** -> **Authentication** -> **URL Configuration**.
+2. Configure your primary target web address inside the **Site URL** parameter:
+   ```text
+   https://your-custom-production-domain.vercel.app
+   ```
+3. Attach dynamic routing patterns to the **Redirect URLs** list to authorize internal paths:
+   ```text
+   https://your-custom-production-domain.vercel.app/**
+   ```
+
+---
+
+## 🗺 Development Roadmap
+
+- [x] **Phase 1**: Core Next.js Setup, Premium UI Tokens Configuration, Singleton Client Authentication Hooks.
+- [x] **Phase 2**: High-Fidelity Bento Grid Workspace Design, Ambient Sliders Integration, Direct Token Hash Consumer Mapping.
+- [ ] **Phase 3**: Supabase Realtime Channels integration syncing shared WebSocket client room loops.
+- [ ] **Phase 4**: Advanced SaaS Gamification Pipelines (Productivity Heatmaps, Neon Profile Cosmetics, Custom Tier Customization).
 
 ---
 
 <div align="center">
-  <i>Built to make studying beautiful.</i>
+  <br />
+  <p><b>Sessions Study OS</b> • Built to make online collaborative learning absolute, immersive, and striking.</p>
 </div>
