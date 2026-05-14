@@ -393,3 +393,341 @@ body::after {
   margin-bottom: 20px;
   text-align: center;
 }
+
+/* Dashboard Bento Grid System */
+.dashboard-wrapper {
+  padding: 40px 40px 120px 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 20;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  background: rgba(10, 15, 30, 0.4);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 20px 32px;
+  border-radius: 16px;
+}
+
+.dashboard-user-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.dashboard-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--orange), var(--gold));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 20px;
+  color: black;
+  box-shadow: 0 4px 12px rgba(255, 80, 0, 0.3);
+}
+
+.dashboard-greeting {
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-greeting-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dashboard-greeting-subtitle {
+  font-size: 13px;
+  color: var(--text-gray);
+  margin: 0;
+}
+
+.dashboard-badge {
+  background: rgba(255, 215, 0, 0.15);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  color: var(--gold);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 24px;
+}
+
+.bento-card {
+  background: rgba(10, 15, 30, 0.45);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+.bento-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Span mappings for desktop layout */
+.bento-rooms { grid-column: span 8; min-height: 380px; }
+.bento-pomodoro { grid-column: span 4; min-height: 380px; display: flex; align-items: center; justify-content: center; text-align: center; }
+.bento-lofi { grid-column: span 5; min-height: 320px; }
+.bento-chat { grid-column: span 4; min-height: 320px; }
+.bento-todos { grid-column: span 3; min-height: 320px; }
+
+@media (max-width: 1024px) {
+  .bento-rooms, .bento-lofi { grid-column: span 12; }
+  .bento-pomodoro, .bento-chat, .bento-todos { grid-column: span 6; }
+}
+
+@media (max-width: 768px) {
+  .dashboard-wrapper { padding: 20px 20px 100px 20px; }
+  .bento-card { grid-column: span 12 !important; }
+  .dashboard-header { flex-direction: column; gap: 16px; align-items: flex-start; }
+}
+
+.bento-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.bento-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bento-icon {
+  color: var(--gold);
+}
+
+/* Custom internal UI objects for Bento Cards */
+.room-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  max-height: 280px;
+  padding-right: 8px;
+}
+
+.room-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.room-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.room-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.room-item-title {
+  font-weight: 700;
+  font-size: 15px;
+  color: white;
+}
+
+.room-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--text-gray);
+}
+
+.online-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #10B981;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 8px #10B981;
+}
+
+.btn-join {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-join:hover {
+  background: var(--gold);
+  color: black;
+  border-color: var(--gold);
+}
+
+/* Pomodoro module styling */
+.pomodoro-circle {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: conic-gradient(var(--orange) 0% 80%, rgba(255,255,255,0.05) 80% 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 16px auto;
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
+}
+
+.pomodoro-inner {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  background: #0A0F1E;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.pomodoro-time {
+  font-size: 44px;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: white;
+  line-height: 1;
+}
+
+.pomodoro-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--orange);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* Lofi Module Controls */
+.lofi-track-deck {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.ambient-sliders {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ambient-slider-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--text-gray);
+}
+
+.ambient-slider-group input[type="range"] {
+  flex: 1;
+  accent-color: var(--gold);
+}
+
+/* Simulated Chat styling */
+.chat-stream {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  flex: 1;
+  max-height: 200px;
+  padding-right: 4px;
+  font-size: 13px;
+}
+
+.chat-message {
+  background: rgba(255, 255, 255, 0.02);
+  padding: 8px 12px;
+  border-radius: 8px;
+  line-height: 1.4;
+}
+
+.chat-user {
+  font-weight: 700;
+  color: var(--gold);
+  margin-right: 6px;
+}
+
+/* Todo layout styling */
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-gray);
+  cursor: pointer;
+}
+
+.todo-item input[type="checkbox"] {
+  accent-color: var(--orange);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.todo-item-completed {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
