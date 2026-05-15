@@ -26,7 +26,7 @@
 
 ## 🎬 Architectural Vision
 
-**Sessions** reimagines online studying from a passive solo activity into an immersive, multiplayer experience. Inspired by the **Resend Launch Week 6** retro-cinema design language, the interface features deep electric blue canvases (`#0651E3`), cinematic grain overlays, and layered glassmorphism — creating a workspace that feels more like a premium product than a study tool.
+**Sessions** reimagines online studying from a passive solo activity into an immersive, multiplayer experience.
 
 Every interaction is real-time. Timers sync across continents. Chat messages appear instantly. Stats update the moment a focus block completes. Zero mock data, zero placeholders — everything you see is backed by a production database, Row Level Security policies, and server-authoritative state management.
 
