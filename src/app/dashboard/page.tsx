@@ -47,29 +47,34 @@ export default function DashboardPage() {
   }, []);
 
   useEffect(() => {
-    let roomSub: any, partSub: any, chatSub: any;
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session?.user) {
+    async function init() {
+      try {
         const p = await fetchCurrentProfile();
         setProfile(p);
-        setLoading(false);
-        await Promise.all([loadRooms(), loadMessages(), loadTasks()]);
-
-        // Set up Realtime subscriptions
-        roomSub = subscribeToPublicRooms(() => loadRooms());
-        partSub = subscribeToPublicParticipants(() => loadRooms());
-        chatSub = subscribeToMessages(null, () => loadMessages());
-      } else {
-        setLoading(false);
+      } catch (err) {
+        console.error('Dashboard profile load error:', err);
       }
-    });
+      setLoading(false);
+
+      // Load all data (these work independently of profile)
+      try {
+        await Promise.all([loadRooms(), loadMessages(), loadTasks()]);
+      } catch (err) {
+        console.error('Dashboard data load error:', err);
+      }
+    }
+
+    init();
+
+    // Set up Realtime subscriptions immediately
+    const roomSub = subscribeToPublicRooms(() => loadRooms());
+    const partSub = subscribeToPublicParticipants(() => loadRooms());
+    const chatSub = subscribeToMessages(null, () => loadMessages());
 
     return () => {
-      subscription.unsubscribe();
-      if (roomSub) supabase.removeChannel(roomSub);
-      if (partSub) supabase.removeChannel(partSub);
-      if (chatSub) supabase.removeChannel(chatSub);
+      supabase.removeChannel(roomSub);
+      supabase.removeChannel(partSub);
+      supabase.removeChannel(chatSub);
     };
   }, [loadRooms, loadMessages, loadTasks]);
 
