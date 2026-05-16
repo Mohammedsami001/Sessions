@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { supabase } from "../../lib/supabase";
 import { fetchCurrentProfile, updateProfile, deleteAccount } from "../../lib/profile";
 import type { Profile } from "../../lib/types";
 import { computeLevelProgress, formatFocusHours } from "../../lib/types";
@@ -9,6 +10,7 @@ import { computeLevelProgress, formatFocusHours } from "../../lib/types";
 export default function ProfilePage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [hasSession, setHasSession] = useState(false);
   const [editing, setEditing] = useState(false);
   const [displayName, setDisplayName] = useState("");
   const [saving, setSaving] = useState(false);
@@ -17,12 +19,19 @@ export default function ProfilePage() {
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    async function init() {
-      const p = await fetchCurrentProfile();
-      if (p) { setProfile(p); setDisplayName(p.display_name); }
+    // Listen for auth state to be ready (handles the race condition)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (session?.user) {
+        setHasSession(true);
+        const p = await fetchCurrentProfile();
+        if (p) { setProfile(p); setDisplayName(p.display_name); }
+      } else {
+        setHasSession(false);
+      }
       setLoading(false);
-    }
-    init();
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const handleSave = async () => {
