@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import { supabase, getCurrentSession } from './supabase';
 import type { Message, MessageWithProfile } from './types';
 
 // ---------- Fetch Recent Messages ----------
@@ -34,7 +34,7 @@ export async function sendMessage(
   content: string,
   roomId: string | null = null
 ): Promise<Message | null> {
-  const { data: { session } } = await supabase.auth.getSession();
+  const session = await getCurrentSession();
   if (!session?.user?.id) return null;
 
   const { data, error } = await supabase
