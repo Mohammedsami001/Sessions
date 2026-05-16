@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import { supabase, getCurrentSession } from './supabase';
 import type { Profile } from './types';
 
 // ---------- Fetch Profile ----------
@@ -11,21 +11,22 @@ export async function fetchProfile(userId: string): Promise<Profile | null> {
     .single();
 
   if (error) {
-    console.error('Failed to fetch profile:', error.message);
+    // PGRST116 = "0 rows" which is expected for new users, don't log it
+    if (error.code !== 'PGRST116') {
+      console.error('Failed to fetch profile:', error.message);
+    }
     return null;
   }
   return data;
 }
 
 // ---------- Ensure Profile Exists ----------
-// If user signed up before the DB trigger existed, create their profile now
 
-async function ensureProfile(userId: string, email?: string, metadata?: any): Promise<Profile | null> {
-  // Try fetching first
+async function ensureProfile(userId: string, email?: string, metadata?: Record<string, any>): Promise<Profile | null> {
   let profile = await fetchProfile(userId);
   if (profile) return profile;
 
-  // Profile doesn't exist — create it as a fallback
+  // Profile doesn't exist — create it
   const displayName =
     metadata?.full_name ||
     metadata?.user_name ||
@@ -36,40 +37,36 @@ async function ensureProfile(userId: string, email?: string, metadata?: any): Pr
 
   const { data, error } = await supabase
     .from('profiles')
-    .upsert({
+    .insert({
       id: userId,
       display_name: displayName,
       avatar_url: avatarUrl,
-    }, { onConflict: 'id' })
+    })
     .select()
     .single();
 
   if (error) {
-    console.error('Failed to create profile:', error.message);
+    console.error('Failed to create profile:', error.message, error.code);
+    // If insert failed due to conflict, try fetching again
+    if (error.code === '23505') {
+      return fetchProfile(userId);
+    }
     return null;
   }
   return data;
 }
 
-// ---------- Fetch Current User Profile (with auto-creation) ----------
+// ---------- Fetch Current User Profile ----------
 
 export async function fetchCurrentProfile(): Promise<Profile | null> {
-  const { data: { session } } = await supabase.auth.getSession();
+  const session = await getCurrentSession();
   if (!session?.user?.id) return null;
 
-  // Ensure profile exists (handles pre-trigger signups)
   return ensureProfile(
     session.user.id,
-    session.user.email,
+    session.user.email || undefined,
     session.user.user_metadata
   );
-}
-
-// ---------- Check if user has an active session ----------
-
-export async function hasActiveSession(): Promise<boolean> {
-  const { data: { session } } = await supabase.auth.getSession();
-  return !!session?.user?.id;
 }
 
 // ---------- Update Profile ----------
@@ -77,7 +74,7 @@ export async function hasActiveSession(): Promise<boolean> {
 export async function updateProfile(
   updates: Partial<Pick<Profile, 'display_name' | 'avatar_url'>>
 ): Promise<Profile | null> {
-  const { data: { session } } = await supabase.auth.getSession();
+  const session = await getCurrentSession();
   if (!session?.user?.id) return null;
 
   const { data, error } = await supabase
@@ -98,7 +95,7 @@ export async function updateProfile(
 
 export async function deleteAccount(): Promise<{ success: boolean; error?: string }> {
   try {
-    const { data: { session } } = await supabase.auth.getSession();
+    const session = await getCurrentSession();
     if (!session?.access_token) {
       return { success: false, error: 'No active session' };
     }
