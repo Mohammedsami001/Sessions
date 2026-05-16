@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import { supabase, getCurrentSession } from './supabase';
 import type { Room, RoomParticipant, CreateRoomInput } from './types';
 
 // ---------- Fetch Public Rooms (Discovery Lobby) ----------
@@ -52,7 +52,7 @@ export async function fetchRoomByCode(code: string): Promise<Room | null> {
 // ---------- Create Room ----------
 
 export async function createRoom(input: CreateRoomInput): Promise<Room | null> {
-  const { data: { session } } = await supabase.auth.getSession();
+  const session = await getCurrentSession();
   if (!session?.user?.id) return null;
 
   const { data, error } = await supabase
@@ -86,7 +86,7 @@ export async function createRoom(input: CreateRoomInput): Promise<Room | null> {
 // ---------- Join Room ----------
 
 export async function joinRoom(roomId: string): Promise<RoomParticipant | null> {
-  const { data: { session } } = await supabase.auth.getSession();
+  const session = await getCurrentSession();
   if (!session?.user?.id) return null;
 
   const { data, error } = await supabase
@@ -120,7 +120,7 @@ export async function joinRoomByCode(code: string): Promise<{ room: Room | null;
 // ---------- Leave Room ----------
 
 export async function leaveRoom(roomId: string): Promise<boolean> {
-  const { data: { session } } = await supabase.auth.getSession();
+  const session = await getCurrentSession();
   if (!session?.user?.id) return false;
 
   // Check if we're the host

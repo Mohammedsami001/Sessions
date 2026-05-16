@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { supabase } from "../../lib/supabase";
+import { getCurrentSession } from "../../lib/supabase";
 import { fetchCurrentProfile, updateProfile, deleteAccount } from "../../lib/profile";
 import type { Profile } from "../../lib/types";
 import { computeLevelProgress, formatFocusHours } from "../../lib/types";
@@ -19,19 +19,20 @@ export default function ProfilePage() {
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    // Listen for auth state to be ready (handles the race condition)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session?.user) {
-        setHasSession(true);
-        const p = await fetchCurrentProfile();
-        if (p) { setProfile(p); setDisplayName(p.display_name); }
-      } else {
-        setHasSession(false);
+    async function init() {
+      try {
+        const session = await getCurrentSession();
+        if (session?.user) {
+          setHasSession(true);
+          const p = await fetchCurrentProfile();
+          if (p) { setProfile(p); setDisplayName(p.display_name); }
+        }
+      } catch (err) {
+        console.error('Profile init error:', err);
       }
       setLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
+    }
+    init();
   }, []);
 
   const handleSave = async () => {
