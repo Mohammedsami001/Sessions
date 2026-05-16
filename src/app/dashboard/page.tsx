@@ -47,19 +47,30 @@ export default function DashboardPage() {
   }, []);
 
   useEffect(() => {
-    async function init() {
-      const p = await fetchCurrentProfile();
-      setProfile(p);
-      setLoading(false);
-      await Promise.all([loadRooms(), loadMessages(), loadTasks()]);
-    }
-    init();
+    let roomSub: any, partSub: any, chatSub: any;
 
-    const roomSub = subscribeToPublicRooms(() => loadRooms());
-    const partSub = subscribeToPublicParticipants(() => loadRooms());
-    const chatSub = subscribeToMessages(null, () => loadMessages());
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (session?.user) {
+        const p = await fetchCurrentProfile();
+        setProfile(p);
+        setLoading(false);
+        await Promise.all([loadRooms(), loadMessages(), loadTasks()]);
 
-    return () => { supabase.removeChannel(roomSub); supabase.removeChannel(partSub); supabase.removeChannel(chatSub); };
+        // Set up Realtime subscriptions
+        roomSub = subscribeToPublicRooms(() => loadRooms());
+        partSub = subscribeToPublicParticipants(() => loadRooms());
+        chatSub = subscribeToMessages(null, () => loadMessages());
+      } else {
+        setLoading(false);
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+      if (roomSub) supabase.removeChannel(roomSub);
+      if (partSub) supabase.removeChannel(partSub);
+      if (chatSub) supabase.removeChannel(chatSub);
+    };
   }, [loadRooms, loadMessages, loadTasks]);
 
   const handleSignOut = async () => { await supabase.auth.signOut(); window.location.href = "/"; };

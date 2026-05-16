@@ -54,7 +54,8 @@ export default function ProfilePage() {
   const levelInfo = profile ? computeLevelProgress(profile.exp) : { level: 0, currentExp: 0, nextLevelExp: 100, progress: 0 };
 
   if (loading) return <main className="dashboard-wrapper"><p style={{ textAlign: 'center', color: 'var(--text-gray)', marginTop: '100px' }}>Loading profile...</p></main>;
-  if (!profile) return <main className="dashboard-wrapper"><p style={{ textAlign: 'center', color: 'var(--text-gray)', marginTop: '100px' }}>Not authenticated. <Link href="/login" style={{ color: 'var(--gold)' }}>Sign in</Link></p></main>;
+  if (!hasSession) return <main className="dashboard-wrapper"><p style={{ textAlign: 'center', color: 'var(--text-gray)', marginTop: '100px' }}>Not authenticated. <Link href="/login" style={{ color: 'var(--gold)' }}>Sign in</Link></p></main>;
+  if (!profile) return <main className="dashboard-wrapper"><p style={{ textAlign: 'center', color: 'var(--text-gray)', marginTop: '100px' }}>Setting up your profile...</p></main>;
 
   return (
     <main className="dashboard-wrapper" style={{ maxWidth: '700px' }}>
