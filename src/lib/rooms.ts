@@ -170,6 +170,49 @@ export async function leaveRoom(roomId: string): Promise<boolean> {
   return true;
 }
 
+// ---------- Delete Room (Host Only) ----------
+
+export async function deleteRoom(roomId: string): Promise<boolean> {
+  const session = await getCurrentSession();
+  if (!session?.user?.id) return false;
+
+  // Verify the current user is the host
+  const { data: room, error: fetchError } = await supabase
+    .from('rooms')
+    .select('host_id')
+    .eq('id', roomId)
+    .single();
+
+  if (fetchError || !room || room.host_id !== session.user.id) {
+    console.error('Only the host can delete a room');
+    return false;
+  }
+
+  // Remove all participants first (triggers Realtime events → clients redirect)
+  const { error: partError } = await supabase
+    .from('room_participants')
+    .delete()
+    .eq('room_id', roomId);
+
+  if (partError) {
+    console.error('Failed to remove participants:', partError.message);
+    return false;
+  }
+
+  // Delete the room
+  const { error: roomError } = await supabase
+    .from('rooms')
+    .delete()
+    .eq('id', roomId);
+
+  if (roomError) {
+    console.error('Failed to delete room:', roomError.message);
+    return false;
+  }
+
+  return true;
+}
+
 // ---------- Fetch Participants ----------
 
 export async function fetchParticipants(roomId: string) {
