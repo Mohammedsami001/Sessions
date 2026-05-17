@@ -22,6 +22,8 @@ export default function DashboardPage() {
   const [joinCode, setJoinCode] = useState("");
   const [joinError, setJoinError] = useState("");
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [createError, setCreateError] = useState("");
+  const [chatError, setChatError] = useState("");
   const [createForm, setCreateForm] = useState<CreateRoomInput>({
     title: "", category: "General", visibility: "public",
     focus_duration: 1500, break_duration: 300, long_break_duration: 900, long_break_interval: 4,
