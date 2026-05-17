@@ -101,6 +101,7 @@ describe('sendMessage', () => {
   let mockFrom: any;
 
   beforeEach(async () => {
+    vi.clearAllMocks();
     vi.resetModules();
     const supabaseMock = await import('../lib/supabase') as any;
     getCurrentSession = supabaseMock.getCurrentSession;
