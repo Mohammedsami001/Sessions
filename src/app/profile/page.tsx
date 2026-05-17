@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { getCurrentSession } from "../../lib/supabase";
+import { supabase } from "../../lib/supabase";
 import { fetchCurrentProfile, updateProfile, deleteAccount } from "../../lib/profile";
 import type { Profile } from "../../lib/types";
 import { computeLevelProgress, formatFocusHours } from "../../lib/types";
@@ -21,8 +21,9 @@ export default function ProfilePage() {
   useEffect(() => {
     async function init() {
       try {
-        const session = await getCurrentSession();
-        if (session?.user) {
+        // Use getUser() — validates JWT with the server (reliable)
+        const { data: { user }, error } = await supabase.auth.getUser();
+        if (!error && user) {
           setHasSession(true);
           const p = await fetchCurrentProfile();
           if (p) { setProfile(p); setDisplayName(p.display_name); }

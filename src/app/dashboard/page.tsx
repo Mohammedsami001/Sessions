@@ -50,6 +50,18 @@ export default function DashboardPage() {
 
   useEffect(() => {
     async function init() {
+      // Auth guard — verify the user is ACTUALLY signed in via server check
+      try {
+        const { data: { user }, error } = await supabase.auth.getUser();
+        if (error || !user) {
+          window.location.href = '/login';
+          return;
+        }
+      } catch {
+        window.location.href = '/login';
+        return;
+      }
+
       try {
         const p = await fetchCurrentProfile();
         setProfile(p);
