@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useParams } from "next/navigation";
 import { supabase } from "../../../lib/supabase";
-import { fetchRoom, fetchParticipants, leaveRoom, startTimer, pauseTimer, resetTimer, completeTimerCycle, subscribeToRoom, subscribeToParticipants } from "../../../lib/rooms";
+import { fetchRoom, fetchParticipants, leaveRoom, deleteRoom, startTimer, pauseTimer, resetTimer, completeTimerCycle, subscribeToRoom, subscribeToParticipants } from "../../../lib/rooms";
 import { fetchRecentMessages, sendMessage, subscribeToMessages } from "../../../lib/chat";
 import { fetchTasks, createTask, toggleTask, deleteTask } from "../../../lib/tasks";
 import type { Room, Task, MessageWithProfile } from "../../../lib/types";
@@ -24,6 +24,7 @@ export default function RoomPage() {
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [timerDisplay, setTimerDisplay] = useState({ minutes: 25, seconds: 0, totalRemaining: 1500 });
   const [loading, setLoading] = useState(true);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const isHost = room?.host_id === currentUserId;
@@ -69,7 +70,15 @@ export default function RoomPage() {
     const partSub = subscribeToParticipants(roomId, () => loadParticipants());
     const chatSub = subscribeToMessages(roomId, () => loadMessages());
 
-    return () => { supabase.removeChannel(roomSub); supabase.removeChannel(partSub); supabase.removeChannel(chatSub); if (timerRef.current) clearInterval(timerRef.current); };
+    // Listen for room deletion — redirect all users to dashboard
+    const deleteSub = supabase
+      .channel(`room-delete-${roomId}`)
+      .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'rooms', filter: `id=eq.${roomId}` }, () => {
+        window.location.href = '/dashboard';
+      })
+      .subscribe();
+
+    return () => { supabase.removeChannel(roomSub); supabase.removeChannel(partSub); supabase.removeChannel(chatSub); supabase.removeChannel(deleteSub); if (timerRef.current) clearInterval(timerRef.current); };
   }, [roomId, loadParticipants, loadMessages, loadTasks, updateTimerDisplay]);
 
   // Live timer tick (client-side countdown from anchor)
@@ -96,7 +105,12 @@ export default function RoomPage() {
   }, [room, roomId, isHost]);
 
   const handleLeave = async () => { await leaveRoom(roomId); window.location.href = "/dashboard"; };
-  const handleSend = async () => { if (!chatInput.trim()) return; await sendMessage(chatInput, roomId); setChatInput(""); };
+  const handleDelete = async () => {
+    const ok = await deleteRoom(roomId);
+    if (ok) window.location.href = "/dashboard";
+    setShowDeleteConfirm(false);
+  };
+  const handleSend = async () => { if (!chatInput.trim()) return; await sendMessage(chatInput, roomId); setChatInput(""); await loadMessages(); };
   const handleAddTask = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTodo.trim()) return;
@@ -123,7 +137,8 @@ export default function RoomPage() {
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
           {room.join_code && <span style={{ background: 'rgba(255,215,0,0.15)', border: '1px solid rgba(255,215,0,0.3)', color: 'var(--gold)', padding: '6px 12px', borderRadius: '6px', fontSize: '11px', fontWeight: 700, letterSpacing: '0.15em' }}>CODE: {room.join_code}</span>}
           {isHost && <span style={{ background: 'rgba(255,80,0,0.2)', border: '1px solid var(--orange)', color: 'var(--orange)', padding: '4px 10px', borderRadius: '999px', fontSize: '10px', fontWeight: 700 }}>HOST</span>}
-          <button onClick={handleLeave} style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)', color: '#FCA5A5', padding: '6px 12px', borderRadius: '6px', fontSize: '12px', cursor: 'pointer', fontWeight: 700 }}>Leave Room</button>
+          <button onClick={handleLeave} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.15)', color: 'var(--text-gray)', padding: '6px 12px', borderRadius: '6px', fontSize: '12px', cursor: 'pointer', fontWeight: 700 }}>Leave Room</button>
+          {isHost && <button onClick={() => setShowDeleteConfirm(true)} style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)', color: '#FCA5A5', padding: '6px 12px', borderRadius: '6px', fontSize: '12px', cursor: 'pointer', fontWeight: 700 }}>Delete Room</button>}
         </div>
       </div>
 
