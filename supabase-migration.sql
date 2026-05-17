@@ -98,13 +98,24 @@ CREATE POLICY "Users can delete own profile"
   ON public.profiles FOR DELETE TO authenticated
   USING (auth.uid() = id);
 
+-- Helper functions (SECURITY DEFINER = bypass RLS, prevents infinite recursion)
+CREATE OR REPLACE FUNCTION public.get_my_room_ids()
+RETURNS SETOF UUID AS $$
+  SELECT room_id FROM public.room_participants WHERE user_id = auth.uid();
+$$ LANGUAGE sql SECURITY DEFINER STABLE;
+
+CREATE OR REPLACE FUNCTION public.is_public_room(p_room_id UUID)
+RETURNS BOOLEAN AS $$
+  SELECT EXISTS (SELECT 1 FROM public.rooms WHERE id = p_room_id AND visibility = 'public');
+$$ LANGUAGE sql SECURITY DEFINER STABLE;
+
 -- ROOMS policies
 CREATE POLICY "Public rooms are viewable by authenticated users"
   ON public.rooms FOR SELECT TO authenticated
   USING (
     visibility = 'public'
     OR host_id = auth.uid()
-    OR id IN (SELECT room_id FROM public.room_participants WHERE user_id = auth.uid())
+    OR id IN (SELECT public.get_my_room_ids())
   );
 
 CREATE POLICY "Authenticated users can create rooms"
@@ -123,8 +134,8 @@ CREATE POLICY "Host can delete room"
 CREATE POLICY "Room members can view participants"
   ON public.room_participants FOR SELECT TO authenticated
   USING (
-    room_id IN (SELECT room_id FROM public.room_participants WHERE user_id = auth.uid())
-    OR room_id IN (SELECT id FROM public.rooms WHERE visibility = 'public')
+    room_id IN (SELECT public.get_my_room_ids())
+    OR public.is_public_room(room_id)
   );
 
 CREATE POLICY "Users can join rooms"
@@ -140,7 +151,7 @@ CREATE POLICY "Users can read accessible messages"
   ON public.messages FOR SELECT TO authenticated
   USING (
     room_id IS NULL
-    OR room_id IN (SELECT room_id FROM public.room_participants WHERE user_id = auth.uid())
+    OR room_id IN (SELECT public.get_my_room_ids())
   );
 
 CREATE POLICY "Users can send messages"
@@ -149,9 +160,10 @@ CREATE POLICY "Users can send messages"
     auth.uid() = user_id
     AND (
       room_id IS NULL
-      OR room_id IN (SELECT room_id FROM public.room_participants WHERE user_id = auth.uid())
+      OR room_id IN (SELECT public.get_my_room_ids())
     )
   );
+
 
 -- TASKS policies
 CREATE POLICY "Users can view own tasks"
