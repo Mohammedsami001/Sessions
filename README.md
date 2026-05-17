@@ -3,8 +3,8 @@
 
   # ✦ SESSIONS ✦
   
-  **The Premium Real-Time Multiplayer Study OS**  
-  *Synchronized focus rooms, live chat, gamified progression, and cinematic UI — built for students who take their craft seriously.*
+  **The Premium Real-Time Study OS**  
+  *Synchronized focus rooms, live chat, gamified progression — built for students who take their craft seriously.*
   
   <br />
 
