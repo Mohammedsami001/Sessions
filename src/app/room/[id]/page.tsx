@@ -237,6 +237,23 @@ export default function RoomPage() {
           </div>
         </div>
       </section>
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => setShowDeleteConfirm(false)}>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'rgba(10,15,30,0.95)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: '20px', padding: '32px', width: '100%', maxWidth: '420px', backdropFilter: 'blur(30px)', textAlign: 'center' }}>
+            <div style={{ fontSize: '40px', marginBottom: '16px' }}>⚠️</div>
+            <h2 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '12px', color: '#FCA5A5' }}>Delete This Room?</h2>
+            <p style={{ fontSize: '13px', color: 'var(--text-gray)', marginBottom: '24px', lineHeight: 1.6 }}>
+              This will <strong style={{ color: 'white' }}>permanently delete</strong> the room and <strong style={{ color: 'white' }}>remove all participants</strong>. Everyone currently in this room will be sent back to the dashboard.
+            </p>
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <button onClick={() => setShowDeleteConfirm(false)} style={{ flex: 1, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.15)', color: 'var(--text-gray)', padding: '12px', borderRadius: '10px', fontWeight: 700, fontSize: '13px', cursor: 'pointer' }}>Cancel</button>
+              <button onClick={handleDelete} style={{ flex: 1, background: '#EF4444', border: 'none', color: 'white', padding: '12px', borderRadius: '10px', fontWeight: 800, fontSize: '13px', cursor: 'pointer' }}>Delete Room</button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

@@ -144,7 +144,10 @@ CREATE POLICY "Users can join rooms"
 
 CREATE POLICY "Users can leave rooms"
   ON public.room_participants FOR DELETE TO authenticated
-  USING (auth.uid() = user_id);
+  USING (
+    auth.uid() = user_id
+    OR room_id IN (SELECT id FROM public.rooms WHERE host_id = auth.uid())
+  );
 
 -- MESSAGES policies
 CREATE POLICY "Users can read accessible messages"
