@@ -84,8 +84,14 @@ export default function DashboardPage() {
 
   const handleSendMessage = async () => {
     if (!chatInput.trim()) return;
-    await sendMessage(chatInput);
-    setChatInput("");
+    setChatError("");
+    const msg = await sendMessage(chatInput);
+    if (msg) {
+      setChatInput("");
+      await loadMessages();
+    } else {
+      setChatError("Failed to send. Are you signed in?");
+    }
   };
 
   const handleAddTodo = async (e: React.FormEvent) => {
@@ -108,10 +114,13 @@ export default function DashboardPage() {
 
   const handleCreateRoom = async () => {
     if (!createForm.title.trim()) return;
+    setCreateError("");
     const room = await createRoom(createForm);
     if (room) {
       setShowCreateModal(false);
       window.location.href = `/room/${room.id}`;
+    } else {
+      setCreateError("Failed to create room. Please make sure you're signed in.");
     }
   };
 
@@ -255,6 +264,7 @@ export default function DashboardPage() {
             <input type="text" placeholder="Say something..." value={chatInput} onChange={e => setChatInput(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') handleSendMessage(); }} style={{ flex: 1, background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', padding: '8px 12px', borderRadius: '8px', color: 'white', fontSize: '12px', outline: 'none' }} />
             <button onClick={handleSendMessage} style={{ background: 'var(--gold)', color: 'black', border: 'none', padding: '0 12px', borderRadius: '8px', fontSize: '11px', fontWeight: 700, cursor: 'pointer' }}>SEND</button>
           </div>
+          {chatError && <div style={{ color: '#FCA5A5', fontSize: '11px', marginTop: '6px' }}>{chatError}</div>}
         </div>
 
         {/* Tasks Card */}
@@ -336,6 +346,7 @@ export default function DashboardPage() {
               <button onClick={handleCreateRoom} style={{ background: 'var(--gold)', color: 'black', border: 'none', padding: '14px', borderRadius: '10px', fontWeight: 800, fontSize: '14px', cursor: 'pointer', marginTop: '8px' }}>
                 CREATE & ENTER ROOM
               </button>
+              {createError && <div style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)', color: '#FCA5A5', padding: '10px', borderRadius: '8px', fontSize: '12px', textAlign: 'center', marginTop: '8px' }}>{createError}</div>}
             </div>
           </div>
         </div>
