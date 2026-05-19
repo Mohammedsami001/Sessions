@@ -1,17 +1,17 @@
-import { supabase, getCurrentSession } from './supabase';
-import type { Room, RoomParticipant, CreateRoomInput } from './types';
+import { supabase, getCurrentSession } from "./supabase";
+import type { Room, RoomParticipant, CreateRoomInput } from "./types";
 
 // ---------- Fetch Public Rooms (Discovery Lobby) ----------
 
 export async function fetchPublicRooms(): Promise<Room[]> {
   const { data, error } = await supabase
-    .from('rooms')
-    .select('*')
-    .eq('visibility', 'public')
-    .order('created_at', { ascending: false });
+    .from("rooms")
+    .select("*")
+    .eq("visibility", "public")
+    .order("created_at", { ascending: false });
 
   if (error) {
-    console.error('Failed to fetch rooms:', error.message);
+    console.error("Failed to fetch rooms:", error.message);
     return [];
   }
   return data || [];
@@ -21,13 +21,13 @@ export async function fetchPublicRooms(): Promise<Room[]> {
 
 export async function fetchRoom(roomId: string): Promise<Room | null> {
   const { data, error } = await supabase
-    .from('rooms')
-    .select('*')
-    .eq('id', roomId)
+    .from("rooms")
+    .select("*")
+    .eq("id", roomId)
     .single();
 
   if (error) {
-    console.error('Failed to fetch room:', error.message);
+    console.error("Failed to fetch room:", error.message);
     return null;
   }
   return data;
@@ -37,13 +37,13 @@ export async function fetchRoom(roomId: string): Promise<Room | null> {
 
 export async function fetchRoomByCode(code: string): Promise<Room | null> {
   const { data, error } = await supabase
-    .from('rooms')
-    .select('*')
-    .eq('join_code', code.toUpperCase().trim())
+    .from("rooms")
+    .select("*")
+    .eq("join_code", code.toUpperCase().trim())
     .single();
 
   if (error) {
-    console.error('Failed to fetch room by code:', error.message);
+    console.error("Failed to fetch room by code:", error.message);
     return null;
   }
   return data;
@@ -56,7 +56,7 @@ export async function createRoom(input: CreateRoomInput): Promise<Room | null> {
   if (!session?.user?.id) return null;
 
   const { data, error } = await supabase
-    .from('rooms')
+    .from("rooms")
     .insert({
       title: input.title,
       category: input.category,
@@ -71,7 +71,7 @@ export async function createRoom(input: CreateRoomInput): Promise<Room | null> {
     .single();
 
   if (error) {
-    console.error('Failed to create room:', error.message);
+    console.error("Failed to create room:", error.message);
     return null;
   }
 
@@ -85,21 +85,23 @@ export async function createRoom(input: CreateRoomInput): Promise<Room | null> {
 
 // ---------- Join Room ----------
 
-export async function joinRoom(roomId: string): Promise<RoomParticipant | null> {
+export async function joinRoom(
+  roomId: string,
+): Promise<RoomParticipant | null> {
   const session = await getCurrentSession();
   if (!session?.user?.id) return null;
 
   const { data, error } = await supabase
-    .from('room_participants')
+    .from("room_participants")
     .upsert(
       { room_id: roomId, user_id: session.user.id },
-      { onConflict: 'room_id,user_id' }
+      { onConflict: "room_id,user_id" },
     )
     .select()
     .single();
 
   if (error) {
-    console.error('Failed to join room:', error.message);
+    console.error("Failed to join room:", error.message);
     return null;
   }
   return data;
@@ -107,12 +109,18 @@ export async function joinRoom(roomId: string): Promise<RoomParticipant | null> 
 
 // ---------- Join Room by Code ----------
 
-export async function joinRoomByCode(code: string): Promise<{ room: Room | null; error?: string }> {
+export async function joinRoomByCode(
+  code: string,
+): Promise<{ room: Room | null; error?: string }> {
   const room = await fetchRoomByCode(code);
-  if (!room) return { room: null, error: 'Invalid room code. Please check and try again.' };
+  if (!room)
+    return {
+      room: null,
+      error: "Invalid room code. Please check and try again.",
+    };
 
   const participant = await joinRoom(room.id);
-  if (!participant) return { room: null, error: 'Failed to join room.' };
+  if (!participant) return { room: null, error: "Failed to join room." };
 
   return { room };
 }
@@ -125,45 +133,42 @@ export async function leaveRoom(roomId: string): Promise<boolean> {
 
   // Check if we're the host
   const { data: room } = await supabase
-    .from('rooms')
-    .select('host_id')
-    .eq('id', roomId)
+    .from("rooms")
+    .select("host_id")
+    .eq("id", roomId)
     .single();
 
   // Remove our participant row
   const { error } = await supabase
-    .from('room_participants')
+    .from("room_participants")
     .delete()
-    .eq('room_id', roomId)
-    .eq('user_id', session.user.id);
+    .eq("room_id", roomId)
+    .eq("user_id", session.user.id);
 
   if (error) {
-    console.error('Failed to leave room:', error.message);
+    console.error("Failed to leave room:", error.message);
     return false;
   }
 
   // If we were the host, transfer ownership to the next oldest participant
   if (room?.host_id === session.user.id) {
     const { data: nextHost } = await supabase
-      .from('room_participants')
-      .select('user_id')
-      .eq('room_id', roomId)
-      .order('joined_at', { ascending: true })
+      .from("room_participants")
+      .select("user_id")
+      .eq("room_id", roomId)
+      .order("joined_at", { ascending: true })
       .limit(1)
       .single();
 
     if (nextHost) {
       // Transfer host
       await supabase
-        .from('rooms')
+        .from("rooms")
         .update({ host_id: nextHost.user_id })
-        .eq('id', roomId);
+        .eq("id", roomId);
     } else {
       // No participants left — delete the room
-      await supabase
-        .from('rooms')
-        .delete()
-        .eq('id', roomId);
+      await supabase.from("rooms").delete().eq("id", roomId);
     }
   }
 
@@ -178,35 +183,35 @@ export async function deleteRoom(roomId: string): Promise<boolean> {
 
   // Verify the current user is the host
   const { data: room, error: fetchError } = await supabase
-    .from('rooms')
-    .select('host_id')
-    .eq('id', roomId)
+    .from("rooms")
+    .select("host_id")
+    .eq("id", roomId)
     .single();
 
   if (fetchError || !room || room.host_id !== session.user.id) {
-    console.error('Only the host can delete a room');
+    console.error("Only the host can delete a room");
     return false;
   }
 
   // Remove all participants first (triggers Realtime events → clients redirect)
   const { error: partError } = await supabase
-    .from('room_participants')
+    .from("room_participants")
     .delete()
-    .eq('room_id', roomId);
+    .eq("room_id", roomId);
 
   if (partError) {
-    console.error('Failed to remove participants:', partError.message);
+    console.error("Failed to remove participants:", partError.message);
     return false;
   }
 
   // Delete the room
   const { error: roomError } = await supabase
-    .from('rooms')
+    .from("rooms")
     .delete()
-    .eq('id', roomId);
+    .eq("id", roomId);
 
   if (roomError) {
-    console.error('Failed to delete room:', roomError.message);
+    console.error("Failed to delete room:", roomError.message);
     return false;
   }
 
@@ -217,13 +222,13 @@ export async function deleteRoom(roomId: string): Promise<boolean> {
 
 export async function fetchParticipants(roomId: string) {
   const { data, error } = await supabase
-    .from('room_participants')
-    .select('*, profiles(display_name, avatar_url)')
-    .eq('room_id', roomId)
-    .order('joined_at', { ascending: true });
+    .from("room_participants")
+    .select("*, profiles(display_name, avatar_url)")
+    .eq("room_id", roomId)
+    .order("joined_at", { ascending: true });
 
   if (error) {
-    console.error('Failed to fetch participants:', error.message);
+    console.error("Failed to fetch participants:", error.message);
     return [];
   }
   return data || [];
@@ -231,16 +236,18 @@ export async function fetchParticipants(roomId: string) {
 
 // ---------- Fetch Participant Count for Multiple Rooms ----------
 
-export async function fetchParticipantCounts(roomIds: string[]): Promise<Record<string, number>> {
+export async function fetchParticipantCounts(
+  roomIds: string[],
+): Promise<Record<string, number>> {
   if (roomIds.length === 0) return {};
 
   const { data, error } = await supabase
-    .from('room_participants')
-    .select('room_id')
-    .in('room_id', roomIds);
+    .from("room_participants")
+    .select("room_id")
+    .in("room_id", roomIds);
 
   if (error) {
-    console.error('Failed to fetch participant counts:', error.message);
+    console.error("Failed to fetch participant counts:", error.message);
     return {};
   }
 
@@ -253,17 +260,20 @@ export async function fetchParticipantCounts(roomIds: string[]): Promise<Record<
 
 // ---------- Timer Controls (Host Only) ----------
 
-export async function startTimer(roomId: string, mode: 'focus' | 'break' | 'long_break'): Promise<boolean> {
+export async function startTimer(
+  roomId: string,
+  mode: "focus" | "break" | "long_break",
+): Promise<boolean> {
   const { error } = await supabase
-    .from('rooms')
+    .from("rooms")
     .update({
       timer_status: mode,
       timer_started_at: new Date().toISOString(),
     })
-    .eq('id', roomId);
+    .eq("id", roomId);
 
   if (error) {
-    console.error('Failed to start timer:', error.message);
+    console.error("Failed to start timer:", error.message);
     return false;
   }
   return true;
@@ -271,15 +281,15 @@ export async function startTimer(roomId: string, mode: 'focus' | 'break' | 'long
 
 export async function pauseTimer(roomId: string): Promise<boolean> {
   const { error } = await supabase
-    .from('rooms')
+    .from("rooms")
     .update({
-      timer_status: 'idle',
-      timer_started_at: null,
+      timer_status: "idle",
+      // Keep timer_started_at to preserve remaining time for resume
     })
-    .eq('id', roomId);
+    .eq("id", roomId);
 
   if (error) {
-    console.error('Failed to pause timer:', error.message);
+    console.error("Failed to pause timer:", error.message);
     return false;
   }
   return true;
@@ -287,42 +297,45 @@ export async function pauseTimer(roomId: string): Promise<boolean> {
 
 export async function resetTimer(roomId: string): Promise<boolean> {
   const { error } = await supabase
-    .from('rooms')
+    .from("rooms")
     .update({
-      timer_status: 'idle',
+      timer_status: "idle",
       timer_started_at: null,
       cycles_completed: 0,
     })
-    .eq('id', roomId);
+    .eq("id", roomId);
 
   if (error) {
-    console.error('Failed to reset timer:', error.message);
+    console.error("Failed to reset timer:", error.message);
     return false;
   }
   return true;
 }
 
-export async function completeTimerCycle(roomId: string, nextMode: 'break' | 'long_break'): Promise<boolean> {
+export async function completeTimerCycle(
+  roomId: string,
+  nextMode: "break" | "long_break",
+): Promise<boolean> {
   // First update status to trigger the focus_complete trigger
   const { data: room } = await supabase
-    .from('rooms')
-    .select('cycles_completed')
-    .eq('id', roomId)
+    .from("rooms")
+    .select("cycles_completed")
+    .eq("id", roomId)
     .single();
 
   const newCycles = (room?.cycles_completed || 0) + 1;
 
   const { error } = await supabase
-    .from('rooms')
+    .from("rooms")
     .update({
       timer_status: nextMode,
       timer_started_at: new Date().toISOString(),
       cycles_completed: newCycles,
     })
-    .eq('id', roomId);
+    .eq("id", roomId);
 
   if (error) {
-    console.error('Failed to complete cycle:', error.message);
+    console.error("Failed to complete cycle:", error.message);
     return false;
   }
   return true;
@@ -330,13 +343,21 @@ export async function completeTimerCycle(roomId: string, nextMode: 'break' | 'lo
 
 // ---------- Realtime Subscriptions ----------
 
-export function subscribeToRoom(roomId: string, callback: (room: Room) => void) {
+export function subscribeToRoom(
+  roomId: string,
+  callback: (room: Room) => void,
+) {
   return supabase
     .channel(`room-${roomId}`)
     .on(
-      'postgres_changes',
-      { event: 'UPDATE', schema: 'public', table: 'rooms', filter: `id=eq.${roomId}` },
-      (payload) => callback(payload.new as Room)
+      "postgres_changes",
+      {
+        event: "UPDATE",
+        schema: "public",
+        table: "rooms",
+        filter: `id=eq.${roomId}`,
+      },
+      (payload) => callback(payload.new as Room),
     )
     .subscribe();
 }
@@ -345,31 +366,36 @@ export function subscribeToParticipants(roomId: string, callback: () => void) {
   return supabase
     .channel(`participants-${roomId}`)
     .on(
-      'postgres_changes',
-      { event: '*', schema: 'public', table: 'room_participants', filter: `room_id=eq.${roomId}` },
-      () => callback()
+      "postgres_changes",
+      {
+        event: "*",
+        schema: "public",
+        table: "room_participants",
+        filter: `room_id=eq.${roomId}`,
+      },
+      () => callback(),
     )
     .subscribe();
 }
 
 export function subscribeToPublicRooms(callback: () => void) {
   return supabase
-    .channel('public-rooms')
+    .channel("public-rooms")
     .on(
-      'postgres_changes',
-      { event: '*', schema: 'public', table: 'rooms' },
-      () => callback()
+      "postgres_changes",
+      { event: "*", schema: "public", table: "rooms" },
+      () => callback(),
     )
     .subscribe();
 }
 
 export function subscribeToPublicParticipants(callback: () => void) {
   return supabase
-    .channel('public-participants')
+    .channel("public-participants")
     .on(
-      'postgres_changes',
-      { event: '*', schema: 'public', table: 'room_participants' },
-      () => callback()
+      "postgres_changes",
+      { event: "*", schema: "public", table: "room_participants" },
+      () => callback(),
     )
     .subscribe();
 }
