@@ -363,6 +363,26 @@ export async function completeTimerCycle(
   return true;
 }
 
+// ---------- Switch Timer Mode (While Paused) ----------
+
+export async function switchTimerMode(
+  roomId: string,
+  newMode: "focus" | "break" | "long_break"
+): Promise<boolean> {
+  const { error } = await supabase
+    .from("rooms")
+    .update({
+      timer_status: newMode,
+    })
+    .eq("id", roomId);
+
+  if (error) {
+    console.error("Failed to switch timer mode:", error.message);
+    return false;
+  }
+  return true;
+}
+
 // ---------- Realtime Subscriptions ----------
 
 export function subscribeToRoom(
