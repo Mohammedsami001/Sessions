@@ -134,12 +134,14 @@ export function computeTimerRemaining(
   breakDuration: number,
   longBreakDuration: number
 ): { minutes: number; seconds: number; totalRemaining: number } {
-  if (!timerStartedAt || timerStatus === 'idle') {
-    // Return full duration based on what the next mode would be
+  // If no timer_started_at, timer hasn't started yet or was fully reset
+  if (!timerStartedAt) {
     const dur = focusDuration;
     return { minutes: Math.floor(dur / 60), seconds: dur % 60, totalRemaining: dur };
   }
 
+  // Timer is either running or paused (idle status with valid timer_started_at)
+  // In both cases, calculate remaining time from the anchor
   let duration: number;
   switch (timerStatus) {
     case 'focus':
@@ -150,6 +152,11 @@ export function computeTimerRemaining(
       break;
     case 'long_break':
       duration = longBreakDuration;
+      break;
+    case 'idle':
+      // Paused state - use focus duration as default
+      // The actual duration was captured when timer started
+      duration = focusDuration;
       break;
     default:
       duration = focusDuration;
