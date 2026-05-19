@@ -419,7 +419,6 @@ export default function RoomPage() {
                 );
               })}
             </div>
-            </div>
             <div
               className="pomodoro-circle"
               style={{
