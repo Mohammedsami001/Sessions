@@ -367,7 +367,7 @@ export async function completeTimerCycle(
 
 export async function switchTimerMode(
   roomId: string,
-  newMode: "focus" | "break" | "long_break"
+  newMode: "focus" | "break" | "long_break",
 ): Promise<boolean> {
   const { error } = await supabase
     .from("rooms")

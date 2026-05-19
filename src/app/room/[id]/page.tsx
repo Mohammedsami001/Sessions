@@ -13,6 +13,7 @@ import {
   pauseTimer,
   resetTimer,
   completeTimerCycle,
+  switchTimerMode,
   subscribeToRoom,
   subscribeToParticipants,
 } from "../../../lib/rooms";
@@ -374,36 +375,50 @@ export default function RoomPage() {
                 marginBottom: "8px",
               }}
             >
-              {(["focus", "break", "long_break"] as const).map((mode) => (
-                <span
-                  key={mode}
-                  style={{
-                    padding: "4px 12px",
-                    borderRadius: "999px",
-                    fontSize: "10px",
-                    fontWeight: 700,
-                    textTransform: "uppercase",
-                    background:
-                      room.timer_status === mode
+              {(["focus", "break", "long_break"] as const).map((mode) => {
+                const isActive = room.timer_status === mode;
+                const isPaused = room.timer_status === "idle";
+                const isClickable = isHost && isPaused;
+
+                return (
+                  <button
+                    key={mode}
+                    onClick={() => isClickable && switchTimerMode(roomId, mode)}
+                    disabled={!isClickable}
+                    style={{
+                      padding: "4px 12px",
+                      borderRadius: "999px",
+                      fontSize: "10px",
+                      fontWeight: 700,
+                      textTransform: "uppercase",
+                      background: isActive
                         ? mode === "focus"
                           ? "rgba(255,80,0,0.2)"
                           : "rgba(59,130,246,0.2)"
                         : "transparent",
-                    border:
-                      room.timer_status === mode
+                      border: isActive
                         ? `1px solid ${mode === "focus" ? "var(--orange)" : "#3B82F6"}`
-                        : "none",
-                    color:
-                      room.timer_status === mode
+                        : `1px solid ${isClickable ? "rgba(255,255,255,0.2)" : "transparent"}`,
+                      color: isActive
                         ? mode === "focus"
                           ? "var(--orange)"
                           : "#3B82F6"
                         : "var(--text-gray)",
-                  }}
-                >
-                  {mode.replace("_", " ")}
-                </span>
-              ))}
+                      cursor: isClickable ? "pointer" : "default",
+                      transition: "all 0.2s",
+                      opacity: isClickable ? 1 : 0.6,
+                    }}
+                    title={
+                      isClickable
+                        ? `Switch to ${mode.replace("_", " ")}`
+                        : "Start or pause the timer to switch modes"
+                    }
+                  >
+                    {mode.replace("_", " ")}
+                  </button>
+                );
+              })}
+            </div>
             </div>
             <div
               className="pomodoro-circle"
@@ -501,7 +516,7 @@ export default function RoomPage() {
                   marginTop: "12px",
                 }}
               >
-                Timer controlled by room host
+                Timer and mode switching controlled by room host
               </p>
             )}
           </div>
