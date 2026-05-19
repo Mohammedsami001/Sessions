@@ -264,11 +264,33 @@ export async function startTimer(
   roomId: string,
   mode: "focus" | "break" | "long_break",
 ): Promise<boolean> {
+  // Fetch current room state to check if we're resuming from pause
+  const { data: room } = await supabase
+    .from("rooms")
+    .select("timer_started_at, timer_status")
+    .eq("id", roomId)
+    .single();
+
+  let timerStartedAt: string;
+
+  if (room?.timer_status === "idle" && room?.timer_started_at) {
+    // Resuming from pause - preserve the anchor to keep remaining time
+    // Adjust the anchor to now minus the already-elapsed time
+    const elapsed = Math.floor(
+      (Date.now() - new Date(room.timer_started_at).getTime()) / 1000,
+    );
+    const newAnchor = new Date(Date.now() - elapsed * 1000).toISOString();
+    timerStartedAt = newAnchor;
+  } else {
+    // Starting fresh
+    timerStartedAt = new Date().toISOString();
+  }
+
   const { error } = await supabase
     .from("rooms")
     .update({
       timer_status: mode,
-      timer_started_at: new Date().toISOString(),
+      timer_started_at: timerStartedAt,
     })
     .eq("id", roomId);
 
