@@ -377,7 +377,7 @@ export default function RoomPage() {
             >
               {(["focus", "break", "long_break"] as const).map((mode) => {
                 const isActive = room.timer_status === mode;
-                const isPaused = room.timer_status === "idle";
+                const isPaused = !room.timer_started_at; // Paused if no anchor (timer not running)
                 const isClickable = isHost && isPaused;
 
                 return (
