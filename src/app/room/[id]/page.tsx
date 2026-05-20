@@ -461,10 +461,12 @@ export default function RoomPage() {
                     onClick={() =>
                       startTimer(
                         roomId,
-                        (room.timer_status as
+                        (room.timer_status === "idle"
+                          ? "focus"
+                          : room.timer_status) as
                           | "focus"
                           | "break"
-                          | "long_break") || "focus",
+                          | "long_break",
                       )
                     }
                     style={{
@@ -478,7 +480,10 @@ export default function RoomPage() {
                       cursor: "pointer",
                     }}
                   >
-                    START {room.timer_status.replace("_", " ").toUpperCase()}
+                    START{" "}
+                    {room.timer_status === "idle"
+                      ? "FOCUS"
+                      : room.timer_status.replace("_", " ").toUpperCase()}
                   </button>
                 ) : (
                   <>
