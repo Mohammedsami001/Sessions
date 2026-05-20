@@ -373,6 +373,7 @@ export async function switchTimerMode(
     .from("rooms")
     .update({
       timer_status: newMode,
+      timer_started_at: null, // Clear anchor to show full duration of new mode while staying paused
     })
     .eq("id", roomId);
 
