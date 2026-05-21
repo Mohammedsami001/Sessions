@@ -1,4 +1,28 @@
+@import "tailwindcss";
+
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@1,600&display=swap');
+
+@theme {
+  --color-gold: #F0C040;
+  --color-gold-dim: rgba(240, 192, 64, 0.15);
+  --color-gold-border: rgba(240, 192, 64, 0.3);
+  --color-orange: #FF6B2C;
+  --color-orange-dim: rgba(255, 107, 44, 0.15);
+  --color-bg-deep: #08090D;
+  --color-bg-surface: #0E1117;
+  --color-bg-elevated: #161B22;
+  --color-bg-card: rgba(14, 17, 23, 0.75);
+  --color-bg-card-hover: rgba(22, 27, 34, 0.85);
+  --color-text-white: #E6EDF3;
+  --color-text-secondary: #9CA3AF;
+  --color-text-gray: rgba(230, 237, 243, 0.55);
+  --color-text-muted: rgba(230, 237, 243, 0.3);
+  --color-border: rgba(230, 237, 243, 0.08);
+  --color-border-hover: rgba(230, 237, 243, 0.15);
+  --color-border-accent: rgba(240, 192, 64, 0.25);
+  --color-glass: rgba(255, 255, 255, 0.03);
+  --color-glass-hover: rgba(255, 255, 255, 0.06);
+}
 
 :root {
   /* Core dark palette — obsidian foundation */
