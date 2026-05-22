@@ -6,6 +6,7 @@ import { supabase } from "../../lib/supabase";
 import { fetchCurrentProfile, updateProfile, deleteAccount } from "../../lib/profile";
 import type { Profile } from "../../lib/types";
 import { computeLevelProgress, formatFocusHours } from "../../lib/types";
+import { Footer } from "@/components/ui/footer";
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -60,10 +61,11 @@ export default function ProfilePage() {
   if (!profile) return <main className="dashboard-wrapper"><p style={{ textAlign: 'center', color: 'var(--text-gray)', marginTop: '100px' }}>Setting up your profile...</p></main>;
 
   return (
-    <main className="dashboard-wrapper" style={{ maxWidth: '700px' }}>
-      <div style={{ marginBottom: '24px' }}>
-        <Link href="/dashboard" style={{ textDecoration: 'none', color: 'var(--text-gray)', fontSize: '13px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px' }}>← <span style={{ color: 'white' }}>Dashboard</span></Link>
-      </div>
+    <div className="min-h-screen flex flex-col justify-between">
+      <main className="dashboard-wrapper flex-1" style={{ maxWidth: '700px', width: '100%' }}>
+        <div style={{ marginBottom: '24px' }}>
+          <Link href="/dashboard" style={{ textDecoration: 'none', color: 'var(--text-gray)', fontSize: '13px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px' }}>← <span style={{ color: 'white' }}>Dashboard</span></Link>
+        </div>
 
       {/* Profile Card */}
       <div className="bento-card" style={{ gridColumn: 'span 12', marginBottom: '24px' }}>
@@ -133,7 +135,8 @@ export default function ProfilePage() {
             </div>
           </div>
         )}
-      </div>
-    </main>
+      </main>
+      <Footer />
+    </div>
   );
 }

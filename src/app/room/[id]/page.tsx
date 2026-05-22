@@ -35,6 +35,7 @@ import {
   Trash2, ShieldAlert, Share2, Play, Pause, RotateCcw, 
   Activity, Crown, Plus, Check, Send, Sparkles, BookOpen, AlertTriangle
 } from "lucide-react";
+import { Footer } from "@/components/ui/footer";
 
 export default function RoomPage() {
   const params = useParams();
@@ -254,7 +255,8 @@ export default function RoomPage() {
   }
 
   return (
-    <main className="min-h-screen bg-bg-deep px-4 md:px-8 py-8 relative overflow-hidden text-text-white font-sans max-w-7xl mx-auto z-20">
+    <div className="min-h-screen flex flex-col justify-between">
+      <main className="flex-1 w-full bg-bg-deep px-4 md:px-8 py-8 relative overflow-hidden text-text-white font-sans max-w-7xl mx-auto z-20">
       
       {/* Absolute background accent glow */}
       <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-orange/3 rounded-full blur-[160px] pointer-events-none"></div>
@@ -681,6 +683,8 @@ export default function RoomPage() {
         </div>
       )}
       
-    </main>
+      </main>
+      <Footer />
+    </div>
   );
 }
