@@ -38,21 +38,6 @@ function HeroSplineBackground() {
   );
 }
 
-function ScreenshotSection({ screenshotRef }: { screenshotRef: React.RefObject<HTMLDivElement | null> }) {
-  return (
-    <section className="relative z-10 container mx-auto px-4 md:px-6 lg:px-8 mt-11 md:mt-12">
-      <div ref={screenshotRef} className="bg-gray-900 rounded-xl overflow-hidden shadow-2xl border border-gray-700/50 w-full md:w-[80%] lg:w-[70%] mx-auto">
-        <div>
-          <img
-            src="https://cdn.sanity.io/images/s6lu43cv/production-v4/13b6177b537aee0fc311a867ea938f16416e8670-3840x2160.jpg?w=3840&h=2160&q=10&auto=format&fm=jpg"
-            alt="App Screenshot"
-            className="w-full h-auto block rounded-lg mx-auto"
-          />
-        </div>
-      </div>
-    </section>
-  );
-}
 
 import Link from 'next/link';
 
@@ -145,18 +130,13 @@ function Navbar({ sessionActive }: { sessionActive: boolean }) {
 }
 
 const HeroSection = ({ sessionActive = false }: { sessionActive?: boolean }) => {
-  const screenshotRef = useRef<HTMLDivElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (screenshotRef.current && heroContentRef.current) {
+      if (heroContentRef.current) {
         requestAnimationFrame(() => {
           const scrollPosition = window.scrollY || window.pageYOffset;
-
-          if (screenshotRef.current) {
-            screenshotRef.current.style.transform = `translateY(-${scrollPosition * 0.35}px)`;
-          }
 
           const maxScroll = 400;
           const opacity = 1 - Math.min(scrollPosition / maxScroll, 1);
@@ -184,10 +164,7 @@ const HeroSection = ({ sessionActive = false }: { sessionActive?: boolean }) => 
         </div>
       </div>
 
-      <div className="bg-[#08090D] relative z-10 -mt-16 pb-24 border-t border-white/5">
-        <div className="relative -top-24">
-          <ScreenshotSection screenshotRef={screenshotRef} />
-        </div>
+      <div className="bg-[#08090D] relative z-10 pb-24 border-t border-white/5">
 
         <div id="features" className="container mx-auto px-4 md:px-6 lg:px-8 mt-12 text-center max-w-4xl">
           <span className="text-yellow-500 font-mono text-xs uppercase tracking-widest bg-yellow-500/10 px-3 py-1 rounded-full border border-yellow-500/25">Lobby OS Features</span>
