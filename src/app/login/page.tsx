@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { supabase } from "../../lib/supabase";
+import { Footer } from "@/components/ui/footer";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -50,13 +51,14 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#08090D] flex items-center justify-center px-4 relative overflow-hidden">
+    <div className="min-h-screen bg-[#08090D] flex flex-col justify-between relative overflow-hidden">
       {/* Decorative Blur Orbs */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-yellow-500/10 rounded-full blur-3xl -z-10" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-orange-600/10 rounded-full blur-3xl -z-10" />
 
-      <div className="w-full max-w-[440px] bg-white/[0.02] backdrop-blur-3xl border border-white/5 shadow-2xl rounded-3xl p-8 sm:p-10 transition-all duration-300 hover:border-white/10">
-        <div className="text-center mb-8">
+      <div className="flex-1 flex items-center justify-center px-4 py-12 relative z-10">
+        <div className="w-full max-w-[440px] bg-white/[0.02] backdrop-blur-3xl border border-white/5 shadow-2xl rounded-3xl p-8 sm:p-10 transition-all duration-300 hover:border-white/10">
+          <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-6 group text-xs text-yellow-500 font-mono tracking-widest font-bold">
             <span className="transition-transform group-hover:-translate-x-1">←</span> RETURN TO LOBBY
           </Link>
@@ -146,6 +148,9 @@ export default function LoginPage() {
           </Link>
         </div>
       </div>
-    </main>
+      </div>
+
+      <Footer />
+    </div>
   );
 }

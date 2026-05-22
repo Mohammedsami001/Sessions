@@ -40,6 +40,7 @@ function HeroSplineBackground() {
 
 
 import Link from 'next/link';
+import { Footer } from './footer';
 
 function HeroContent({ sessionActive }: { sessionActive: boolean }) {
   return (
@@ -192,6 +193,7 @@ const HeroSection = ({ sessionActive = false }: { sessionActive?: boolean }) => 
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
