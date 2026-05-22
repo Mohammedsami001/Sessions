@@ -41,6 +41,7 @@ function HeroSplineBackground() {
 
 import Link from 'next/link';
 import { Footer } from './footer';
+import { Navbar } from './mini-navbar';
 
 function HeroContent({ sessionActive }: { sessionActive: boolean }) {
   return (
@@ -92,43 +93,7 @@ function HeroContent({ sessionActive }: { sessionActive: boolean }) {
   );
 }
 
-function Navbar({ sessionActive }: { sessionActive: boolean }) {
-  return (
-    <nav className="fixed top-0 left-0 right-0 z-20 border-b border-white/5" style={{ backgroundColor: 'rgba(8, 9, 13, 0.45)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)' }}>
-      <div className="container mx-auto px-4 py-4 md:px-6 lg:px-8 flex items-center justify-between">
-        <div className="flex items-center space-x-6 lg:space-x-8">
-          <Link href="/" className="flex items-center space-x-2 text-white font-black tracking-widest text-lg font-sans">
-             <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-yellow-500">
-              <path fillRule="evenodd" clipRule="evenodd" d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32ZM12.4306 9.70695C12.742 9.33317 13.2633 9.30058 13.6052 9.62118L19.1798 14.8165C19.4894 15.1054 19.4894 15.5841 19.1798 15.873L13.6052 21.0683C13.2633 21.3889 12.742 21.3563 12.4306 19.9991V9.70695Z" fill="currentColor" />
-            </svg>
-            <span>SESSIONS</span>
-          </Link>
 
-          <div className="hidden md:flex items-center space-x-6">
-            <a href="#features" className="text-gray-400 hover:text-white text-sm transition duration-150">Features</a>
-            <a href="#about" className="text-gray-400 hover:text-white text-sm transition duration-150">About</a>
-            <a href="#community" className="text-gray-400 hover:text-white text-sm transition duration-150">Community</a>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-4">
-          {sessionActive ? (
-            <Link href="/dashboard" className="bg-yellow-500 hover:bg-yellow-400 text-black px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition duration-300">
-              Dashboard
-            </Link>
-          ) : (
-            <>
-              <Link href="/login" className="text-gray-300 hover:text-white text-sm transition duration-150">Sign In</Link>
-              <Link href="/signup" className="border border-white/20 text-white px-5 py-1.5 rounded-full text-xs sm:text-sm hover:bg-white hover:text-black hover:border-white transition duration-300">
-                Get Started
-              </Link>
-            </>
-          )}
-        </div>
-      </div>
-    </nav>
-  );
-}
 
 const HeroSection = ({ sessionActive = false }: { sessionActive?: boolean }) => {
   const heroContentRef = useRef<HTMLDivElement>(null);
