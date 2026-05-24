@@ -56,7 +56,6 @@ export function Navbar({ sessionActive = false }: { sessionActive?: boolean }) {
 
   const navLinksData = [
     { label: 'Features', href: '/#features' },
-    { label: 'Profile', href: '/profile' },
   ];
 
   const activeLinks = [...navLinksData];
