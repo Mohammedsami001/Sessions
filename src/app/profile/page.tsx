@@ -48,8 +48,8 @@ export default function ProfilePage() {
 
   const handleDelete = async () => {
     if (!profile) return;
-    if (deleteConfirmText.toLowerCase() !== "delete my account") {
-      alert("Please type 'delete my account' exactly to confirm.");
+    if (deleteConfirmText !== "DELETE") {
+      alert("Please type 'DELETE' exactly to confirm.");
       return;
     }
     setDeleting(true);

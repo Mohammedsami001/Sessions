@@ -158,7 +158,7 @@ export default function DashboardPage() {
 
   const handleCreateRoom = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!profile) return;
+    if (!profile || !createForm.title.trim()) return;
     setCreateError("");
     setLoadingCreate(true);
     const room = await roomService.createRoom(createForm, profile.id);
@@ -589,7 +589,7 @@ export default function DashboardPage() {
                     <input 
                       type="checkbox" 
                       checked={todo.completed} 
-                      onChange={() => handleToggleTask(todo.id, todo.completed)}
+                      onChange={() => handleToggleTask(todo.id, !todo.completed)}
                       className="accent-orange rounded cursor-pointer w-4 h-4 shrink-0"
                     />
                     <span className="text-xs text-text-white font-medium truncate leading-tight select-none">

@@ -45,26 +45,34 @@ export class SupabaseChatRepository implements IChatRepository {
   subscribeToMessages(roomId: string | null, callback: (msg: MessageWithProfile) => void): { unsubscribe: () => void } {
     const channelName = roomId ? `messages:room:${roomId}` : 'messages:global';
     
-    const filter = roomId 
-      ? `room_id=eq.${roomId}` 
-      : `room_id=is.null`;
+    let filterOptions: any = { event: 'INSERT', schema: 'public', table: 'messages' };
+    if (roomId) {
+      filterOptions.filter = `room_id=eq.${roomId}`;
+    }
 
     const sub = supabase
       .channel(channelName)
       .on(
         'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'messages', filter },
+        filterOptions,
         async (payload) => {
           // fetch profile info
           const { data } = await supabase
             .from('profiles')
             .select('display_name, avatar_url')
-            .eq('id', payload.new.user_id)
+            .eq('id', (payload.new as any).user_id)
             .single();
 
           const messageWithProfile: MessageWithProfile = {
-            ...(payload.new as any),
-            profiles: data || { display_name: 'Unknown', avatar_url: null },
+            id: (payload.new as any).id,
+            room_id: (payload.new as any).room_id,
+            user_id: (payload.new as any).user_id,
+            content: (payload.new as any).content,
+            created_at: (payload.new as any).created_at,
+            profiles: {
+              display_name: data?.display_name || 'Unknown',
+              avatar_url: data?.avatar_url || null,
+            }
           };
           
           callback(messageWithProfile);
