@@ -3,10 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState, useCallback } from "react";
 import { supabase } from "../../lib/supabase";
-import { fetchCurrentProfile } from "../../lib/profile";
-import { fetchPublicRooms, createRoom, joinRoom, joinRoomByCode, subscribeToPublicRooms, subscribeToPublicParticipants, fetchParticipantCounts } from "../../lib/rooms";
-import { fetchRecentMessages, sendMessage, subscribeToMessages } from "../../lib/chat";
-import { fetchTasks, createTask, toggleTask, deleteTask } from "../../lib/tasks";
+import { profileService, taskService, chatService, roomService } from "../../lib/container";
 import type { Profile, Room, Task, MessageWithProfile, CreateRoomInput } from "../../lib/types";
 import { computeLevelProgress, formatFocusHours, computeTimerRemaining } from "../../lib/types";
 import { 
@@ -29,27 +26,29 @@ export default function DashboardPage() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [createError, setCreateError] = useState("");
   const [chatError, setChatError] = useState("");
+  const [loadingCreate, setLoadingCreate] = useState(false);
+  const [loadingJoin, setLoadingJoin] = useState(false);
   const [createForm, setCreateForm] = useState<CreateRoomInput>({
     title: "", category: "General", visibility: "public",
     focus_duration: 1500, break_duration: 300, long_break_duration: 900, long_break_interval: 4,
   });
 
   const loadRooms = useCallback(async () => {
-    const r = await fetchPublicRooms();
-    setRooms(r);
-    if (r.length > 0) {
-      const counts = await fetchParticipantCounts(r.map(room => room.id));
+    const rs = await roomService.fetchPublicRooms();
+    setRooms(rs);
+    if (rs.length > 0) {
+      const counts = await roomService.fetchParticipantCounts(rs.map(r => r.id));
       setParticipantCounts(counts);
     }
   }, []);
 
   const loadMessages = useCallback(async () => {
-    const m = await fetchRecentMessages(null, 30);
+    const m = await chatService.fetchRecentMessages(null, 30);
     setMessages(m);
   }, []);
 
   const loadTasks = useCallback(async () => {
-    const t = await fetchTasks(null);
+    const t = await taskService.fetchTasks(null);
     setTasks(t);
   }, []);
 
@@ -68,8 +67,11 @@ export default function DashboardPage() {
       }
 
       try {
-        const p = await fetchCurrentProfile();
-        setProfile(p);
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          const p = await profileService.ensureProfile(user.id, user.email || undefined, user.user_metadata);
+          setProfile(p);
+        }
       } catch (err) {
         console.error('Dashboard profile load error:', err);
       }
@@ -86,23 +88,23 @@ export default function DashboardPage() {
     init();
 
     // Set up Realtime subscriptions immediately
-    const roomSub = subscribeToPublicRooms(() => loadRooms());
-    const partSub = subscribeToPublicParticipants(() => loadRooms());
-    const chatSub = subscribeToMessages(null, () => loadMessages());
+    const roomSub = roomService.subscribeToPublicRooms(() => loadRooms());
+    const partSub = roomService.subscribeToPublicParticipants(() => loadRooms());
+    const chatSub = chatService.subscribeToMessages(null, () => loadMessages());
 
     return () => {
-      supabase.removeChannel(roomSub);
-      supabase.removeChannel(partSub);
-      supabase.removeChannel(chatSub);
+      roomSub.unsubscribe();
+      partSub.unsubscribe();
+      chatSub.unsubscribe();
     };
   }, [loadRooms, loadMessages, loadTasks]);
 
   const handleSignOut = async () => { await supabase.auth.signOut(); window.location.href = "/"; };
 
   const handleSendMessage = async () => {
-    if (!chatInput.trim()) return;
+    if (!chatInput.trim() || !profile) return;
     setChatError("");
-    const msg = await sendMessage(chatInput);
+    const msg = await chatService.sendMessage(chatInput, profile.id, null);
     if (msg) {
       setChatInput("");
       await loadMessages();
@@ -111,46 +113,80 @@ export default function DashboardPage() {
     }
   };
 
-  const handleAddTodo = async (e: React.FormEvent) => {
+  const handleAddTask = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newTodo.trim()) return;
-    await createTask(newTodo);
-    setNewTodo("");
-    await loadTasks();
-  };
-
-  const handleToggleTodo = async (id: string, completed: boolean) => {
-    await toggleTask(id, !completed);
-    await loadTasks();
-  };
-
-  const handleDeleteTodo = async (id: string) => {
-    await deleteTask(id);
-    await loadTasks();
-  };
-
-  const handleCreateRoom = async () => {
-    if (!createForm.title.trim()) return;
-    setCreateError("");
-    const room = await createRoom(createForm);
-    if (room) {
-      setShowCreateModal(false);
-      window.location.href = `/room/${room.id}`;
+    if (!newTodo.trim() || !profile) return;
+    
+    // Optimistic UI for tasks
+    const tempId = `temp-${Date.now()}`;
+    const optimisticTask = {
+      id: tempId,
+      text: newTodo.trim(),
+      completed: false,
+      user_id: profile.id,
+      room_id: null,
+      created_at: new Date().toISOString()
+    };
+    
+    setTasks(prev => [...prev, optimisticTask]);
+    setNewTodo('');
+    
+    const savedTask = await taskService.createTask(optimisticTask.text, profile.id, null);
+    if (savedTask) {
+      setTasks(prev => prev.map(t => t.id === tempId ? savedTask : t));
     } else {
-      setCreateError("Failed to create room. Please make sure you're signed in.");
+      setTasks(prev => prev.filter(t => t.id !== tempId));
     }
   };
 
-  const handleJoinByCode = async () => {
-    if (!joinCode.trim()) return;
-    setJoinError("");
-    const { room, error } = await joinRoomByCode(joinCode);
-    if (error) { setJoinError(error); return; }
-    if (room) window.location.href = `/room/${room.id}`;
+  const handleToggleTask = async (taskId: string, completed: boolean) => {
+    setTasks(prev => prev.map(t => t.id === taskId ? { ...t, completed } : t));
+    const success = await taskService.toggleTask(taskId, completed);
+    if (!success) {
+      setTasks(prev => prev.map(t => t.id === taskId ? { ...t, completed: !completed } : t));
+    }
   };
 
-  const handleJoinRoom = async (roomId: string) => {
-    await joinRoom(roomId);
+  const handleDeleteTask = async (taskId: string) => {
+    const backup = [...tasks];
+    setTasks(prev => prev.filter(t => t.id !== taskId));
+    const success = await taskService.deleteTask(taskId);
+    if (!success) {
+      setTasks(backup);
+    }
+  };
+
+  const handleCreateRoom = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!profile) return;
+    setCreateError("");
+    setLoadingCreate(true);
+    const room = await roomService.createRoom(createForm, profile.id);
+    if (room) {
+      window.location.href = `/room/${room.id}`;
+    } else {
+      setCreateError("Failed to create room.");
+      setLoadingCreate(false);
+    }
+  };
+
+  const handleJoinByCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!joinCode.trim() || !profile) return;
+    setJoinError("");
+    setLoadingJoin(true);
+    const { room, error } = await roomService.joinRoomByCode(joinCode, profile.id);
+    if (room) {
+      window.location.href = `/room/${room.id}`;
+    } else {
+      setJoinError(error || "Failed to join room.");
+      setLoadingJoin(false);
+    }
+  };
+
+  const handleQuickJoin = async (roomId: string) => {
+    if (!profile) return;
+    await roomService.joinRoom(roomId, profile.id);
     window.location.href = `/room/${roomId}`;
   };
 
@@ -340,8 +376,8 @@ export default function DashboardPage() {
                     </div>
 
                     <button 
-                      onClick={() => handleJoinRoom(room.id)} 
-                      className="w-full md:w-auto bg-glass/60 hover:bg-gold hover:text-bg-deep border border-border-hover hover:border-gold text-text-white px-5 py-2.5 rounded-lg text-xs font-bold tracking-widest uppercase cursor-pointer transition-all duration-300 shrink-0 text-center"
+                      onClick={() => handleQuickJoin(room.id)} 
+                      className="w-full md:w-auto bg-glass/60 hover:bg-gold hover:text-bg-deep text-text-gray px-4 py-2 rounded-xl text-[10px] font-black tracking-widest uppercase cursor-pointer border border-border/80 hover:border-gold shadow-sm transition-all flex items-center justify-center gap-1.5 active:scale-95"
                     >
                       ENTER STATION
                     </button>
@@ -521,7 +557,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Form add task */}
-          <form onSubmit={handleAddTodo} className="flex gap-1.5 mb-4">
+          <form onSubmit={handleAddTask} className="flex gap-1.5 mb-4">
             <input 
               type="text" 
               placeholder="NEW TASK..." 
@@ -553,7 +589,7 @@ export default function DashboardPage() {
                     <input 
                       type="checkbox" 
                       checked={todo.completed} 
-                      onChange={() => handleToggleTodo(todo.id, todo.completed)}
+                      onChange={() => handleToggleTask(todo.id, todo.completed)}
                       className="accent-orange rounded cursor-pointer w-4 h-4 shrink-0"
                     />
                     <span className="text-xs text-text-white font-medium truncate leading-tight select-none">
@@ -562,7 +598,7 @@ export default function DashboardPage() {
                   </label>
                   
                   <button 
-                    onClick={(e) => { e.preventDefault(); handleDeleteTodo(todo.id); }} 
+                    onClick={(e) => { e.preventDefault(); handleDeleteTask(todo.id); }} 
                     className="bg-transparent border-0 text-text-muted hover:text-red cursor-pointer p-1 rounded opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity duration-200 shrink-0"
                     title="Delete Task"
                   >

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
-import { fetchCurrentProfile, updateProfile, deleteAccount } from "../../lib/profile";
+import { profileService } from "../../lib/container";
 import type { Profile } from "../../lib/types";
 import { computeLevelProgress, formatFocusHours } from "../../lib/types";
 import { Footer } from "@/components/ui/footer";
@@ -26,7 +26,7 @@ export default function ProfilePage() {
         const { data: { user }, error } = await supabase.auth.getUser();
         if (!error && user) {
           setHasSession(true);
-          const p = await fetchCurrentProfile();
+          const p = await profileService.ensureProfile(user.id, user.email || undefined, user.user_metadata);
           if (p) { setProfile(p); setDisplayName(p.display_name); }
         }
       } catch (err) {
@@ -38,20 +38,30 @@ export default function ProfilePage() {
   }, []);
 
   const handleSave = async () => {
-    if (!displayName.trim()) return;
+    if (!displayName.trim() || !profile) return;
     setSaving(true);
-    const updated = await updateProfile({ display_name: displayName.trim() });
+    const updated = await profileService.updateProfile(profile.id, { display_name: displayName.trim() });
     if (updated) setProfile(updated);
     setEditing(false);
     setSaving(false);
   };
 
   const handleDelete = async () => {
-    if (deleteConfirmText !== 'DELETE') return;
+    if (!profile) return;
+    if (deleteConfirmText.toLowerCase() !== "delete my account") {
+      alert("Please type 'delete my account' exactly to confirm.");
+      return;
+    }
     setDeleting(true);
-    const result = await deleteAccount();
-    if (result.success) { window.location.href = '/'; }
-    else { alert(result.error || 'Failed to delete account.'); setDeleting(false); }
+    const success = await profileService.deleteAccount(profile.id);
+    if (success) {
+      window.location.href = "/";
+    } else {
+      alert("Failed to delete account. Please try again.");
+      setDeleting(false);
+      setShowDeleteConfirm(false);
+      setDeleteConfirmText("");
+    }
   };
 
   const levelInfo = profile ? computeLevelProgress(profile.exp) : { level: 0, currentExp: 0, nextLevelExp: 100, progress: 0 };

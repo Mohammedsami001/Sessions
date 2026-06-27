@@ -4,31 +4,8 @@ import Link from "next/link";
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useParams } from "next/navigation";
 import { supabase } from "../../../lib/supabase";
-import {
-  fetchRoom,
-  fetchParticipants,
-  leaveRoom,
-  deleteRoom,
-  startTimer,
-  pauseTimer,
-  resetTimer,
-  completeTimerCycle,
-  switchTimerMode,
-  subscribeToRoom,
-  subscribeToParticipants,
-} from "../../../lib/rooms";
-import {
-  fetchRecentMessages,
-  sendMessage,
-  subscribeToMessages,
-} from "../../../lib/chat";
-import {
-  fetchTasks,
-  createTask,
-  toggleTask,
-  deleteTask,
-} from "../../../lib/tasks";
-import type { Room, Task, MessageWithProfile } from "../../../lib/types";
+import { profileService, chatService, taskService, roomService } from "../../../lib/container";
+import type { Profile, Room, Task, MessageWithProfile } from "../../../lib/types";
 import { computeTimerRemaining } from "../../../lib/types";
 import { 
   ArrowLeft, Users, Clock, Timer, MessageSquare, CheckSquare, 
@@ -47,8 +24,9 @@ export default function RoomPage() {
   const [roomTasks, setRoomTasks] = useState<Task[]>([]);
   const [taskTab, setTaskTab] = useState<"global" | "room">("room");
   const [chatInput, setChatInput] = useState("");
-  const [newTodo, setNewTodo] = useState("");
+  const [newTask, setNewTask] = useState("");
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [timerDisplay, setTimerDisplay] = useState({
     minutes: 25,
     seconds: 0,
@@ -63,21 +41,21 @@ export default function RoomPage() {
 
   const loadParticipants = useCallback(async () => {
     if (!roomId) return;
-    const p = await fetchParticipants(roomId);
+    const p = await roomService.fetchParticipants(roomId);
     setParticipants(p);
   }, [roomId]);
 
   const loadMessages = useCallback(async () => {
     if (!roomId) return;
-    const m = await fetchRecentMessages(roomId, 100);
+    const m = await chatService.fetchRecentMessages(roomId, 100);
     setMessages(m);
   }, [roomId]);
 
   const loadTasks = useCallback(async () => {
-    const g = await fetchTasks(null);
+    const g = await taskService.fetchTasks(null);
     setGlobalTasks(g);
     if (roomId) {
-      const r = await fetchTasks(roomId);
+      const r = await taskService.fetchTasks(roomId);
       setRoomTasks(r);
     }
   }, [roomId]);
@@ -98,8 +76,12 @@ export default function RoomPage() {
       const {
         data: { session },
       } = await supabase.auth.getSession();
-      if (session?.user?.id) setCurrentUserId(session.user.id);
-      const r = await fetchRoom(roomId);
+      if (session?.user?.id) {
+        setCurrentUserId(session.user.id);
+        const p = await profileService.ensureProfile(session.user.id, session.user.email || undefined, session.user.user_metadata);
+        setProfile(p);
+      }
+      const r = await roomService.fetchRoom(roomId);
       if (r) {
         setRoom(r);
         updateTimerDisplay(r);
@@ -109,12 +91,12 @@ export default function RoomPage() {
     }
     init();
 
-    const roomSub = subscribeToRoom(roomId, (updated) => {
+    const roomSub = roomService.subscribeToRoom(roomId, (updated) => {
       setRoom(updated);
       updateTimerDisplay(updated);
     });
-    const partSub = subscribeToParticipants(roomId, () => loadParticipants());
-    const chatSub = subscribeToMessages(roomId, () => loadMessages());
+    const partSub = roomService.subscribeToParticipants(roomId, () => loadParticipants());
+    const chatSub = chatService.subscribeToMessages(roomId, () => loadMessages());
 
     // Listen for room deletion — redirect all users to dashboard
     const deleteSub = supabase
@@ -134,9 +116,9 @@ export default function RoomPage() {
       .subscribe();
 
     return () => {
-      supabase.removeChannel(roomSub);
-      supabase.removeChannel(partSub);
-      supabase.removeChannel(chatSub);
+      roomSub.unsubscribe();
+      partSub.unsubscribe();
+      chatSub.unsubscribe();
       supabase.removeChannel(deleteSub);
       if (timerRef.current) clearInterval(timerRef.current);
     };
@@ -163,9 +145,9 @@ export default function RoomPage() {
             room.timer_status === "focus" &&
             nextCycles % room.long_break_interval === 0;
           if (room.timer_status === "focus") {
-            completeTimerCycle(roomId, isLongBreak ? "long_break" : "break");
+            roomService.completeTimerCycle(roomId, isLongBreak ? "long_break" : "break");
           } else {
-            startTimer(roomId, "focus");
+            roomService.startTimer(roomId, "focus");
           }
         }
       }, 200);
@@ -176,25 +158,54 @@ export default function RoomPage() {
   }, [room, roomId, isHost]);
 
   const handleLeave = async () => {
-    await leaveRoom(roomId);
+    if (!currentUserId) return;
+    await roomService.leaveRoom(roomId, currentUserId);
     window.location.href = "/dashboard";
   };
   const handleDelete = async () => {
-    const ok = await deleteRoom(roomId);
+    if (!currentUserId) return;
+    const ok = await roomService.deleteRoom(roomId, currentUserId);
     if (ok) window.location.href = "/dashboard";
     setShowDeleteConfirm(false);
   };
   const handleSend = async () => {
-    if (!chatInput.trim()) return;
-    await sendMessage(chatInput, roomId);
+    if (!chatInput.trim() || !currentUserId) return;
+    await chatService.sendMessage(chatInput, currentUserId, roomId);
     setChatInput("");
     await loadMessages();
   };
+  
   const handleAddTask = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newTodo.trim()) return;
-    await createTask(newTodo, taskTab === "room" ? roomId : null);
-    setNewTodo("");
+    if (!newTask.trim() || !currentUserId) return;
+    
+    // Optimistic
+    const tempId = `temp-${Date.now()}`;
+    const targetRoom = taskTab === "room" ? roomId : null;
+    const optTask = {
+      id: tempId,
+      text: newTask.trim(),
+      completed: false,
+      user_id: currentUserId,
+      room_id: targetRoom,
+      created_at: new Date().toISOString()
+    };
+    
+    if (targetRoom) setRoomTasks(prev => [...prev, optTask]);
+    else setGlobalTasks(prev => [...prev, optTask]);
+    
+    setNewTask("");
+    await taskService.createTask(optTask.text, currentUserId, targetRoom);
+    await loadTasks();
+  };
+
+  const handleToggleTask = async (taskId: string, completed: boolean) => {
+    await taskService.toggleTask(taskId, completed);
+    await loadTasks();
+  };
+
+  const handleDeleteTask = async (taskId: string) => {
+    await taskService.deleteTask(taskId);
     await loadTasks();
   };
 
@@ -352,7 +363,7 @@ export default function RoomPage() {
                 return (
                   <button
                     key={mode}
-                    onClick={() => isClickable && switchTimerMode(roomId, mode)}
+                    onClick={() => isClickable && roomService.switchTimerMode(roomId, mode)}
                     disabled={!isClickable}
                     className={`px-3 py-1.5 rounded-full text-[9px] font-bold tracking-widest uppercase border transition-all ${
                       isActive
@@ -412,7 +423,7 @@ export default function RoomPage() {
                 {!room.timer_started_at ? (
                   <button
                     onClick={() =>
-                      startTimer(
+                      roomService.startTimer(
                         roomId,
                         (room.timer_status === "idle" ? "focus" : room.timer_status) as any
                       )
@@ -425,14 +436,14 @@ export default function RoomPage() {
                 ) : (
                   <>
                     <button
-                      onClick={() => pauseTimer(roomId)}
+                      onClick={() => roomService.pauseTimer(roomId)}
                       className="flex-1 bg-white hover:bg-glass hover:text-white border border-transparent hover:border-border text-bg-deep font-black text-xs tracking-widest uppercase py-3.5 rounded-xl cursor-pointer shadow-md transition-all flex items-center justify-center gap-1"
                     >
                       <Pause size={12} fill="currentColor" />
                       PAUSE
                     </button>
                     <button
-                      onClick={() => resetTimer(roomId)}
+                      onClick={() => roomService.resetTimer(roomId)}
                       className="bg-glass hover:bg-glass-hover border border-border text-text-gray hover:text-white px-4 py-3.5 rounded-xl text-xs font-black tracking-widest uppercase cursor-pointer transition-all flex items-center justify-center gap-1"
                       title="Reset countdown"
                     >
@@ -585,8 +596,8 @@ export default function RoomPage() {
               <input 
                 type="text" 
                 placeholder={`ADD NEURAL TASK FOR ${taskTab.toUpperCase()} BOARD...`} 
-                value={newTodo} 
-                onChange={(e) => setNewTodo(e.target.value)} 
+                value={newTask} 
+                onChange={(e) => setNewTask(e.target.value)} 
                 className="flex-1 bg-black/40 border border-border focus:border-orange/60 focus:ring-1 focus:ring-orange/30 px-3 py-2.5 rounded-lg text-xs text-text-white placeholder:text-text-muted outline-none transition-all"
               />
               <button 
@@ -613,7 +624,7 @@ export default function RoomPage() {
                       <input 
                         type="checkbox" 
                         checked={t.completed} 
-                        onChange={() => toggleTask(t.id, !t.completed).then(() => loadTasks())}
+                        onChange={() => handleToggleTask(t.id, !t.completed)}
                         className="accent-orange rounded cursor-pointer w-4 h-4 shrink-0"
                       />
                       <span className="text-xs text-text-white font-medium truncate leading-tight select-none">
@@ -624,7 +635,7 @@ export default function RoomPage() {
                     <button 
                       onClick={(e) => {
                         e.preventDefault();
-                        deleteTask(t.id).then(() => loadTasks());
+                        handleDeleteTask(t.id);
                       }} 
                       className="bg-transparent border-0 text-text-muted hover:text-red cursor-pointer p-1 rounded opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity duration-200 shrink-0"
                     >
