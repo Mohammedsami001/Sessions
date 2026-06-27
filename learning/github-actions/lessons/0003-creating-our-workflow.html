@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 3: Creating Our Workflow</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+    <h1>Lesson 3: Creating Our Workflow</h1>
+    
+    <div class="lesson-card">
+        <h2>Where do workflows live?</h2>
+        <p>GitHub automatically looks for YAML files inside a very specific folder in your project: <code>.github/workflows/</code>.</p>
+        <p>If you put a YAML file there (e.g., <code>ci.yml</code>), GitHub will read it and run it.</p>
+        
+        <h2>Writing the Sessions CI Workflow</h2>
+        <p>Here is the exact YAML we will use for our Next.js project. Let's break it down:</p>
+
+<pre><code>name: CI
+
+# 1. The Trigger: When should this run?
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+# 2. The Jobs: What servers are we booting up?
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    # 3. The Steps: What commands do we run?
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Unit Tests
+        run: npx vitest run
+
+      - name: Run Build
+        run: npm run build
+</code></pre>
+
+        <h3>Understanding the Steps</h3>
+        <ul>
+            <li><code>uses: actions/checkout@v4</code>: This is a pre-made action that downloads your repository's code onto the server.</li>
+            <li><code>uses: actions/setup-node@v4</code>: This installs Node.js on the server so we can use <code>npm</code>.</li>
+            <li><code>run: npm ci</code>: A strict version of <code>npm install</code> that is faster and better for automated servers.</li>
+        </ul>
+
+        <div class="task">
+            <h3>Your Turn!</h3>
+            <p>I have explained the parts of the file, but now we actually need to put this into the real project.</p>
+            <p><strong>Your Task:</strong> In your chat, ask me to create the <code>.github/workflows/ci.yml</code> file using the code snippet above. Once I create it, we will push it to GitHub and watch it run!</p>
+        </div>
+
+        <hr>
+        <p><em>Reply in the chat to instruct me to create the file, or ask me any questions about the <code>ci.yml</code> code above!</em></p>
+    </div>
+</body>
+</html>

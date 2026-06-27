@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 2: YAML Basics</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+    <h1>Lesson 2: YAML Basics</h1>
+    
+    <div class="lesson-card">
+        <h2>What is YAML?</h2>
+        <p><strong>YAML</strong> stands for "YAML Ain't Markup Language" (a recursive acronym). It is a highly readable data-serialization language. We use it for configuration files because it is incredibly easy for humans to read and write.</p>
+        <p>GitHub Actions uses YAML files to understand exactly what you want it to automate.</p>
+        
+        <h2>The 3 Golden Rules of YAML</h2>
+        
+        <h3>1. Key-Value Pairs</h3>
+        <p>Data is stored as a <code>key</code> followed by a colon, a space, and then the <code>value</code>.</p>
+<pre><code>name: Sessions CI
+author: Sami
+</code></pre>
+
+        <h3>2. Indentation Matters (Like Python!)</h3>
+        <p>You use <strong>spaces (never tabs)</strong> to nest data. Usually, we use 2 spaces for indentation. This tells YAML that the indented items belong to the key above them.</p>
+<pre><code>on:
+  push:
+    branches:
+      - main
+</code></pre>
+        <p><em>(In this example, <code>push</code> belongs to <code>on</code>, and <code>branches</code> belongs to <code>push</code>).</em></p>
+
+        <h3>3. Lists use Dashes</h3>
+        <p>When you want a list of items (an array), you put each item on a new line starting with a dash <code>-</code> and a space.</p>
+<pre><code>jobs:
+  - build
+  - test
+  - deploy
+</code></pre>
+
+        <div class="task">
+            <h3>Quick Quiz!</h3>
+            <p>Look at the snippet below. Can you tell me what the two <strong>mistakes</strong> are based on the golden rules we just learned?</p>
+<pre><code>steps:
+-name: Install Dependencies
+  run:npm install
+</code></pre>
+            <p><strong>Hint:</strong> Look very closely at the spaces!</p>
+        </div>
+
+        <hr>
+        <p><em>Reply in the chat with the two mistakes you found!</em></p>
+    </div>
+</body>
+</html>

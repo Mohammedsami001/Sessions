@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 1: What is GitHub Actions?</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+    <h1>Lesson 1: Introduction to GitHub Actions</h1>
+    
+    <div class="lesson-card">
+        <h2>What are we learning?</h2>
+        <p>In this lesson, you'll learn what GitHub Actions is, why we use it, and how it connects to our `Sessions` Next.js application.</p>
+        
+        <h2>The Core Concept</h2>
+        <p><strong>GitHub Actions</strong> is a CI/CD (Continuous Integration / Continuous Deployment) platform built directly into GitHub. It allows you to automate your software development workflows.</p>
+        <p>Instead of manually running <code>npm run build</code> or <code>npx vitest run</code> every time you want to make sure your code works, GitHub Actions does it for you automatically on GitHub's servers whenever you push code or create a Pull Request.</p>
+
+        <h3>Key Terminology</h3>
+        <ul>
+            <li><strong>Workflow:</strong> An automated process made up of one or more jobs. Workflows are defined by a YAML file in the <code>.github/workflows/</code> directory.</li>
+            <li><strong>Event:</strong> A specific activity that triggers the workflow (e.g., a <code>push</code> or a <code>pull_request</code>).</li>
+            <li><strong>Job:</strong> A set of steps that execute on the same runner (server).</li>
+            <li><strong>Step:</strong> An individual task that can run commands (like <code>npm install</code>) or use predefined actions.</li>
+            <li><strong>Runner:</strong> A server provided by GitHub (e.g., <code>ubuntu-latest</code>) that runs your workflow.</li>
+        </ul>
+
+        <div class="task">
+            <h3>Your First Task</h3>
+            <p>To use GitHub Actions, we must first tell GitHub what to do by creating a workflow YAML file. In the next step, we are going to create our first workflow that runs our tests and type-checking automatically.</p>
+            <p><strong>Question for you:</strong> Have you ever written a YAML (<code>.yml</code>) file before, or would you like me to briefly explain YAML syntax before we write our workflow?</p>
+        </div>
+
+        <hr>
+        <p><em>When you are ready, reply in the chat to answer the question, or ask me for clarification on any of the terms above!</em></p>
+    </div>
+</body>
+</html>
