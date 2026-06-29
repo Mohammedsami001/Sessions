@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
-import { HeroSection } from "@/components/ui/3d-hero-section-boxes";
+import { PrismaHero } from "@/components/ui/prisma-hero";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
   const [sessionActive, setSessionActive] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
@@ -15,6 +17,7 @@ export default function Home() {
         const { data: { session } } = await supabase.auth.getSession();
         if (session?.user) {
           setSessionActive(true);
+          // Auto-redirect to dashboard if already logged in? Or let them click the button.
         }
       } catch (err) {
         // Fallback silently if unconfigured
@@ -25,13 +28,15 @@ export default function Home() {
 
   if (!mounted) {
     return (
-      <div className="bg-[#08090D] h-screen w-screen flex items-center justify-center">
-        <div className="text-yellow-500 font-mono tracking-widest text-xs animate-pulse">
-          INITIALIZING LOBBY OS...
+      <div className="bg-black h-screen w-screen flex items-center justify-center">
+        <div className="text-[#E1E0CC] font-sans tracking-widest text-xs animate-pulse">
+          INITIALIZING...
         </div>
       </div>
     );
   }
 
-  return <HeroSection sessionActive={sessionActive} />;
+  // We can pass sessionActive to PrismaHero if we want to change the button text,
+  // but for now let's just render the component as requested.
+  return <PrismaHero />;
 }

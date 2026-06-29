@@ -50,14 +50,13 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#08090D] flex items-center justify-center px-4 relative overflow-hidden">
-      {/* Decorative Blur Orbs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-yellow-500/10 rounded-full blur-3xl -z-10" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-orange-600/10 rounded-full blur-3xl -z-10" />
+    <main className="min-h-screen bg-black flex items-center justify-center px-4 relative overflow-hidden font-sans">
+      <div className="noise-overlay pointer-events-none absolute inset-0 opacity-[0.7] mix-blend-overlay" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60" />
 
       <div className="w-full max-w-[440px] bg-white/[0.02] backdrop-blur-3xl border border-white/5 shadow-2xl rounded-3xl p-8 sm:p-10 transition-all duration-300 hover:border-white/10">
         <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 mb-6 group text-xs text-yellow-500 font-mono tracking-widest font-bold">
+          <Link href="/" className="inline-flex items-center gap-2 mb-6 group text-xs text-[#E1E0CC] font-sans tracking-widest font-bold relative z-10">
             <span className="transition-transform group-hover:-translate-x-1">←</span> RETURN TO LOBBY
           </Link>
           <h1 className="text-3xl font-black text-white tracking-tight">Welcome Back</h1>
@@ -110,7 +109,7 @@ export default function LoginPage() {
               id="email"
               type="email" 
               required 
-              className="w-full bg-black/40 border border-white/5 focus:border-yellow-500/50 focus:bg-black/60 rounded-xl px-4 py-3 text-white text-sm outline-none transition-all placeholder:text-gray-600"
+              className="w-full bg-black/40 border border-white/5 focus:border-[#E1E0CC]/50 focus:bg-black/60 rounded-xl px-4 py-3 text-white text-sm outline-none transition-all placeholder:text-gray-600"
               placeholder="student@university.edu"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -123,7 +122,7 @@ export default function LoginPage() {
               id="password"
               type="password" 
               required 
-              className="w-full bg-black/40 border border-white/5 focus:border-yellow-500/50 focus:bg-black/60 rounded-xl px-4 py-3 text-white text-sm outline-none transition-all placeholder:text-gray-600"
+              className="w-full bg-black/40 border border-white/5 focus:border-[#E1E0CC]/50 focus:bg-black/60 rounded-xl px-4 py-3 text-white text-sm outline-none transition-all placeholder:text-gray-600"
               placeholder="••••••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -133,7 +132,7 @@ export default function LoginPage() {
           <button 
             type="submit" 
             disabled={loading} 
-            className="w-full bg-yellow-500 hover:bg-yellow-400 disabled:opacity-50 disabled:cursor-not-allowed text-black font-bold py-3.5 px-4 rounded-xl text-sm transition-all duration-200 hover:scale-[1.01] cursor-pointer"
+            className="w-full bg-white hover:bg-[#E1E0CC] disabled:opacity-50 disabled:cursor-not-allowed text-black font-bold py-3.5 px-4 rounded-xl text-sm transition-all duration-200 hover:scale-[1.01] cursor-pointer"
           >
             {loading ? "AUTHENTICATING..." : "SIGN IN"}
           </button>
@@ -141,7 +140,7 @@ export default function LoginPage() {
 
         <div className="text-center text-sm text-gray-400 mt-8">
           Don't have an account?{" "}
-          <Link href="/signup" className="text-yellow-500 hover:underline font-semibold">
+          <Link href="/signup" className="text-[#E1E0CC] hover:underline font-semibold">
             Get started
           </Link>
         </div>
