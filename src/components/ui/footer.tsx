@@ -13,17 +13,17 @@ export function Footer() {
   // Footer link data adapted for Sessions
   const footerLinks = [
     {
-      title: "Lobby Protocol",
+      title: "Study OS Protocol",
       links: [
-        { label: "Lobby Landing", href: "/" },
-        { label: "Command Panel", href: "/dashboard" },
+        { label: "Sessions Home", href: "/" },
+        { label: "Dashboard", href: "/dashboard" },
         { label: "Student Profile", href: "/profile" },
       ],
     },
     {
       title: "System Guidelines",
       links: [
-        { label: "Lobby Features", href: "/#features" },
+        { label: "Sessions Features", href: "/#features" },
         { label: "Security Sign In", href: "/login" },
         { label: "Register Profile", href: "/signup" },
       ],

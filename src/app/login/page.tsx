@@ -57,7 +57,7 @@ export default function LoginPage() {
       <div className="w-full max-w-[440px] bg-white/[0.02] backdrop-blur-3xl border border-white/5 shadow-2xl rounded-3xl p-8 sm:p-10 transition-all duration-300 hover:border-white/10">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-6 group text-xs text-[#E1E0CC] font-sans tracking-widest font-bold relative z-10">
-            <span className="transition-transform group-hover:-translate-x-1">←</span> RETURN TO LOBBY
+            <span className="transition-transform group-hover:-translate-x-1">←</span> BACK TO HOME
           </Link>
           <h1 className="text-3xl font-black text-white tracking-tight">Welcome Back</h1>
           <p className="text-sm text-gray-400 mt-2">Sign in to access your study rooms</p>

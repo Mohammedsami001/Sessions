@@ -133,7 +133,7 @@ const HeroSection = ({ sessionActive = false }: { sessionActive?: boolean }) => 
       <div className="bg-[#08090D] relative z-10 pb-24 border-t border-white/5">
 
         <div id="features" className="container mx-auto px-4 md:px-6 lg:px-8 mt-12 text-center max-w-4xl">
-          <span className="text-yellow-500 font-mono text-xs uppercase tracking-widest bg-yellow-500/10 px-3 py-1 rounded-full border border-yellow-500/25">Lobby OS Features</span>
+          <span className="text-yellow-500 font-mono text-xs uppercase tracking-widest bg-yellow-500/10 px-3 py-1 rounded-full border border-yellow-500/25">Study OS Features</span>
           <h2 className="text-3xl sm:text-5xl font-bold text-white mt-6 mb-4 font-sans tracking-tight">Everything You Need for Deep Work</h2>
           <p className="text-gray-400 text-base sm:text-lg mb-16 max-w-xl mx-auto">Sessions is a synchronized multi-student space engineered to eliminate distractions and induce absolute focus.</p>
 

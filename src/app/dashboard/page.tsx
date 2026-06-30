@@ -211,14 +211,14 @@ export default function DashboardPage() {
           className="no-underline text-text-gray text-xs md:text-sm font-semibold tracking-wider hover:text-text-white flex items-center gap-2 group transition-colors"
         >
           <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-          <span>RETURN TO LOBBY</span>
+          <span>BACK TO HOME</span>
         </Link>
         <div className="flex gap-3 items-center">
           <Link 
             href="/profile" 
             className="no-underline text-gold hover:text-white text-xs font-bold tracking-wider border border-gold-border/30 hover:border-gold hover:bg-gold/10 px-4 py-2 rounded-full transition-all duration-300"
           >
-            ACCOUNT CONSOLE
+            PROFILE
           </Link>
           <button 
             onClick={handleSignOut} 

@@ -246,17 +246,16 @@ export default function RoomPage() {
   if (!room) {
     return (
       <main className="min-h-screen bg-bg-deep flex flex-col items-center justify-center p-6 text-center">
-        <div className="max-w-md bg-bg-card border border-border p-8 rounded-2xl shadow-xl flex flex-col items-center gap-4">
-          <div className="text-4xl text-orange">⚠️</div>
-          <h2 className="text-xl font-bold text-text-white">SYNCHRONIZED ROOM NOT FOUND</h2>
-          <p className="text-xs text-text-gray max-w-xs leading-relaxed">
-            The studio station you are seeking does not exist or has been deleted by the host console.
+        <div className="w-full max-w-md bg-white/[0.02] border border-white/5 rounded-3xl p-8 backdrop-blur-xl">
+          <h1 className="text-2xl font-black text-white mb-4 tracking-tight">Room Not Found</h1>
+          <p className="text-text-gray mb-8 leading-relaxed text-sm">
+            The room you are seeking does not exist or has been deleted by the host.
           </p>
           <Link 
             href="/dashboard" 
             className="no-underline text-bg-deep bg-gold hover:bg-white px-6 py-3 rounded-lg text-xs font-black tracking-widest uppercase cursor-pointer transition-colors mt-2"
           >
-            RETURN TO COMMAND PANEL
+            RETURN TO DASHBOARD
           </Link>
         </div>
       </main>
@@ -294,17 +293,16 @@ export default function RoomPage() {
           )}
           
           {isHost && (
-            <span className="bg-orange-dim border border-orange-dim text-orange px-3 py-1.5 rounded-xl text-[10px] font-black tracking-widest uppercase flex items-center gap-1">
-              <Crown size={12} />
-              HOST CONSOLE
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-bold tracking-widest text-[#E1E0CC] opacity-60">HOST CONTROLS</span>
+            </div>
           )}
           
           <button 
             onClick={handleLeave} 
             className="bg-glass hover:bg-white hover:text-bg-deep border border-border/80 text-text-gray hover:border-white px-4 py-2 rounded-xl text-xs font-bold tracking-wider cursor-pointer transition-all duration-300"
           >
-            Leave Station
+            Leave Room
           </button>
           
           {isHost && (
@@ -336,7 +334,7 @@ export default function RoomPage() {
         <div className="flex items-center gap-2 bg-glass border border-border/60 px-4 py-2 rounded-xl">
           <Users size={14} className="text-text-gray" />
           <span className="text-xs text-text-gray font-semibold">
-            <span className="text-text-white font-bold">{participants.length}</span> study peers synched
+            <span className="text-text-white font-bold">{participants.length}</span> peers in room
           </span>
         </div>
       </header>
@@ -467,7 +465,7 @@ export default function RoomPage() {
           <div className="bento-card bg-gradient-to-b from-bg-card to-bg-card/85 p-6 border border-border rounded-2xl">
             <h2 className="text-sm font-extrabold text-text-white tracking-widest uppercase flex items-center gap-2 mb-4">
               <Users size={16} className="text-gold" />
-              PEERS CONSOLE ({participants.length})
+              PARTICIPANTS ({participants.length})
             </h2>
             <div className="flex flex-wrap gap-2.5 max-h-[140px] overflow-y-auto scrollbar-thin scrollbar-thumb-glass pr-1">
               {participants.map((p: any) => (
@@ -507,7 +505,7 @@ export default function RoomPage() {
             <div className="bento-header flex justify-between items-center mb-4">
               <h2 className="bento-title text-base font-extrabold flex items-center gap-2">
                 <MessageSquare size={16} className="text-gold" />
-                Live Classroom Thread
+                Live Chat
               </h2>
             </div>
 
@@ -671,7 +669,7 @@ export default function RoomPage() {
             </h3>
             
             <p className="text-xs text-text-gray leading-relaxed mb-6">
-              This action will <strong className="text-text-white">permanently delete</strong> the synchronized classroom. Everyone currently focused inside this station will be automatically redirected to their dashboards.
+              This action will <strong className="text-text-white">permanently delete</strong> the room. Everyone currently inside this room will be automatically redirected to their dashboards.
             </p>
 
             <div className="flex gap-3">
@@ -685,7 +683,7 @@ export default function RoomPage() {
                 onClick={handleDelete} 
                 className="flex-1 bg-red hover:bg-red-hover text-white border-none py-3 rounded-lg font-black text-xs tracking-widest uppercase cursor-pointer shadow-md transition-colors"
               >
-                Delete Station
+                Delete Room
               </button>
             </div>
           </div>
