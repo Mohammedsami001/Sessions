@@ -31,8 +31,9 @@ describe('AuthUI Navigation and Toggle', () => {
   it('renders Sign Up form by default when initialIsSignIn is false', () => {
     render(<AuthUI initialIsSignIn={false} />);
     
-    // Should show Sign up header
+    // Should show Sign up header and branding
     expect(screen.getByRole('heading', { name: /create an account/i })).toBeDefined();
+    expect(screen.getAllByText(/sessions/i).length).toBeGreaterThan(0);
     
     // Should show the name field
     const nameField = screen.getByLabelText(/full name/i);
@@ -51,6 +52,7 @@ describe('AuthUI Navigation and Toggle', () => {
     
     // Should now be on Sign Up
     expect(screen.getByRole('heading', { name: /create an account/i })).toBeDefined();
+    expect(screen.getAllByText(/sessions/i).length).toBeGreaterThan(0);
     expect(screen.getByLabelText(/full name/i)).toBeDefined();
   });
 

@@ -267,7 +267,7 @@ function SignUpForm() {
       <div className="flex flex-col items-center gap-2 text-center mb-2">
         <div className="flex items-center gap-2 mb-6 text-black">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-hexagon"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-          <span className="font-semibold text-lg tracking-tight">Cogie</span>
+          <span className="font-semibold text-lg tracking-tight">Sessions</span>
         </div>
 
         <h1 className="text-4xl font-serif tracking-tight text-black">Create an account</h1>
