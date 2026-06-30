@@ -83,7 +83,7 @@ export const WordsPullUpMultiStyle = ({ segments, className = "", style }: Words
 };
 
 /* ---------------- Hero ---------------- */
-const navItems = ["Our story", "Collective", "Workshops", "Programs", "Inquiries"];
+const navItems = ["Home", "About", "Pricing", "Contact", "Login", "Signup"];
 
 const PrismaHero = () => {
   return (
