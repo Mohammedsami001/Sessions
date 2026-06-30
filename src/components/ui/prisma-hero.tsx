@@ -82,8 +82,14 @@ export const WordsPullUpMultiStyle = ({ segments, className = "", style }: Words
   );
 };
 
+import Link from "next/link";
+
 /* ---------------- Hero ---------------- */
-const navItems = ["Home", "About", "Pricing", "Contact", "Login", "Signup"];
+const navItems = [
+  { label: "Features", href: "/#features" },
+  { label: "Sign In", href: "/login" },
+  { label: "Create Account", href: "/signup" }
+];
 
 const PrismaHero = () => {
   return (
@@ -110,16 +116,16 @@ const PrismaHero = () => {
         <nav className="absolute left-1/2 top-0 z-20 -translate-x-1/2">
           <div className="flex items-center gap-3 rounded-b-2xl bg-black px-4 py-2 sm:gap-6 md:gap-12 md:rounded-b-3xl md:px-8 lg:gap-14">
             {navItems.map((item) => (
-              <a
-                key={item}
-                href="#"
+              <Link
+                key={item.label}
+                href={item.href}
                 className="text-[10px] transition-colors sm:text-xs md:text-sm font-sans"
                 style={{ color: "rgba(225, 224, 204, 0.8)" }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = "#E1E0CC")}
                 onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(225, 224, 204, 0.8)")}
               >
-                {item}
-              </a>
+                {item.label}
+              </Link>
             ))}
           </div>
         </nav>
@@ -146,20 +152,24 @@ const PrismaHero = () => {
                 className="text-xs sm:text-sm md:text-base text-gray-300 font-sans"
                 style={{ lineHeight: 1.2 }}
               >
-                Prisma is a worldwide network of visual artists, filmmakers and storytellers bound not by place, status or labels but by passion and hunger to unlock potential through our unique perspectives.
+                A synchronized Study OS designed for deep work. Connect with peers in authoritative, distraction-free rooms engineered to induce absolute flow.
               </motion.p>
 
-              <motion.button
+              <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                className="group inline-flex items-center gap-2 self-start rounded-full bg-white py-1 pl-5 pr-1 text-sm font-medium text-black transition-all hover:gap-3 sm:text-base"
               >
-                Join the lab
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black transition-transform group-hover:scale-110 sm:h-10 sm:w-10">
-                  <ArrowRight className="h-4 w-4" style={{ color: "#E1E0CC" }} />
-                </span>
-              </motion.button>
+                <Link
+                  href="/dashboard"
+                  className="group inline-flex items-center gap-2 self-start rounded-full bg-white py-1 pl-5 pr-1 text-sm font-medium text-black transition-all hover:gap-3 sm:text-base"
+                >
+                  Launch Study OS
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black transition-transform group-hover:scale-110 sm:h-10 sm:w-10">
+                    <ArrowRight className="h-4 w-4" style={{ color: "#E1E0CC" }} />
+                  </span>
+                </Link>
+              </motion.div>
 
             </div>
           </div>
