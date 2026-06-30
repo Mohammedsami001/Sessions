@@ -7,11 +7,11 @@ describe('AuthUI Navigation and Toggle', () => {
     render(<AuthUI initialIsSignIn={true} />);
     
     // Should show Sign in header
-    expect(screen.getByRole('heading', { name: /sign in to your account/i })).toBeDefined();
-    expect(screen.getByText(/enter your email below to sign in/i)).toBeDefined();
+    expect(screen.getByRole('heading', { name: /welcome back/i })).toBeDefined();
+    expect(screen.getByText(/enter your email and password to access your account/i)).toBeDefined();
     
     // Should show the sign in button
-    const signInButton = screen.getByRole('button', { name: /sign in/i });
+    const signInButton = screen.getByRole('button', { name: /^sign in$/i });
     expect(signInButton).toBeDefined();
 
     // Should NOT show Sign up fields (like name)
@@ -33,7 +33,7 @@ describe('AuthUI Navigation and Toggle', () => {
     render(<AuthUI initialIsSignIn={true} />);
     
     // Starts on Sign In
-    expect(screen.getByRole('heading', { name: /sign in to your account/i })).toBeDefined();
+    expect(screen.getByRole('heading', { name: /welcome back/i })).toBeDefined();
     
     // Click "Sign up" toggle button
     const toggleButton = screen.getByRole('button', { name: /sign up/i });
