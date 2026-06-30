@@ -22,6 +22,27 @@
   --color-border-accent: rgba(225, 224, 204, 0.25);
   --color-glass: rgba(255, 255, 255, 0.03);
   --color-glass-hover: rgba(255, 255, 255, 0.06);
+
+  /* Shadcn UI Standard Theme Variables mapped to Study OS palette */
+  --color-background: var(--bg-deep);
+  --color-foreground: var(--text-white);
+  --color-card: var(--bg-card);
+  --color-card-foreground: var(--text-white);
+  --color-popover: var(--bg-card);
+  --color-popover-foreground: var(--text-white);
+  --color-primary: var(--gold);
+  --color-primary-foreground: var(--bg-deep);
+  --color-secondary: var(--bg-surface);
+  --color-secondary-foreground: var(--text-white);
+  --color-muted: var(--gold-dim);
+  --color-muted-foreground: var(--text-muted);
+  --color-accent: var(--glass);
+  --color-accent-foreground: var(--text-white);
+  --color-destructive: #EF4444;
+  --color-destructive-foreground: #FFFFFF;
+  --color-input: rgba(255, 255, 255, 0.08);
+  --color-ring: var(--gold);
+  --radius: 0.5rem;
 }
 
 :root {
