@@ -136,14 +136,14 @@ const PrismaHero = () => {
             
             <div className="col-span-12 lg:col-span-8">
               <h1
-                className="font-medium leading-[0.85] tracking-[-0.07em] text-[26vw] sm:text-[24vw] md:text-[22vw] lg:text-[20vw] xl:text-[19vw] 2xl:text-[20vw]"
+                className="font-medium leading-[0.85] tracking-[-0.07em] text-[16vw] sm:text-[14vw] md:text-[12vw] lg:text-[10vw] xl:text-[9vw] 2xl:text-[9.5vw]"
                 style={{ color: "#E1E0CC" }}
               >
                 <WordsPullUp text="Sessions" showAsterisk />
               </h1>
             </div>
 
-            <div className="col-span-12 flex flex-col gap-5 pb-6 lg:col-span-4 lg:pb-10">
+            <div className="col-span-12 flex flex-col gap-5 pb-6 lg:col-span-4 lg:pb-10 relative z-10">
               
               <motion.p
                 initial={{ y: 20, opacity: 0 }}
