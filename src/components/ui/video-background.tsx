@@ -1,13 +1,21 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 export function VideoBackground({ className = "" }: { className?: string }) {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current && videoRef.current.readyState >= 3) {
+      setIsVideoLoaded(true);
+    }
+  }, []);
 
   return (
     <div className={`absolute inset-0 z-0 overflow-hidden bg-black ${className}`}>
       <video
+        ref={videoRef}
         autoPlay
         loop
         muted
