@@ -43,4 +43,11 @@ describe('PrismaHero Navigation', () => {
     const ctaButton = screen.getByRole('link', { name: /launch study os/i });
     expect(ctaButton.getAttribute('href')).toBe('/dashboard');
   });
+
+  it('renders the VideoBackground', () => {
+    const { container } = render(<PrismaHero />);
+    const video = container.querySelector('video');
+    expect(video).not.toBeNull();
+    expect(video?.getAttribute('src')).toBe('https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_170732_8a9ccda6-5cff-4628-b164-059c500a2b41.mp4');
+  });
 });
