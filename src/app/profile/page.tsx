@@ -7,6 +7,7 @@ import { profileService } from "../../lib/container";
 import type { Profile } from "../../lib/types";
 import { computeLevelProgress, formatFocusHours } from "../../lib/types";
 import { Footer } from "@/components/ui/footer";
+import { GooeyLoader } from "@/components/ui/loader-10";
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -66,7 +67,7 @@ export default function ProfilePage() {
 
   const levelInfo = profile ? computeLevelProgress(profile.exp) : { level: 0, currentExp: 0, nextLevelExp: 100, progress: 0 };
 
-  if (loading) return <main className="dashboard-wrapper"><p style={{ textAlign: 'center', color: 'var(--text-gray)', marginTop: '100px' }}>Loading profile...</p></main>;
+  if (loading) return <main className="min-h-screen bg-bg-deep flex flex-col items-center justify-center p-6"><GooeyLoader /></main>;
   if (!hasSession) return <main className="dashboard-wrapper"><p style={{ textAlign: 'center', color: 'var(--text-gray)', marginTop: '100px' }}>Not authenticated. <Link href="/login" style={{ color: 'var(--gold)' }}>Sign in</Link></p></main>;
   if (!profile) return <main className="dashboard-wrapper"><p style={{ textAlign: 'center', color: 'var(--text-gray)', marginTop: '100px' }}>Setting up your profile...</p></main>;
 

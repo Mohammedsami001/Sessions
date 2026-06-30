@@ -13,6 +13,7 @@ import {
   Activity, Crown, Plus, Check, Send, Sparkles, BookOpen, AlertTriangle
 } from "lucide-react";
 import { Footer } from "@/components/ui/footer";
+import { GooeyLoader } from "@/components/ui/loader-10";
 
 export default function RoomPage() {
   const params = useParams();
@@ -237,10 +238,7 @@ export default function RoomPage() {
   if (loading) {
     return (
       <main className="min-h-screen bg-bg-deep flex flex-col items-center justify-center p-6">
-        <div className="relative flex flex-col items-center gap-4">
-          <div className="w-16 h-16 rounded-full border-2 border-gold-border/20 border-t-gold animate-spin"></div>
-          <p className="text-text-gray font-medium tracking-wider text-sm animate-pulse">ESTABLISHING SYNCHRONIZED INTERLINK...</p>
-        </div>
+        <GooeyLoader />
       </main>
     );
   }

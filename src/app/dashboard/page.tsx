@@ -11,6 +11,7 @@ import {
   MessageSquare, CheckSquare, Trash2, Users, Flame, Trophy, Clock, 
   Globe, Lock, ArrowLeft, Send, Check, Volume2, PlusCircle
 } from "lucide-react";
+import { GooeyLoader } from "../../components/ui/loader-10";
 
 export default function DashboardPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -195,10 +196,7 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <main className="min-h-screen bg-bg-deep flex flex-col items-center justify-center p-6">
-        <div className="relative flex flex-col items-center gap-4">
-          <div className="w-16 h-16 rounded-full border-2 border-gold-border/20 border-t-gold animate-spin"></div>
-          <p className="text-text-gray font-medium tracking-wider text-sm animate-pulse">SYNCHRONIZING SECURE DATABASE...</p>
-        </div>
+        <GooeyLoader />
       </main>
     );
   }
