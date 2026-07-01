@@ -137,8 +137,8 @@ const PrismaHero = () => {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="text-xs sm:text-sm md:text-base text-gray-300 font-sans"
-                style={{ lineHeight: 1.2 }}
+                className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 font-sans"
+                style={{ lineHeight: 1.4 }}
               >
                 A synchronized Study OS designed for deep work. Connect with peers in authoritative, distraction-free rooms engineered to induce absolute flow.
               </motion.p>
@@ -150,11 +150,11 @@ const PrismaHero = () => {
               >
                 <Link
                   href="/dashboard"
-                  className="group inline-flex items-center gap-2 self-start rounded-full bg-white py-1 pl-5 pr-1 text-sm font-medium text-black transition-all hover:gap-3 sm:text-base"
+                  className="group inline-flex items-center gap-3 self-start rounded-full bg-white py-2 pl-6 pr-2 text-base font-medium text-black transition-all hover:gap-4 sm:text-lg lg:py-3 lg:pl-8 lg:pr-3 lg:text-xl"
                 >
                   Launch Study OS
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black transition-transform group-hover:scale-110 sm:h-10 sm:w-10">
-                    <ArrowRight className="h-4 w-4" style={{ color: "#E1E0CC" }} />
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-black transition-transform group-hover:scale-110 sm:h-12 sm:w-12 lg:h-14 lg:w-14">
+                    <ArrowRight className="h-5 w-5 lg:h-6 lg:w-6" style={{ color: "#E1E0CC" }} />
                   </span>
                 </Link>
               </motion.div>
