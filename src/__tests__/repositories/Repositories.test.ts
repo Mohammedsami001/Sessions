@@ -36,7 +36,7 @@ describe('Repository Domain Logic (Moved from Services)', () => {
       const repo = new InMemoryRoomRepository();
       const room = await repo.createRoom({ title: 'Test', visibility: 'public' } as any, 'host1');
       
-      const res = await repo.joinRoomByCode(room!.join_code, 'user1');
+      const res = await repo.joinRoomByCode(room!.join_code!, 'user1');
       expect(res.error).toBeUndefined();
       expect(res.room?.id).toBe(room?.id);
     });
