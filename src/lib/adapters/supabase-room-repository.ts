@@ -312,12 +312,13 @@ export class SupabaseRoomRepository implements IRoomRepository {
           const oldRoom = payload.old as Partial<Room>;
           const newRoom = payload.new as Room;
           
-          const timerChanged = 
+          const roomStateChanged = 
+            oldRoom.host_id !== newRoom.host_id ||
             oldRoom.timer_status !== newRoom.timer_status ||
             oldRoom.timer_started_at !== newRoom.timer_started_at ||
             oldRoom.cycles_completed !== newRoom.cycles_completed;
             
-          if (timerChanged) {
+          if (roomStateChanged) {
             callback(newRoom);
           }
         }

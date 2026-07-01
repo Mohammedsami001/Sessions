@@ -12,9 +12,10 @@ export class InMemoryChatRepository implements IChatRepository {
   }
 
   async sendMessage(content: string, userId: string, roomId: string | null): Promise<MessageWithProfile | null> {
+    if (!content.trim() || !userId) return null;
     const msg: MessageWithProfile = {
       id: `msg-${this.nextId++}`,
-      content,
+      content: content.trim(),
       user_id: userId,
       room_id: roomId,
       created_at: new Date().toISOString(),

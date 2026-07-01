@@ -331,7 +331,7 @@ export default function DashboardPage() {
             {rooms.length === 0 ? (
               <div className="flex flex-col items-center justify-center text-center h-48 py-10 opacity-70">
                 <div className="w-12 h-12 rounded-full bg-glass flex items-center justify-center text-text-muted text-lg mb-3">📡</div>
-                <p className="text-text-gray text-sm font-semibold max-w-sm">No synchronized classrooms active. Be the pioneer and launch a deep-focus station!</p>
+                <p className="text-text-gray text-sm font-semibold max-w-sm">No synchronized rooms active. Be the pioneer and launch a deep-focus room!</p>
               </div>
             ) : (
               rooms.map(room => {
