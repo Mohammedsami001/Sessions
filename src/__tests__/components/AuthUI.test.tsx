@@ -22,7 +22,7 @@ describe('AuthUI Navigation and Toggle', () => {
     // Should have correct hover text and cursor on social buttons
     const googleBtn = screen.getByRole('button', { name: /continue with google/i });
     expect(googleBtn.className).toContain('cursor-pointer');
-    expect(googleBtn.className).toContain('hover:text-gray-900');
+    expect(googleBtn.className).toContain('hover:text-white');
 
     // Should NOT show Sign up fields (like name)
     expect(screen.queryByLabelText(/full name/i)).toBeNull();
