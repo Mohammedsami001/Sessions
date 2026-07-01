@@ -124,7 +124,7 @@ const PrismaHero = () => {
             
             <div className="col-span-12 lg:col-span-8">
               <h1
-                className="font-medium leading-[0.85] tracking-[-0.07em] text-[19.5vw] sm:text-[18vw] md:text-[16.5vw] lg:text-[15vw] xl:text-[14.25vw] 2xl:text-[15vw]"
+                className="font-medium leading-[0.85] tracking-[-0.07em] text-[24vw] sm:text-[22vw] md:text-[20vw] lg:text-[18vw] xl:text-[17vw] 2xl:text-[18vw]"
                 style={{ color: "#E1E0CC" }}
               >
                 <WordsPullUp text="Sessions"/>
