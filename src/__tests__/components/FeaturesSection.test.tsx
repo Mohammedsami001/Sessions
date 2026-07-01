@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import { describe, it, expect, vi, beforeAll } from 'vitest';
 import { FeaturesSection } from '../../components/ui/features-section';
 
