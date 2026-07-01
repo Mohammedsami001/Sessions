@@ -92,7 +92,7 @@ const navItems = [
   { label: "Create Account", href: "/signup" }
 ];
 
-const PrismaHero = () => {
+const SessionsHero = () => {
   return (
     <section className="h-screen w-full bg-black">
       <div className="relative h-full w-full overflow-hidden rounded-2xl md:rounded-[2rem]">
@@ -167,4 +167,4 @@ const PrismaHero = () => {
   );
 };
 
-export { PrismaHero };
+export { SessionsHero };

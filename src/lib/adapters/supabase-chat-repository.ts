@@ -25,10 +25,11 @@ export class SupabaseChatRepository implements IChatRepository {
   }
 
   async sendMessage(content: string, userId: string, roomId: string | null): Promise<MessageWithProfile | null> {
+    if (!content.trim() || !userId) return null;
     const { data, error } = await supabase
       .from('messages')
       .insert({
-        content,
+        content: content.trim(),
         user_id: userId,
         room_id: roomId,
       })

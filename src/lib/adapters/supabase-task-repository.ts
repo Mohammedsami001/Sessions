@@ -24,10 +24,16 @@ export class SupabaseTaskRepository implements ITaskRepository {
     return data || [];
   }
 
-  async createTask(taskData: Omit<Task, 'id' | 'created_at'>): Promise<Task | null> {
+  async createTask(text: string, userId: string, roomId: string | null): Promise<Task | null> {
+    if (!text.trim() || !userId) return null;
     const { data, error } = await supabase
       .from('tasks')
-      .insert(taskData)
+      .insert({
+        text: text.trim(),
+        user_id: userId,
+        room_id: roomId,
+        completed: false,
+      })
       .select()
       .single();
 

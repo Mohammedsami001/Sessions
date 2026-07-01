@@ -4,12 +4,13 @@ export interface IProfileRepository {
   fetchProfile(userId: string): Promise<Profile | null>;
   createProfile(profile: Omit<Profile, 'created_at' | 'updated_at' | 'total_focus_seconds' | 'exp' | 'total_sessions' | 'streak_days' | 'last_active_date' | 'is_pro'>): Promise<Profile | null>;
   updateProfile(userId: string, updates: Partial<Profile>): Promise<Profile | null>;
+  ensureProfile(userId: string, email?: string, metadata?: Record<string, any>): Promise<Profile | null>;
   deleteAccount(userId: string): Promise<boolean>;
 }
 
 export interface ITaskRepository {
   fetchTasks(roomId: string | null): Promise<Task[]>;
-  createTask(task: Omit<Task, 'id' | 'created_at'>): Promise<Task | null>;
+  createTask(text: string, userId: string, roomId: string | null): Promise<Task | null>;
   toggleTask(taskId: string, completed: boolean): Promise<boolean>;
   deleteTask(taskId: string): Promise<boolean>;
 }
@@ -26,6 +27,7 @@ export interface IRoomRepository {
   fetchRoomByCode(code: string): Promise<Room | null>;
   createRoom(input: CreateRoomInput, userId: string): Promise<Room | null>;
   joinRoom(roomId: string, userId: string): Promise<RoomParticipant | null>;
+  joinRoomByCode(code: string, userId: string): Promise<{ room: Room | null; error?: string }>;
   leaveRoom(roomId: string, userId: string): Promise<boolean>;
   deleteRoom(roomId: string, userId: string): Promise<boolean>;
   fetchParticipants(roomId: string): Promise<any[]>;

@@ -377,7 +377,7 @@ export default function DashboardPage() {
                       onClick={() => handleQuickJoin(room.id)} 
                       className="w-full md:w-auto bg-glass/60 hover:bg-gold hover:text-bg-deep text-text-gray px-4 py-2 rounded-xl text-[10px] font-black tracking-widest uppercase cursor-pointer border border-border/80 hover:border-gold shadow-sm transition-all flex items-center justify-center gap-1.5 active:scale-95"
                     >
-                      ENTER STATION
+                      ENTER ROOM
                     </button>
                   </div>
                 );
@@ -391,7 +391,7 @@ export default function DashboardPage() {
               onClick={() => setShowCreateModal(true)} 
               className="text-xs text-gold hover:text-white font-bold tracking-wider flex items-center gap-1 bg-transparent border-0 cursor-pointer p-0 group"
             >
-              <span>Host custom station</span>
+              <span>Host custom room</span>
               <span className="group-hover:translate-x-1 transition-transform">→</span>
             </button>
           </div>
@@ -745,7 +745,7 @@ export default function DashboardPage() {
                 onClick={handleCreateRoom} 
                 className="w-full bg-gradient-to-r from-gold to-orange hover:from-white hover:to-white text-bg-deep font-extrabold text-sm tracking-widest uppercase py-4 rounded-xl cursor-pointer mt-6 shadow-md transition-all active:scale-[0.98]"
               >
-                CREATE & ENTER STATION
+                CREATE & ENTER ROOM
               </button>
               
               {createError && (

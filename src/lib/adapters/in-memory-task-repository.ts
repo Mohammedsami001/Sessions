@@ -13,14 +13,18 @@ export class InMemoryTaskRepository implements ITaskRepository {
     return allTasks.filter(t => t.room_id === null).sort((a, b) => a.created_at.localeCompare(b.created_at));
   }
 
-  async createTask(taskData: Omit<Task, 'id' | 'created_at'>): Promise<Task | null> {
-    const task: Task = {
-      ...taskData,
-      id: `task-${this.nextId++}`,
-      created_at: new Date().toISOString(),
+  async createTask(text: string, userId: string, roomId: string | null): Promise<Task | null> {
+    if (!text.trim() || !userId) return null;
+    const newTask: Task = {
+      id: `task-${Date.now()}`,
+      text: text.trim(),
+      user_id: userId,
+      room_id: roomId,
+      completed: false,
+      created_at: new Date().toISOString()
     };
-    this.tasks.set(task.id, task);
-    return task;
+    this.tasks.set(newTask.id, newTask);
+    return newTask;
   }
 
   async toggleTask(taskId: string, completed: boolean): Promise<boolean> {
