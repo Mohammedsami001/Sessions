@@ -1,3 +1,13 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { SessionsHero } from "@/components/ui/sessions-hero";
+import { FeaturesSection } from "@/components/ui/features-section";
+import { supabase } from "@/lib/supabase";
+
+export default function Home() {
+  const [mounted, setMounted] = useState(false);
+  const [sessionActive, setSessionActive] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -25,7 +35,7 @@
     );
   }
 
-  // We can pass sessionActive to PrismaHero if we want to change the button text,
+  // We can pass sessionActive to SessionsHero if we want to change the button text,
   // but for now let's just render the component as requested.
   return (
     <main className="min-h-screen bg-black">
