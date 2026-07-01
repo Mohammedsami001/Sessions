@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
-import { PrismaHero } from "@/components/ui/prisma-hero";
+import { SessionsHero } from "@/components/ui/sessions-hero";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -38,5 +38,5 @@ export default function Home() {
 
   // We can pass sessionActive to PrismaHero if we want to change the button text,
   // but for now let's just render the component as requested.
-  return <PrismaHero />;
+  return <SessionsHero />;
 }

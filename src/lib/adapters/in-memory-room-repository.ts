@@ -85,6 +85,16 @@ export class InMemoryRoomRepository implements IRoomRepository {
     return p;
   }
 
+  async joinRoomByCode(code: string, userId: string): Promise<{ room: Room | null; error?: string }> {
+    const room = await this.fetchRoomByCode(code);
+    if (!room) return { room: null, error: "Invalid room code. Please check and try again." };
+    
+    const p = await this.joinRoom(room.id, userId);
+    if (!p) return { room: null, error: "Failed to join room." };
+    
+    return { room };
+  }
+
   async leaveRoom(roomId: string, userId: string): Promise<boolean> {
     const key = `${roomId}_${userId}`;
     if (!this.participants.has(key)) return false;

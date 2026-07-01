@@ -86,6 +86,16 @@ export class SupabaseRoomRepository implements IRoomRepository {
     return data;
   }
 
+  async joinRoomByCode(code: string, userId: string): Promise<{ room: Room | null; error?: string }> {
+    const room = await this.fetchRoomByCode(code);
+    if (!room) return { room: null, error: "Invalid room code. Please check and try again." };
+    
+    const p = await this.joinRoom(room.id, userId);
+    if (!p) return { room: null, error: "Failed to join room." };
+    
+    return { room };
+  }
+
   async leaveRoom(roomId: string, userId: string): Promise<boolean> {
     const { data: room } = await supabase
       .from('rooms')
@@ -298,7 +308,20 @@ export class SupabaseRoomRepository implements IRoomRepository {
       .on(
         'postgres_changes',
         { event: 'UPDATE', schema: 'public', table: 'rooms', filter: `id=eq.${roomId}` },
-        (payload) => callback(payload.new as Room)
+        (payload) => {
+          const oldRoom = payload.old as Partial<Room>;
+          const newRoom = payload.new as Room;
+          
+          const roomStateChanged = 
+            oldRoom.host_id !== newRoom.host_id ||
+            oldRoom.timer_status !== newRoom.timer_status ||
+            oldRoom.timer_started_at !== newRoom.timer_started_at ||
+            oldRoom.cycles_completed !== newRoom.cycles_completed;
+            
+          if (roomStateChanged) {
+            callback(newRoom);
+          }
+        }
       )
       .subscribe();
     return { unsubscribe: () => { supabase.removeChannel(sub); } };

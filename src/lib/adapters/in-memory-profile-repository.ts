@@ -35,4 +35,25 @@ export class InMemoryProfileRepository implements IProfileRepository {
   async deleteAccount(userId: string): Promise<boolean> {
     return this.profiles.delete(userId);
   }
+
+  async ensureProfile(userId: string, email?: string, metadata?: Record<string, any>): Promise<Profile | null> {
+    const existing = await this.fetchProfile(userId);
+    if (existing) {
+      return existing;
+    }
+
+    const displayName =
+      metadata?.full_name ||
+      metadata?.user_name ||
+      metadata?.name ||
+      (email ? email.split('@')[0] : 'Student');
+
+    const avatarUrl = metadata?.avatar_url || metadata?.picture || null;
+
+    return await this.createProfile({
+      id: userId,
+      display_name: displayName,
+      avatar_url: avatarUrl,
+    });
+  }
 }

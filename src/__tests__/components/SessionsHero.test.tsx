@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { PrismaHero } from '../../components/ui/prisma-hero';
+import { SessionsHero } from '../../components/ui/sessions-hero';
 import { describe, it, expect } from 'vitest';
 import React from 'react';
 
@@ -19,9 +19,9 @@ Object.defineProperty(window, 'IntersectionObserver', {
   value: MockIntersectionObserver
 });
 
-describe('PrismaHero Navigation', () => {
+describe('SessionsHero Navigation', () => {
   it('renders correct navigation links for the Study OS', () => {
-    render(<PrismaHero />);
+    render(<SessionsHero />);
     
     const featuresLink = screen.getByRole('link', { name: /features/i });
     expect(featuresLink.getAttribute('href')).toBe('/#features');
@@ -34,7 +34,7 @@ describe('PrismaHero Navigation', () => {
   });
 
   it('renders grounded hero content and correct CTA link', () => {
-    render(<PrismaHero />);
+    render(<SessionsHero />);
     
     // Using screen.getByText with regex for the expected new copy
     const paragraph = screen.getByText(/A synchronized Study OS designed for deep work/i);
@@ -45,7 +45,7 @@ describe('PrismaHero Navigation', () => {
   });
 
   it('renders the VideoBackground', () => {
-    const { container } = render(<PrismaHero />);
+    const { container } = render(<SessionsHero />);
     const video = container.querySelector('video');
     expect(video).not.toBeNull();
     expect(video?.getAttribute('src')).toBe('https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_170732_8a9ccda6-5cff-4628-b164-059c500a2b41.mp4');
