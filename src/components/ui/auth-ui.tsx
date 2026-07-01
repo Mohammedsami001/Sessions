@@ -8,6 +8,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { Eye, EyeOff } from "lucide-react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import Image from "next/image";
 import { supabase } from "@/lib/supabase";
 import { VideoBackground } from "./video-background";
 
@@ -187,7 +188,6 @@ function SignInForm() {
     <form onSubmit={handleSignIn} autoComplete="on" className="flex flex-col gap-6 w-full max-w-[360px] mx-auto">
       <div className="flex flex-col items-center gap-2 text-center mb-2">
         <div className="flex items-center gap-2 mb-6 text-white">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-hexagon"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
           <span className="font-semibold text-lg tracking-tight">Sessions</span>
         </div>
         
@@ -266,7 +266,6 @@ function SignUpForm() {
     <form onSubmit={handleSignUp} autoComplete="on" className="flex flex-col gap-6 w-full max-w-[360px] mx-auto">
       <div className="flex flex-col items-center gap-2 text-center mb-2">
         <div className="flex items-center gap-2 mb-6 text-white">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-hexagon"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
           <span className="font-semibold text-lg tracking-tight">Sessions</span>
         </div>
 
@@ -367,8 +366,14 @@ export function AuthUI({ initialIsSignIn = true }: AuthUIProps) {
       <div className="w-full max-w-[1200px] bg-black rounded-[2rem] overflow-hidden flex flex-col md:flex-row shadow-2xl relative min-h-[750px] z-10 border border-white/10">
         {/* Left Panel (Image & Quotes) */}
         <div className="hidden md:flex md:w-[45%] relative m-3 rounded-[1.5rem] overflow-hidden bg-black flex-col justify-between p-10">
-          <div className="absolute inset-0 z-0">
-             <img src={isSignIn ? "/study_login_bg.png" : "/study_signup_bg.png"} alt="Study background" className="w-full h-full object-cover opacity-60 mix-blend-luminosity transition-all duration-700" />
+          <div className="absolute inset-0 z-0 bg-black">
+             <Image 
+               src={isSignIn ? "/study_login_bg.png" : "/study_signup_bg.png"} 
+               alt="Study background" 
+               fill
+               priority
+               className="object-cover opacity-60 mix-blend-luminosity transition-all duration-700 text-transparent" 
+             />
           </div>
           
           <div className="relative z-10 flex items-center gap-4 text-white text-[10px] tracking-[0.2em] font-semibold uppercase">
