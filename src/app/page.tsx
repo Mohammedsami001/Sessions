@@ -1,14 +1,13 @@
-"use client";
+"use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "../lib/supabase";
 import { SessionsHero } from "@/components/ui/sessions-hero";
-import { useRouter } from "next/navigation";
+import { FeaturesSection } from "@/components/ui/features-section";
+import { supabase } from "@/lib/supabase";
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
   const [sessionActive, setSessionActive] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
@@ -36,7 +35,12 @@ export default function Home() {
     );
   }
 
-  // We can pass sessionActive to PrismaHero if we want to change the button text,
+  // We can pass sessionActive to SessionsHero if we want to change the button text,
   // but for now let's just render the component as requested.
-  return <SessionsHero />;
+  return (
+    <main className="min-h-screen bg-black">
+      <SessionsHero />
+      <FeaturesSection />
+    </main>
+  );
 }
