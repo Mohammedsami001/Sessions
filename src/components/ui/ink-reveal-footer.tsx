@@ -181,7 +181,7 @@ export function InkRevealFooter() {
         The InkReveal component masks the colorful background with a solid black color.
         Since we set pointer-events: none inside InkReveal, clicks pass through to z-0!
       */}
-      <InkReveal maskColor={[0, 0, 0]} brushSize={256} className="z-10" />
+      <InkReveal maskColor={[0, 0, 0]} brushSize={256} lifetime={1200} className="z-10" />
     </footer>
   );
 }
