@@ -45,7 +45,7 @@ export function InkRevealFooter() {
         </svg>
       ),
       label: "GitHub",
-      href: "https://github.com",
+      href: "https://github.com/Mohammedsami001/Sessions",
     },
     {
       icon: (
