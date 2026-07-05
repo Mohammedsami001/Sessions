@@ -28,17 +28,12 @@ export function InkRevealFooter() {
   const contactInfo = [
     {
       icon: <Mail size={16} className="text-white" />,
-      text: "hello@sessions.edu",
-      href: "mailto:hello@sessions.edu",
+      text: "mohdsamisanadi@gmail.com",
+      href: "mailto:mohdsamisanadi@gmail.com",
     },
     {
       icon: <Terminal size={16} className="text-white" />,
       text: "Version v1.4.2",
-    },
-    {
-      icon: <Activity size={16} className="text-emerald-400" />,
-      text: "System: Online (14ms)",
-      pulse: true,
     },
   ];
 
@@ -128,9 +123,6 @@ export function InkRevealFooter() {
                   ) : (
                     <span className="hover:text-white transition-colors flex items-center gap-1.5">
                       {item.text}
-                      {item.pulse && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]"></span>
-                      )}
                     </span>
                   )}
                 </li>
@@ -166,12 +158,7 @@ export function InkRevealFooter() {
           </div>
 
           <div className="flex items-center gap-1.5 font-bold">
-            <span>&copy; {new Date().getFullYear()} SESSIONS PROTOCOL. ALL RIGHTS RESERVED.</span>
-          </div>
-
-          <div className="flex items-center gap-1.5 text-[10px] font-bold tracking-wider">
-            <span>DESIGNED BY COGNITIVE INTERLINK</span>
-            <Heart size={10} className="text-red-500 fill-red-500 animate-pulse drop-shadow-md" />
+            <span>&copy; {new Date().getFullYear()} SESSIONS. ALL RIGHTS RESERVED.</span>
           </div>
         </div>
       </div>
