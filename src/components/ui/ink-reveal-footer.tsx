@@ -54,7 +54,7 @@ export function InkRevealFooter() {
         </svg>
       ),
       label: "Twitter",
-      href: "https://twitter.com",
+      href: "https://x.com/SanadiMohdsami",
     },
   ];
 
