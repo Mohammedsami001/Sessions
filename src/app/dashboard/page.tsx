@@ -15,6 +15,9 @@ import { GooeyLoader } from "../../components/ui/loader-10";
 import UserStatsHeader from "@/components/ui/user-stats-header";
 import JoinRoomBar from "@/components/ui/join-room-bar";
 import EngineCoreWidget from "@/components/ui/engine-core-widget";
+import ActiveRoomsWidget from "@/components/ui/active-rooms-widget";
+import GlobalChatWidget from "@/components/ui/global-chat-widget";
+import StudyChecklistWidget from "@/components/ui/study-checklist-widget";
 
 export default function DashboardPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -219,269 +222,74 @@ export default function DashboardPage() {
       {/* Bento Layout Grid */}
       <section className="bento-grid gap-6">
         
-        {/* Active Shared Rooms Panel */}
-        <div className="bento-card bento-rooms flex flex-col min-h-[460px] bg-gradient-to-b from-bg-card to-bg-card/85 relative group">
-          <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-gold/50 via-orange/50 to-transparent"></div>
-          
-          <div className="bento-header flex justify-between items-center mb-6">
-            <div>
-              <h2 className="bento-title text-lg font-extrabold flex items-center gap-2">
-                <Globe size={18} className="text-gold animate-pulse" />
-                Active Multiplayer Rooms
-              </h2>
-              <p className="text-xs text-text-gray mt-0.5">{rooms.length} synchronized study sessions online</p>
-            </div>
-            <button 
-              onClick={() => setShowCreateModal(true)} 
-              className="bg-gradient-to-r from-gold to-orange hover:from-white hover:to-white text-bg-deep px-4 py-2 rounded-xl text-xs font-black tracking-widest uppercase cursor-pointer shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 flex items-center gap-1"
-            >
-              <PlusCircle size={14} />
-              Host Room
-            </button>
-          </div>
-
-          {/* Room entries */}
-          <div className="room-list flex-1 overflow-y-auto space-y-3 pr-2 scrollbar-thin scrollbar-thumb-glass">
-            {rooms.length === 0 ? (
-              <div className="flex flex-col items-center justify-center text-center h-48 py-10 opacity-70">
-                <div className="w-12 h-12 rounded-full bg-glass flex items-center justify-center text-text-muted text-lg mb-3">📡</div>
-                <p className="text-text-gray text-sm font-semibold max-w-sm">No synchronized rooms active. Be the pioneer and launch a deep-focus room!</p>
-              </div>
-            ) : (
-              rooms.map(room => {
-                const timer = computeTimerRemaining(room.timer_started_at, room.timer_status, room.focus_duration, room.break_duration, room.long_break_duration);
-                return (
-                  <div 
-                    key={room.id} 
-                    className="room-item bg-glass/60 hover:bg-glass border border-border/80 hover:border-border-hover/80 p-4 rounded-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4 transition-all duration-300 shadow-sm"
-                  >
-                    <div className="room-item-info flex flex-col gap-1.5">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-[9px] bg-gold-dim border border-gold-border/30 text-gold font-bold px-2 py-0.5 rounded-full tracking-widest uppercase">
-                          {room.category}
-                        </span>
-                        {room.visibility === 'private' && (
-                          <span className="text-[9px] bg-red-dim border border-red/20 text-red font-bold px-2 py-0.5 rounded-full tracking-widest uppercase flex items-center gap-0.5">
-                            <Lock size={8} /> PRIVATE
-                          </span>
-                        )}
-                      </div>
-                      
-                      <div className="room-item-title text-base font-bold text-text-white tracking-wide">
-                        {room.title}
-                      </div>
-                      
-                      <div className="room-item-meta flex items-center gap-3 text-xs text-text-gray mt-0.5">
-                        <span className="flex items-center gap-1.5">
-                          <span className="online-dot shrink-0"></span>
-                          <span className="font-semibold text-text-white">{participantCounts[room.id] || 0}</span> peers study
-                        </span>
-                        <span className="text-text-muted">•</span>
-                        <span 
-                          className="font-bold flex items-center gap-1"
-                          style={{ color: room.timer_status === 'focus' ? 'var(--orange)' : room.timer_status === 'idle' ? 'var(--text-gray)' : '#3B82F6' }}
-                        >
-                          <Clock size={12} />
-                          {room.timer_status === 'idle' ? 'STANDBY' : `${String(timer.minutes).padStart(2,'0')}:${String(timer.seconds).padStart(2,'0')} [${room.timer_status.toUpperCase().replace('_',' ')}]`}
-                        </span>
-                      </div>
-                    </div>
-
-                    <button 
-                      onClick={() => handleQuickJoin(room.id)} 
-                      className="w-full md:w-auto bg-glass/60 hover:bg-gold hover:text-bg-deep text-text-gray px-4 py-2 rounded-xl text-[10px] font-black tracking-widest uppercase cursor-pointer border border-border/80 hover:border-gold shadow-sm transition-all flex items-center justify-center gap-1.5 active:scale-95"
-                    >
-                      ENTER ROOM
-                    </button>
-                  </div>
-                );
-              })
-            )}
-          </div>
-          
-          <div className="mt-4 pt-4 border-t border-border/40 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-            <span className="text-[11px] text-text-gray font-medium">Want to sync a customized Pomodoro interval timers with peers?</span>
-            <button 
-              onClick={() => setShowCreateModal(true)} 
-              className="text-xs text-gold hover:text-white font-bold tracking-wider flex items-center gap-1 bg-transparent border-0 cursor-pointer p-0 group"
-            >
-              <span>Host custom room</span>
-              <span className="group-hover:translate-x-1 transition-transform">→</span>
-            </button>
-          </div>
-        </div>
+        <ActiveRoomsWidget 
+          rooms={rooms} 
+          participantCounts={participantCounts} 
+          handleQuickJoin={handleQuickJoin} 
+          setShowCreateModal={setShowCreateModal} 
+        />
 
         {/* Engine Core (Timer Widget) */}
         <EngineCoreWidget profile={profile} />
         {/* Ambient Sound Mixer Panel */}
-        <div className="bento-card bento-lofi flex flex-col bg-gradient-to-b from-bg-card to-bg-card/85 relative group overflow-hidden min-h-[340px]">
-          <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-orange/30 to-transparent"></div>
-          
-          <div className="bento-header flex justify-between items-center mb-6">
-            <h2 className="bento-title text-base font-extrabold flex items-center gap-2">
-              <Music size={16} className="text-orange" />
+        <div className="flex flex-col min-h-[340px] bg-white/5 border border-white/10 rounded-2xl relative group overflow-hidden shadow-sm hover:border-white/20 transition-colors lg:col-span-4 xl:col-span-3 p-6">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-base font-extrabold flex items-center gap-2 text-white">
+              <Music size={16} className="text-zinc-400" />
               Ambient sound deck
             </h2>
-            <span className="text-[9px] bg-gradient-to-r from-gold/20 to-orange/20 border border-gold-border/40 text-gold font-bold px-2 py-0.5 rounded-full tracking-widest uppercase">
+            <span className="text-[9px] bg-white/10 border border-white/10 text-zinc-400 font-bold px-2 py-0.5 rounded-sm tracking-widest uppercase">
               PRO MODULE
             </span>
           </div>
 
           <div className="flex-1 flex flex-col justify-center items-center text-center p-4 relative">
-            {/* Absolute overlay locking the teaser */}
-            <div className="absolute inset-0 bg-bg-card/40 backdrop-blur-[2px] flex flex-col items-center justify-center z-10 rounded-xl">
-              <div className="w-12 h-12 rounded-full bg-bg-deep border border-gold-border/20 flex items-center justify-center text-gold shadow-md mb-3 transform group-hover:scale-110 transition-transform duration-300">
+            <div className="absolute inset-0 bg-zinc-950/40 backdrop-blur-[2px] flex flex-col items-center justify-center z-10 rounded-xl">
+              <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white shadow-sm mb-3 transform group-hover:scale-110 transition-transform duration-300">
                 <Lock size={18} />
               </div>
-              <p className="text-sm font-bold text-text-white tracking-wide">Ambient Audio Mixer</p>
-              <p className="text-xs text-text-gray max-w-[200px] mt-1">
-                Customize rain, fireplace, cafe, and lofi streams under <span className="text-gold font-semibold">Sessions Pro</span>.
+              <p className="text-sm font-bold text-white tracking-wide">Ambient Audio Mixer</p>
+              <p className="text-xs text-zinc-400 max-w-[200px] mt-1">
+                Customize rain, fireplace, cafe, and lofi streams under <span className="text-white font-semibold">Sessions Pro</span>.
               </p>
             </div>
 
-            {/* Blurred placeholder controls under lock */}
-            <div className="w-full space-y-4 opacity-15 filter blur-[1.5px] select-none pointer-events-none">
+            <div className="w-full space-y-4 opacity-20 filter blur-[1.5px] select-none pointer-events-none">
               <div className="flex items-center justify-between gap-4">
-                <span className="text-xs font-semibold text-text-gray w-16 text-left">Lofi Radio</span>
-                <input type="range" disabled className="flex-1 h-1 bg-glass rounded-lg accent-gold" />
-                <Volume2 size={14} className="text-text-muted" />
+                <span className="text-xs font-semibold text-zinc-500 w-16 text-left">Lofi Radio</span>
+                <input type="range" disabled className="flex-1 h-1 bg-white/10 rounded-lg accent-white" />
+                <Volume2 size={14} className="text-zinc-500" />
               </div>
               <div className="flex items-center justify-between gap-4">
-                <span className="text-xs font-semibold text-text-gray w-16 text-left">Rain Storm</span>
-                <input type="range" disabled className="flex-1 h-1 bg-glass rounded-lg accent-gold" />
-                <Volume2 size={14} className="text-text-muted" />
+                <span className="text-xs font-semibold text-zinc-500 w-16 text-left">Rain Storm</span>
+                <input type="range" disabled className="flex-1 h-1 bg-white/10 rounded-lg accent-white" />
+                <Volume2 size={14} className="text-zinc-500" />
               </div>
               <div className="flex items-center justify-between gap-4">
-                <span className="text-xs font-semibold text-text-gray w-16 text-left">Fireplace</span>
-                <input type="range" disabled className="flex-1 h-1 bg-glass rounded-lg accent-gold" />
-                <Volume2 size={14} className="text-text-muted" />
+                <span className="text-xs font-semibold text-zinc-500 w-16 text-left">Fireplace</span>
+                <input type="range" disabled className="flex-1 h-1 bg-white/10 rounded-lg accent-white" />
+                <Volume2 size={14} className="text-zinc-500" />
               </div>
             </div>
           </div>
         </div>
 
-        {/* Global Stream Chat Panel */}
-        <div className="bento-card bento-chat flex flex-col bg-gradient-to-b from-bg-card to-bg-card/85 relative min-h-[340px]">
-          <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-gold/30 to-transparent"></div>
-          
-          <div className="bento-header mb-4">
-            <h2 className="bento-title text-base font-extrabold flex items-center gap-2">
-              <MessageSquare size={16} className="text-gold" />
-              Global Chat Stream
-            </h2>
-          </div>
+        <GlobalChatWidget 
+          chatMessages={messages} 
+          chatInput={chatInput} 
+          setChatInput={setChatInput} 
+          handleSendMessage={handleSendMessage} 
+          chatEndRef={chatEndRef} 
+        />
 
-          {/* Messages block */}
-          <div className="chat-stream flex-1 overflow-y-auto space-y-2.5 pr-1 mb-4 max-h-[170px] scrollbar-thin scrollbar-thumb-glass">
-            {messages.length === 0 ? (
-              <div className="flex flex-col items-center justify-center text-center h-full opacity-60">
-                <p className="text-text-gray text-xs font-medium">Stream is quiet. Broadcast a transmission!</p>
-              </div>
-            ) : (
-              messages.map(msg => (
-                <div key={msg.id} className="chat-message bg-glass/40 border border-border/40 p-2.5 rounded-lg flex flex-col gap-0.5 hover:border-border-hover/50 transition-colors">
-                  <span className="chat-user text-[11px] font-bold text-gold tracking-wide uppercase">
-                    {msg.profiles?.display_name || 'Anon'}
-                  </span>
-                  <span className="text-xs text-text-white/90 break-words font-medium">
-                    {msg.content}
-                  </span>
-                </div>
-              ))
-            )}
-          </div>
-
-          {/* Interactive input */}
-          <div className="flex flex-col gap-1.5 mt-auto border-t border-border/40 pt-3">
-            <div className="flex gap-2">
-              <input 
-                type="text" 
-                placeholder="TRANSMIT MESSAGE..." 
-                value={chatInput} 
-                onChange={e => setChatInput(e.target.value)} 
-                onKeyDown={e => { if (e.key === 'Enter') handleSendMessage(); }} 
-                className="flex-1 bg-black/40 border border-border focus:border-gold/60 focus:ring-1 focus:ring-gold/30 px-3 py-2 rounded-lg text-xs text-text-white placeholder:text-text-muted outline-none transition-all"
-              />
-              <button 
-                onClick={handleSendMessage} 
-                className="bg-gold hover:bg-white text-bg-deep px-3 py-2 rounded-lg cursor-pointer transition-colors duration-200 flex items-center justify-center shrink-0"
-                title="Send Transmission"
-              >
-                <Send size={13} />
-              </button>
-            </div>
-            {chatError && <div className="text-[10px] text-red font-medium leading-none mt-1">{chatError}</div>}
-          </div>
-        </div>
-
-        {/* User Tasks Checklist Card */}
-        <div className="bento-card bento-todos flex flex-col bg-gradient-to-b from-bg-card to-bg-card/85 relative min-h-[340px]">
-          <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-orange/30 to-transparent"></div>
-          
-          <div className="bento-header mb-4">
-            <h2 className="bento-title text-base font-extrabold flex items-center gap-2">
-              <CheckSquare size={16} className="text-orange" />
-              Study Checklist
-            </h2>
-          </div>
-
-          {/* Form add task */}
-          <form onSubmit={handleAddTask} className="flex gap-1.5 mb-4">
-            <input 
-              type="text" 
-              placeholder="NEW TASK..." 
-              value={newTodo} 
-              onChange={e => setNewTodo(e.target.value)} 
-              className="flex-1 bg-black/40 border border-border focus:border-orange/60 focus:ring-1 focus:ring-orange/30 px-3 py-2 rounded-lg text-xs text-text-white placeholder:text-text-muted outline-none transition-all"
-            />
-            <button 
-              type="submit" 
-              className="bg-glass hover:bg-orange hover:text-white border border-border hover:border-orange px-3 rounded-lg text-xs font-bold cursor-pointer transition-all shrink-0"
-            >
-              +
-            </button>
-          </form>
-
-          {/* Tasks list */}
-          <div className="todo-list flex-1 overflow-y-auto space-y-2.5 max-h-[160px] scrollbar-thin scrollbar-thumb-glass pr-1">
-            {tasks.length === 0 ? (
-              <div className="flex flex-col items-center justify-center text-center h-24 opacity-60">
-                <p className="text-text-gray text-xs font-medium">All tasks cleared. Good job!</p>
-              </div>
-            ) : (
-              tasks.map(todo => (
-                <div 
-                  key={todo.id} 
-                  className={`todo-item bg-glass/20 border border-border/30 hover:border-border-hover/50 p-2.5 rounded-lg flex items-center justify-between gap-3 group transition-all duration-200 ${todo.completed ? 'opacity-40 line-through bg-black/10' : ''}`}
-                >
-                  <label className="flex items-center gap-2.5 cursor-pointer flex-1 min-w-0">
-                    <input 
-                      type="checkbox" 
-                      checked={todo.completed} 
-                      onChange={() => handleToggleTask(todo.id, !todo.completed)}
-                      className="accent-orange rounded cursor-pointer w-4 h-4 shrink-0"
-                    />
-                    <span className="text-xs text-text-white font-medium truncate leading-tight select-none">
-                      {todo.text}
-                    </span>
-                  </label>
-                  
-                  <button 
-                    onClick={(e) => { e.preventDefault(); handleDeleteTask(todo.id); }} 
-                    className="bg-transparent border-0 text-text-muted hover:text-red cursor-pointer p-1 rounded opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity duration-200 shrink-0"
-                    title="Delete Task"
-                  >
-                    <Trash2 size={13} />
-                  </button>
-                </div>
-              ))
-            )}
-          </div>
-
-          <div className="mt-auto pt-3 border-t border-border/40 text-center text-[10px] text-text-muted font-semibold tracking-wider">
-            TASKS PERSIST SECURELY ON CLOUD
-          </div>
-        </div>
+        <StudyChecklistWidget 
+          tasks={tasks} 
+          newTaskTitle={newTodo} 
+          setNewTaskTitle={setNewTodo} 
+          handleAddTask={handleAddTask} 
+          toggleTaskCompletion={handleToggleTask} 
+          deleteTask={handleDeleteTask} 
+        />
 
       </section>
 
