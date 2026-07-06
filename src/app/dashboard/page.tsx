@@ -195,40 +195,14 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-bg-deep flex flex-col items-center justify-center p-6">
+      <main className="flex flex-col items-center justify-center min-h-screen w-full">
         <GooeyLoader />
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-bg-deep px-4 md:px-8 py-8 relative overflow-hidden text-text-white font-sans max-w-7xl mx-auto z-20">
-      
-      {/* Upper Navigation Action Bar */}
-      <div className="flex justify-between items-center mb-8 bg-glass/40 backdrop-blur-md border border-border px-6 py-3 rounded-full shadow-sm hover:border-border-hover transition-colors">
-        <Link 
-          href="/" 
-          className="no-underline text-text-gray text-xs md:text-sm font-semibold tracking-wider hover:text-text-white flex items-center gap-2 group transition-colors"
-        >
-          <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-          <span>BACK TO HOME</span>
-        </Link>
-        <div className="flex gap-3 items-center">
-          <Link 
-            href="/profile" 
-            className="no-underline text-gold hover:text-white text-xs font-bold tracking-wider border border-gold-border/30 hover:border-gold hover:bg-gold/10 px-4 py-2 rounded-full transition-all duration-300"
-          >
-            PROFILE
-          </Link>
-          <button 
-            onClick={handleSignOut} 
-            className="bg-transparent hover:bg-red/10 border border-border hover:border-red/40 text-text-gray hover:text-red px-4 py-2 rounded-full text-xs font-bold tracking-wider cursor-pointer transition-all duration-300 flex items-center gap-1.5"
-          >
-            <LogOut size={13} />
-            SIGN OUT
-          </button>
-        </div>
-      </div>
+    <main className="px-6 md:px-12 py-10 max-w-6xl mx-auto w-full z-20 relative">
 
       {/* Hero Welcome Command Panel */}
       <header className="relative mb-8 bg-gradient-to-r from-bg-card to-bg-card/90 backdrop-blur-3xl border border-border/80 p-6 md:p-8 rounded-2xl flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 shadow-md hover:border-border-hover transition-all duration-500">
