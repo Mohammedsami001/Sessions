@@ -233,7 +233,7 @@ export default function DashboardPage() {
         {/* Engine Core (Timer Widget) */}
         <EngineCoreWidget profile={profile} />
         {/* Ambient Sound Mixer Panel */}
-        <div className="flex flex-col min-h-[340px] bg-white/5 border border-white/10 rounded-2xl relative group overflow-hidden shadow-sm hover:border-white/20 transition-colors lg:col-span-4 xl:col-span-3 p-6">
+        <div className="flex flex-col min-h-[340px] bg-white/5 border border-white/10 rounded-2xl relative group overflow-hidden shadow-sm hover:border-white/20 transition-colors col-span-12 lg:col-span-5 p-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-base font-extrabold flex items-center gap-2 text-white">
               <Music size={16} className="text-zinc-400" />

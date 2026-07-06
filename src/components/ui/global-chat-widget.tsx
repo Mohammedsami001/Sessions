@@ -3,7 +3,7 @@ import { MessageSquare, Send } from "lucide-react";
 
 export default function GlobalChatWidget({ chatMessages, chatInput, setChatInput, handleSendMessage, chatEndRef }: any) {
   return (
-    <div className="flex flex-col min-h-[460px] bg-white/5 border border-white/10 rounded-2xl relative group p-6 shadow-sm hover:border-white/20 transition-colors lg:col-span-4 xl:col-span-4">
+    <div className="flex flex-col min-h-[460px] bg-white/5 border border-white/10 rounded-2xl relative group p-6 shadow-sm hover:border-white/20 transition-colors col-span-12 lg:col-span-4">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-base font-extrabold flex items-center gap-2 text-white">
           <MessageSquare size={16} className="text-zinc-400" />
@@ -44,7 +44,7 @@ export default function GlobalChatWidget({ chatMessages, chatInput, setChatInput
           placeholder="TRANSMIT MESSAGE..." 
           value={chatInput} 
           onChange={e => setChatInput(e.target.value)} 
-          className="w-full bg-zinc-950 border border-white/10 focus:border-white/30 px-4 py-3 rounded-lg pr-12 text-white text-xs font-medium placeholder:text-zinc-600 placeholder:tracking-widest uppercase outline-none transition-all"
+          className="w-full bg-transparent border border-white/10 focus:border-white/30 px-4 py-3 rounded-lg pr-12 text-white text-xs font-medium placeholder:text-zinc-600 placeholder:tracking-widest uppercase outline-none transition-all"
         />
         <button 
           type="submit" 
