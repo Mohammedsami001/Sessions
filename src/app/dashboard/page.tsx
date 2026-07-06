@@ -12,6 +12,8 @@ import {
   Globe, Lock, ArrowLeft, Send, Check, Volume2, PlusCircle
 } from "lucide-react";
 import { GooeyLoader } from "../../components/ui/loader-10";
+import UserStatsHeader from "@/components/ui/user-stats-header";
+import JoinRoomBar from "@/components/ui/join-room-bar";
 
 export default function DashboardPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -204,77 +206,14 @@ export default function DashboardPage() {
   return (
     <main className="px-6 md:px-12 py-10 max-w-6xl mx-auto w-full z-20 relative">
 
-      {/* Hero Welcome Command Panel */}
-      <header className="relative mb-8 bg-gradient-to-r from-bg-card to-bg-card/90 backdrop-blur-3xl border border-border/80 p-6 md:p-8 rounded-2xl flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 shadow-md hover:border-border-hover transition-all duration-500">
-        
-        {/* Subtle decorative glow */}
-        <div className="absolute top-0 right-1/4 w-72 h-72 bg-gold/5 rounded-full blur-[100px] pointer-events-none"></div>
-
-        <div className="flex items-center gap-5 w-full lg:w-auto">
-          {/* Avatar with beautiful warm gold gradient & blinking online status */}
-          <div className="relative shrink-0">
-            <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-orange to-gold flex items-center justify-center font-extrabold text-2xl text-bg-deep shadow-[0_0_25px_rgba(240,192,64,0.3)] transform hover:scale-105 transition-transform duration-300 select-none">
-              {profile?.display_name?.charAt(0).toUpperCase() || '?'}
-            </div>
-            <span className="absolute -bottom-1 -right-1 w-4 h-4 bg-green rounded-full border-2 border-bg-deep shadow-[0_0_8px_#22C55E]"></span>
-          </div>
-          
-          <div className="flex flex-col">
-            <h1 className="text-xl md:text-2xl font-bold tracking-tight text-text-white leading-tight flex flex-wrap items-center gap-2">
-              Welcome, <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold to-orange font-semibold">{profile?.display_name || 'Student'}</span>
-            </h1>
-            <p className="text-xs md:text-sm text-text-gray flex items-center gap-2 mt-1">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-green"></span>
-              </span>
-              Multiplayer Network Status: <span className="text-green font-bold">ACTIVE PROTOCOL</span>
-            </p>
-          </div>
-        </div>
-
-        {/* Level & focus metrics dashboard overlay */}
-        <div className="flex flex-wrap items-center gap-4 w-full lg:w-auto border-t lg:border-t-0 border-border/40 pt-4 lg:pt-0">
-          <div className="flex flex-col items-center px-4 py-2 bg-glass rounded-xl border border-border/50 text-center shrink-0 min-w-[100px] hover:border-gold-border/20 transition-colors">
-            <span className="text-[10px] text-text-muted font-bold tracking-widest uppercase">LEVEL</span>
-            <span className="text-lg font-black text-gold tracking-wide mt-0.5">✦ {levelInfo.level} ✦</span>
-          </div>
-          
-          <div className="flex flex-col items-center px-4 py-2 bg-glass rounded-xl border border-border/50 text-center shrink-0 min-w-[120px] hover:border-gold-border/20 transition-colors">
-            <span className="text-[10px] text-text-muted font-bold tracking-widest uppercase">TOTAL FOCUS</span>
-            <span className="text-lg font-black text-text-white mt-0.5">{formatFocusHours(profile?.total_focus_seconds || 0)}</span>
-          </div>
-
-          <div className="flex flex-col items-center px-4 py-2 bg-glass rounded-xl border border-border/50 text-center shrink-0 min-w-[100px] hover:border-gold-border/20 transition-colors">
-            <span className="text-[10px] text-text-muted font-bold tracking-widest uppercase">EXPERIENCE</span>
-            <span className="text-lg font-black text-transparent bg-clip-text bg-gradient-to-r from-gold to-orange mt-0.5">{profile?.exp || 0} XP</span>
-          </div>
-        </div>
-      </header>
-
-      {/* Code Entry / Join Area */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-8 items-stretch sm:items-center bg-bg-surface/50 border border-border/60 p-4 rounded-xl shadow-inner max-w-2xl hover:border-border transition-colors">
-        <div className="relative flex-1">
-          <input 
-            type="text" 
-            placeholder="ENTER ROOM JOIN CODE..." 
-            value={joinCode} 
-            onChange={e => setJoinCode(e.target.value.toUpperCase())} 
-            className="w-full bg-black/40 border border-border/60 focus:border-gold/60 focus:ring-1 focus:ring-gold/30 px-4 py-3 rounded-lg text-text-white font-bold text-sm tracking-widest placeholder:text-text-muted uppercase outline-none transition-all duration-300"
-          />
-        </div>
-        <button 
-          onClick={handleJoinByCode} 
-          className="bg-glass hover:bg-gold hover:text-bg-deep border border-border hover:border-gold text-text-white px-6 py-3 rounded-lg text-xs font-black tracking-widest uppercase cursor-pointer transition-all duration-300 shrink-0"
-        >
-          JOIN SESSION
-        </button>
-        {joinError && (
-          <span className="text-xs text-red font-semibold bg-red-dim border border-red/20 px-3 py-2 rounded-lg animate-shake sm:max-w-xs text-center shrink-0">
-            {joinError}
-          </span>
-        )}
-      </div>
+      <UserStatsHeader profile={profile} levelInfo={levelInfo} />
+      
+      <JoinRoomBar 
+        joinCode={joinCode} 
+        setJoinCode={setJoinCode} 
+        handleJoinByCode={handleJoinByCode} 
+        joinError={joinError} 
+      />
 
       {/* Bento Layout Grid */}
       <section className="bento-grid gap-6">
