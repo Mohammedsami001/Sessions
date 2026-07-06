@@ -14,6 +14,7 @@ import {
 import { GooeyLoader } from "../../components/ui/loader-10";
 import UserStatsHeader from "@/components/ui/user-stats-header";
 import JoinRoomBar from "@/components/ui/join-room-bar";
+import EngineCoreWidget from "@/components/ui/engine-core-widget";
 
 export default function DashboardPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -310,51 +311,8 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Minimalist Premium Pomodoro Preview Circle */}
-        <div className="bento-card bento-pomodoro flex flex-col justify-center items-center text-center bg-gradient-to-b from-bg-card to-bg-card/85 relative overflow-hidden group min-h-[460px]">
-          <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-orange/50 via-gold/50 to-transparent"></div>
-          
-          <div className="w-full flex flex-col items-center z-10">
-            <p className="text-[10px] text-text-gray font-bold tracking-widest uppercase flex items-center gap-1.5 mb-6">
-              <Timer size={13} className="text-orange" />
-              Engine Core Standby
-            </p>
-            
-            {/* Visualizer Circle */}
-            <div className="relative w-44 h-44 rounded-full flex items-center justify-center p-1 bg-gradient-to-tr from-orange via-gold/10 to-orange/20 shadow-[0_0_50px_rgba(255,107,44,0.1)] mb-6">
-              <div className="absolute inset-0.5 rounded-full bg-bg-deep/95 backdrop-blur-lg flex flex-col items-center justify-center z-10 border border-border">
-                <div className="text-4xl font-black text-text-white tracking-tighter leading-none select-none font-sans">
-                  25:00
-                </div>
-                <div className="text-[9px] font-bold tracking-widest text-orange mt-2 uppercase select-none">
-                  READY STATE
-                </div>
-              </div>
-            </div>
-
-            <p className="text-xs text-text-gray max-w-[200px] leading-relaxed mb-6">
-              Synchronized timer, focus cycle database, and intervals are handled live inside rooms.
-            </p>
-            
-            <div className="w-full grid grid-cols-2 gap-3 pt-4 border-t border-border/40 text-center">
-              <div className="flex flex-col">
-                <span className="text-[9px] text-text-muted font-bold tracking-wider uppercase flex items-center justify-center gap-0.5">
-                  <Trophy size={10} className="text-gold" />
-                  sessions
-                </span>
-                <span className="text-base font-black text-text-white mt-0.5">{profile?.total_sessions || 0}</span>
-              </div>
-              <div className="flex flex-col border-l border-border/40">
-                <span className="text-[9px] text-text-muted font-bold tracking-wider uppercase flex items-center justify-center gap-0.5">
-                  <Flame size={10} className="text-orange animate-bounce" />
-                  focus streak
-                </span>
-                <span className="text-base font-black text-orange mt-0.5">{profile?.streak_days || 0} Days</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
+        {/* Engine Core (Timer Widget) */}
+        <EngineCoreWidget profile={profile} />
         {/* Ambient Sound Mixer Panel */}
         <div className="bento-card bento-lofi flex flex-col bg-gradient-to-b from-bg-card to-bg-card/85 relative group overflow-hidden min-h-[340px]">
           <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-orange/30 to-transparent"></div>
