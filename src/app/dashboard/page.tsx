@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { supabase } from "../../lib/supabase";
 import { profileService, taskService, chatService, roomService } from "../../lib/container";
 import type { Profile, Room, Task, MessageWithProfile, CreateRoomInput } from "../../lib/types";
@@ -39,6 +39,7 @@ export default function DashboardPage() {
     title: "", category: "General", visibility: "public",
     focus_duration: 1500, break_duration: 300, long_break_duration: 900, long_break_interval: 4,
   });
+  const chatEndRef = useRef<HTMLDivElement>(null);
 
   const loadRooms = useCallback(async () => {
     const rs = await roomService.fetchPublicRooms();
