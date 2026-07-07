@@ -12,8 +12,9 @@ describe("EngineCoreWidget Component", () => {
 
   it("renders the timer interface", () => {
     render(<EngineCoreWidget profile={mockProfile as any} />);
+    expect(screen.getByText("Engine Core Standby")).toBeInTheDocument();
     expect(screen.getByText("25:00")).toBeInTheDocument();
-    expect(screen.getByText(/READY STATE/i)).toBeInTheDocument();
+    expect(screen.getByText(/Synchronized timer, tools and protocols/i)).toBeInTheDocument();
   });
 
   it("renders the correct stats", () => {

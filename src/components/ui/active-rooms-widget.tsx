@@ -25,10 +25,25 @@ export default function ActiveRoomsWidget({ rooms, participantCounts, handleQuic
       <div className="flex-1 overflow-y-auto space-y-3 pr-2 scrollbar-thin scrollbar-thumb-white/10">
         {rooms.length === 0 ? (
           <div className="flex flex-col items-center justify-center text-center h-48 py-10 opacity-70">
-            <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-zinc-500 mb-3 border border-white/5">
-              <Globe size={16} />
+            <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-zinc-500 mb-4 border border-white/5 relative">
+              <Globe size={18} />
+              <div className="absolute top-0 right-0 w-3 h-3 bg-red-500/20 rounded-full flex items-center justify-center">
+                <div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse"></div>
+              </div>
             </div>
-            <p className="text-zinc-500 text-xs font-semibold max-w-[200px]">No synchronized rooms active. Be the pioneer.</p>
+            <p className="text-white text-sm font-bold mb-1">No active rooms right now.</p>
+            <p className="text-zinc-500 text-xs font-medium max-w-[260px] mb-6">
+              Be the pioneer and host a Room to start a deep focus session with others.
+            </p>
+            <div className="flex flex-col gap-2 items-center text-xs w-full max-w-sm pt-4 border-t border-white/5">
+              <span className="text-zinc-500 font-medium">Want to open a custom Room with friends?</span>
+              <button 
+                onClick={() => setShowCreateModal(true)}
+                className="text-white font-bold hover:text-zinc-300 transition-colors flex items-center gap-1"
+              >
+                Host custom room <span className="text-lg leading-none">→</span>
+              </button>
+            </div>
           </div>
         ) : (
           rooms.map((room: any) => {

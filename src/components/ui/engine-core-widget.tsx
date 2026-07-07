@@ -23,8 +23,8 @@ export default function EngineCoreWidget({ profile }: { profile: any }) {
           </div>
         </div>
 
-        <p className="text-xs text-zinc-500 max-w-[200px] leading-relaxed mb-8">
-          Synchronized timer, focus cycle database, and intervals are handled live inside rooms.
+        <p className="text-[11px] text-zinc-500 max-w-[200px] leading-relaxed mb-8">
+          Synchronized timer, tools and protocols are ready. Start to enter deep focus.
         </p>
         
         {/* Stats beneath */}
