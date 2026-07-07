@@ -17,13 +17,26 @@ describe("Sidebar Component", () => {
     render(<Sidebar />);
     
     // Check for the main brand/logo
-    expect(screen.getByText(/Sessions/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Sessions/i)[0]).toBeInTheDocument();
     
     // Check for navigation links
     expect(screen.getByText(/Dashboard/i)).toBeInTheDocument();
     expect(screen.getByText(/Profile/i)).toBeInTheDocument();
+    expect(screen.getByText(/Global Tasks/i)).toBeInTheDocument();
     expect(screen.getByText(/Browse Rooms/i)).toBeInTheDocument();
     expect(screen.getByText(/Settings/i)).toBeInTheDocument();
+  });
+
+  it("renders the Go Pro and Lo-fi Focus widgets in the sidebar", () => {
+    render(<Sidebar />);
+    
+    // Check Go Pro widget
+    expect(screen.getByText(/Go Pro/i)).toBeInTheDocument();
+    expect(screen.getByText(/Upgrade Now/i)).toBeInTheDocument();
+    
+    // Check Lo-fi Focus widget
+    expect(screen.getByText(/Lo-fi Focus/i)).toBeInTheDocument();
+    expect(screen.getByText(/Chillhop Essentials/i)).toBeInTheDocument();
   });
 
   it("has the correct styling classes for a fixed 250px sidebar on desktop", () => {
