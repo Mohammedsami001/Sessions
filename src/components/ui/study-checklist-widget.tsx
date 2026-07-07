@@ -48,18 +48,18 @@ export default function StudyChecklistWidget({ tasks, newTaskTitle, setNewTaskTi
         )}
       </div>
 
-      <form onSubmit={handleAddTask} className="relative flex items-center mt-auto">
+      <form onSubmit={handleAddTask} className="flex items-center gap-2 mt-auto">
         <input 
           type="text" 
           placeholder="ADD NEW OBJECTIVE..." 
           value={newTaskTitle} 
           onChange={e => setNewTaskTitle(e.target.value)} 
-          className="w-full bg-transparent border border-white/10 focus:border-white/30 px-4 py-3 rounded-lg pr-10 text-white text-xs font-medium placeholder:text-zinc-600 placeholder:tracking-widest uppercase outline-none transition-all"
+          className="flex-1 bg-transparent border border-white/10 focus:border-white/30 px-4 py-3 rounded-lg text-white text-xs font-medium placeholder:text-zinc-600 placeholder:tracking-widest uppercase outline-none transition-all"
         />
         <button 
           type="submit" 
           disabled={!newTaskTitle?.trim()}
-          className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-md text-zinc-400 hover:text-white hover:bg-white/10 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
+          className="p-3 rounded-lg bg-white text-zinc-950 hover:bg-zinc-200 disabled:opacity-50 disabled:hover:bg-white transition-colors flex items-center justify-center shrink-0"
         >
           <Plus size={16} />
         </button>
