@@ -1,4 +1,5 @@
 import React from "react";
+import { LogIn } from "lucide-react";
 
 interface JoinRoomBarProps {
   joinCode: string;
@@ -13,17 +14,18 @@ export default function JoinRoomBar({ joinCode, setJoinCode, handleJoinByCode, j
       <div className="relative flex-1">
         <input 
           type="text" 
-          placeholder="ENTER ROOM JOIN CODE..." 
+          placeholder="Enter Room Join Code..." 
           value={joinCode} 
-          onChange={e => setJoinCode(e.target.value.toUpperCase())} 
-          className="w-full bg-zinc-950 border border-white/10 focus:border-white/30 focus:ring-1 focus:ring-white/10 px-4 py-3 rounded-lg text-white font-bold text-sm tracking-widest placeholder:text-zinc-500 uppercase outline-none transition-all duration-300"
+          onChange={e => setJoinCode(e.target.value)} 
+          className="w-full bg-zinc-950 border border-white/10 focus:border-white/30 focus:ring-1 focus:ring-white/10 px-4 py-3 rounded-lg text-white font-medium text-sm placeholder:text-zinc-500 outline-none transition-all duration-300"
         />
       </div>
       <button 
         onClick={handleJoinByCode} 
-        className="bg-white hover:bg-zinc-200 border border-white text-zinc-950 px-6 py-3 rounded-lg text-xs font-black tracking-widest uppercase cursor-pointer transition-all duration-300 shrink-0"
+        className="bg-white hover:bg-zinc-200 border border-white text-zinc-950 px-5 py-3 rounded-lg text-sm font-bold flex items-center gap-2 cursor-pointer transition-all duration-300 shrink-0"
       >
-        JOIN SESSION
+        <LogIn size={16} />
+        Join Session
       </button>
       {joinError && (
         <span className="text-xs text-red-400 font-semibold bg-red-950/50 border border-red-500/20 px-3 py-2 rounded-lg animate-shake sm:max-w-xs text-center shrink-0">

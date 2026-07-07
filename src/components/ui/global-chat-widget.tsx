@@ -3,15 +3,13 @@ import { MessageSquare, Send } from "lucide-react";
 
 export default function GlobalChatWidget({ chatMessages, chatInput, setChatInput, handleSendMessage, chatEndRef }: any) {
   return (
-    <div className="flex flex-col min-h-[460px] bg-white/5 border border-white/10 rounded-2xl relative group p-6 shadow-sm hover:border-white/20 transition-colors col-span-12 lg:col-span-4">
+    <div className="flex flex-col h-full bg-[#0a0a0a] border border-white/10 rounded-2xl relative group p-5 shadow-sm hover:border-white/20 transition-colors flex-1">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-base font-extrabold flex items-center gap-2 text-white">
           <MessageSquare size={16} className="text-zinc-400" />
-          Global Chat
+          Global Chat Stream
         </h2>
-        <span className="text-[9px] bg-white/10 border border-white/10 text-zinc-400 font-bold px-2 py-0.5 rounded-sm tracking-widest uppercase">
-          LIVE
-        </span>
+        <span className="w-2 h-2 rounded-full bg-white/80"></span>
       </div>
 
       <div className="flex-1 overflow-y-auto mb-4 space-y-4 pr-2 scrollbar-thin scrollbar-thumb-white/10 flex flex-col">
@@ -41,10 +39,10 @@ export default function GlobalChatWidget({ chatMessages, chatInput, setChatInput
       <form onSubmit={handleSendMessage} className="flex items-center gap-2 mt-auto">
         <input 
           type="text" 
-          placeholder="TRANSMIT MESSAGE..." 
+          placeholder="Type a message..." 
           value={chatInput} 
           onChange={e => setChatInput(e.target.value)} 
-          className="flex-1 bg-transparent border border-white/10 focus:border-white/30 px-4 py-3 rounded-lg text-white text-xs font-medium placeholder:text-zinc-600 placeholder:tracking-widest uppercase outline-none transition-all"
+          className="flex-1 bg-transparent border border-white/10 focus:border-white/30 px-4 py-3 rounded-lg text-white text-sm font-medium placeholder:text-zinc-600 outline-none transition-all"
         />
         <button 
           type="submit" 

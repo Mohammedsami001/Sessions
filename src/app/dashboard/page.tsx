@@ -9,7 +9,7 @@ import { computeLevelProgress, formatFocusHours, computeTimerRemaining } from ".
 import { 
   LogOut, User, Sparkles, Activity, Plus, Play, Timer, Music, 
   MessageSquare, CheckSquare, Trash2, Users, Flame, Trophy, Clock, 
-  Globe, Lock, ArrowLeft, Send, Check, Volume2, PlusCircle
+  Globe, Lock, ArrowLeft, Send, Check, Volume2, PlusCircle, Crown, Settings2
 } from "lucide-react";
 import { GooeyLoader } from "../../components/ui/loader-10";
 import UserStatsHeader from "@/components/ui/user-stats-header";
@@ -210,11 +210,11 @@ export default function DashboardPage() {
   }
 
   return (
-    <main className="px-6 md:px-12 py-10 max-w-6xl mx-auto w-full z-20 relative">
+    <main className="px-8 py-6 max-w-[1600px] mx-auto w-full h-screen flex flex-col relative overflow-hidden z-20">
 
       <UserStatsHeader profile={profile} />
       
-      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-8 w-full">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-6 w-full shrink-0">
         <div className="w-full lg:flex-1">
           <JoinRoomBar 
             joinCode={joinCode} 
@@ -228,9 +228,11 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Bento Layout Grid */}
-      <section className="grid grid-cols-1 md:grid-cols-12 gap-6">
+      {/* Bento Layout Grid - Fills remaining height */}
+      <section className="flex flex-col gap-5 flex-1 min-h-0 pb-6">
         
+        {/* Row 1 */}
+        <div className="flex gap-5 flex-1 min-h-0">
         <ActiveRoomsWidget 
           rooms={rooms} 
           participantCounts={participantCounts} 
@@ -240,43 +242,50 @@ export default function DashboardPage() {
 
         {/* Engine Core (Timer Widget) */}
         <EngineCoreWidget profile={profile} />
+        </div>
         
-        {/* Ambient Sound Mixer Panel */}
-        <div className="flex flex-col min-h-[340px] bg-white/5 border border-white/10 rounded-2xl relative group overflow-hidden shadow-sm hover:border-white/20 transition-colors col-span-1 md:col-span-4 p-6">
-          <div className="flex justify-between items-center mb-6">
+        {/* Row 2 */}
+        <div className="flex gap-5 h-[320px] shrink-0">
+          
+          {/* Ambient Sound Mixer Panel */}
+          <div className="flex-1 flex flex-col bg-[#0a0a0a] border border-white/10 rounded-2xl relative group overflow-hidden shadow-sm hover:border-white/20 transition-colors p-5">
+          <div className="flex justify-between items-center mb-6 z-20">
             <h2 className="text-base font-extrabold flex items-center gap-2 text-white">
               <Music size={16} className="text-zinc-400" />
-              Ambient sound deck
+              Ambient Sound Deck
             </h2>
-            <span className="text-[9px] bg-white/10 border border-white/10 text-zinc-400 font-bold px-2 py-0.5 rounded-sm tracking-widest uppercase">
+            <span className="text-[9px] bg-transparent border border-white/20 text-white font-bold px-2 py-0.5 rounded-sm tracking-widest uppercase">
               PRO MODULE
             </span>
           </div>
 
           <div className="flex-1 flex flex-col justify-center items-center text-center p-4 relative">
-            <div className="absolute inset-0 bg-zinc-950/40 backdrop-blur-[2px] flex flex-col items-center justify-center z-10 rounded-xl">
-              <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white shadow-sm mb-3 transform group-hover:scale-110 transition-transform duration-300">
-                <Lock size={18} />
-              </div>
-              <p className="text-sm font-bold text-white tracking-wide">Ambient Audio Mixer</p>
-              <p className="text-xs text-zinc-400 max-w-[200px] mt-1">
-                Customize rain, fireplace, cafe, and lofi streams under <span className="text-white font-semibold">Sessions Pro</span>.
-              </p>
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+               {/* Faint soundwave bars */}
+               <div className="flex items-center gap-1 h-12">
+                 {[1,2,3,5,2,4,7,3,1,2,4,6,3,1,5,2,1].map((h, i) => (
+                   <div key={i} className="w-1.5 bg-white rounded-full" style={{ height: `${h * 10}%` }}></div>
+                 ))}
+                 <div className="w-8 h-8 rounded-full bg-white/20 mx-2 flex items-center justify-center shrink-0">
+                   <Settings2 size={16} className="text-white" />
+                 </div>
+                 {[1,2,5,1,3,7,4,2,5,3,1,2,3,2,1].map((h, i) => (
+                   <div key={i} className="w-1.5 bg-white rounded-full" style={{ height: `${h * 10}%` }}></div>
+                 ))}
+               </div>
             </div>
-
-            <div className="w-full space-y-4 opacity-20 filter blur-[1.5px] select-none pointer-events-none">
-              <div className="flex items-center justify-between gap-4">
-                <span className="text-xs font-semibold text-zinc-500 w-16 text-left">Lofi Radio</span>
-                <input type="range" disabled className="flex-1 h-1 bg-white/10 rounded-lg accent-white" />
-                <Volume2 size={14} className="text-zinc-500" />
-              </div>
-              <div className="flex items-center justify-between gap-4">
-                <span className="text-xs font-semibold text-zinc-500 w-16 text-left">Rain Storm</span>
-                <input type="range" disabled className="flex-1 h-1 bg-white/10 rounded-lg accent-white" />
-                <Volume2 size={14} className="text-zinc-500" />
-              </div>
-              <div className="flex items-center justify-between gap-4">
-                <span className="text-xs font-semibold text-zinc-500 w-16 text-left">Fireplace</span>
+            
+            <div className="flex flex-col items-center justify-center z-10 mt-16">
+              <p className="text-sm font-bold text-white tracking-wide mb-1">Ambient Audio Mixer</p>
+              <p className="text-[11px] text-zinc-400 max-w-[200px] leading-relaxed mb-6">
+                Custom rain, fire crackle, cafe, and lofi streams under Sessions Pro.
+              </p>
+              <button className="flex items-center gap-2 text-white text-[11px] font-bold tracking-widest uppercase hover:text-zinc-300 transition-colors bg-white/5 border border-white/10 px-4 py-2 rounded-lg">
+                <Crown size={14} className="text-white" />
+                Explore Pro Sounds →
+              </button>
+            </div>
+          </div>
                 <input type="range" disabled className="flex-1 h-1 bg-white/10 rounded-lg accent-white" />
                 <Volume2 size={14} className="text-zinc-500" />
               </div>
@@ -292,14 +301,22 @@ export default function DashboardPage() {
           chatEndRef={chatEndRef} 
         />
 
-        <StudyChecklistWidget 
-          tasks={tasks} 
-          newTaskTitle={newTodo} 
-          setNewTaskTitle={setNewTodo} 
-          handleAddTask={handleAddTask} 
-          toggleTaskCompletion={handleToggleTask} 
-          deleteTask={handleDeleteTask} 
-        />
+          <StudyChecklistWidget 
+            tasks={tasks} 
+            newTaskTitle={newTodo} 
+            setNewTaskTitle={setNewTodo} 
+            handleAddTask={handleAddTask} 
+            toggleTaskCompletion={handleToggleTask} 
+            deleteTask={handleDeleteTask} 
+          />
+        </div>
+        
+        {/* Tiny Footer */}
+        <div className="w-full text-center shrink-0">
+          <p className="text-[11px] text-zinc-500 font-medium flex items-center justify-center gap-2">
+            <span>😊</span> Stay consistent, stay focused. <span>🌿</span>
+          </p>
+        </div>
 
       </section>
 

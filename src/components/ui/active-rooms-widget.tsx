@@ -4,44 +4,56 @@ import { computeTimerRemaining } from "@/lib/types";
 
 export default function ActiveRoomsWidget({ rooms, participantCounts, handleQuickJoin, setShowCreateModal }: any) {
   return (
-    <div className="flex flex-col min-h-[460px] bg-white/5 border border-white/10 rounded-2xl relative group p-6 shadow-sm hover:border-white/20 transition-colors col-span-12 lg:col-span-7">
+    <div className="flex flex-col h-full bg-[#0a0a0a] border border-white/10 rounded-2xl relative group p-5 shadow-sm hover:border-white/20 transition-colors w-[60%] shrink-0">
       <div className="flex justify-between items-center mb-6">
         <div>
           <h2 className="text-base font-extrabold flex items-center gap-2 text-white">
-            <Globe size={16} className="text-zinc-400" />
-            Active Multiplayer Rooms
+            <span className="w-2 h-2 rounded-full bg-white/80"></span>
+            Active Rooms
           </h2>
-          <p className="text-[10px] text-zinc-500 mt-1 uppercase tracking-widest">{rooms.length} synchronized sessions</p>
+          <p className="text-[10px] text-zinc-500 mt-1 uppercase tracking-widest">Synchronized study sessions online</p>
         </div>
         <button 
           onClick={() => setShowCreateModal(true)} 
-          className="bg-white text-zinc-950 hover:bg-zinc-200 px-3 py-1.5 rounded-lg text-[10px] font-black tracking-widest uppercase cursor-pointer shadow-sm transition-colors flex items-center gap-1.5"
+          className="bg-transparent border border-white/20 text-white hover:border-white px-3 py-1.5 rounded-lg text-[10px] font-black tracking-widest uppercase cursor-pointer transition-colors flex items-center gap-1.5"
         >
           <PlusCircle size={12} />
-          Host
+          Host Room
         </button>
       </div>
 
       <div className="flex-1 overflow-y-auto space-y-3 pr-2 scrollbar-thin scrollbar-thumb-white/10">
         {rooms.length === 0 ? (
-          <div className="flex flex-col items-center justify-center text-center h-48 py-10 opacity-70">
-            <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-zinc-500 mb-4 border border-white/5 relative">
-              <Globe size={18} />
-              <div className="absolute top-0 right-0 w-3 h-3 bg-red-500/20 rounded-full flex items-center justify-center">
-                <div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse"></div>
-              </div>
+          <div className="flex flex-col items-center justify-center text-center h-48 py-10">
+            <div className="relative w-24 h-24 flex items-center justify-center mb-4">
+              <svg viewBox="0 0 100 100" className="w-full h-full animate-pulse-slow">
+                <circle cx="50" cy="50" r="16" fill="url(#planet-grad)" />
+                <ellipse cx="50" cy="50" rx="35" ry="10" transform="rotate(-20 50 50)" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="0.5" />
+                <ellipse cx="50" cy="50" rx="35" ry="10" transform="rotate(20 50 50)" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="0.5" />
+                <circle cx="80" cy="30" r="1.5" fill="white" className="animate-ping" />
+                <circle cx="20" cy="70" r="1" fill="white" />
+                <circle cx="30" cy="20" r="1" fill="white" />
+                <defs>
+                  <radialGradient id="planet-grad" cx="50%" cy="50%" r="50%" fx="30%" fy="30%">
+                    <stop offset="0%" stopColor="rgba(255,255,255,0.8)" />
+                    <stop offset="100%" stopColor="rgba(255,255,255,0.1)" />
+                  </radialGradient>
+                </defs>
+              </svg>
             </div>
             <p className="text-white text-sm font-bold mb-1">No active rooms right now.</p>
-            <p className="text-zinc-500 text-xs font-medium max-w-[260px] mb-6">
+            <p className="text-zinc-500 text-xs font-medium max-w-[280px] mb-6">
               Be the pioneer and host a Room to start a deep focus session with others.
             </p>
-            <div className="flex flex-col gap-2 items-center text-xs w-full max-w-sm pt-4 border-t border-white/5">
-              <span className="text-zinc-500 font-medium">Want to open a custom Room with friends?</span>
+            <div className="flex justify-between items-center text-xs w-full max-w-[90%] pt-4 border-t border-white/5">
+              <span className="text-zinc-500 font-medium flex items-center gap-1.5">
+                <Globe size={12} /> Want to open a custom Room with friends?
+              </span>
               <button 
                 onClick={() => setShowCreateModal(true)}
                 className="text-white font-bold hover:text-zinc-300 transition-colors flex items-center gap-1"
               >
-                Host custom room <span className="text-lg leading-none">→</span>
+                Host custom room <span className="text-sm leading-none">→</span>
               </button>
             </div>
           </div>
