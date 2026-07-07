@@ -23,22 +23,15 @@ describe("UserStatsHeader Component", () => {
   };
 
   it("renders the user's name and online status", () => {
-    render(<UserStatsHeader profile={mockProfile} levelInfo={mockLevelInfo} />);
+    render(<UserStatsHeader profile={mockProfile} />);
     expect(screen.getByText(/Welcome/i)).toBeInTheDocument();
     expect(screen.getByText("MOSAMI")).toBeInTheDocument();
     expect(screen.getByText(/ACTIVE PROTOCOL/i)).toBeInTheDocument();
   });
 
-  it("displays the correct stats without loud colors", () => {
-    render(<UserStatsHeader profile={mockProfile} levelInfo={mockLevelInfo} />);
-    
-    // Check for level, exp, and focus text
-    expect(screen.getByText("LEVEL")).toBeInTheDocument();
-    expect(screen.getByText("5")).toBeInTheDocument(); // Level 5
-    
-    expect(screen.getByText("EXPERIENCE")).toBeInTheDocument();
-    expect(screen.getByText(/250 XP/i)).toBeInTheDocument();
-    
-    expect(screen.getByText("TOTAL FOCUS")).toBeInTheDocument();
+  it("displays the Profile and Sign Out buttons", () => {
+    render(<UserStatsHeader profile={mockProfile} />);
+    expect(screen.getByRole("button", { name: /Profile/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Sign out/i })).toBeInTheDocument();
   });
 });

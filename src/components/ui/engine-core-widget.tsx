@@ -3,7 +3,7 @@ import { Trophy, Flame, Timer } from "lucide-react";
 
 export default function EngineCoreWidget({ profile }: { profile: any }) {
   return (
-    <div className="flex flex-col justify-center items-center text-center bg-white/5 border border-white/10 p-6 rounded-2xl relative group min-h-[460px] shadow-sm hover:border-white/20 transition-colors col-span-12 lg:col-span-4">
+    <div className="flex flex-col justify-center items-center text-center bg-white/5 border border-white/10 p-6 rounded-2xl relative group min-h-[460px] shadow-sm hover:border-white/20 transition-colors col-span-12 lg:col-span-5">
       
       <div className="w-full flex flex-col items-center z-10">
         <p className="text-[10px] text-zinc-400 font-bold tracking-widest uppercase flex items-center gap-1.5 mb-8">

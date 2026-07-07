@@ -3,7 +3,7 @@ import { CheckSquare, Plus, Check, Trash2 } from "lucide-react";
 
 export default function StudyChecklistWidget({ tasks, newTaskTitle, setNewTaskTitle, handleAddTask, toggleTaskCompletion, deleteTask }: any) {
   return (
-    <div className="flex flex-col min-h-[340px] bg-white/5 border border-white/10 rounded-2xl relative group p-6 shadow-sm hover:border-white/20 transition-colors col-span-12 lg:col-span-3">
+    <div className="flex flex-col min-h-[340px] bg-white/5 border border-white/10 rounded-2xl relative group p-6 shadow-sm hover:border-white/20 transition-colors col-span-12 md:col-span-4">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-base font-extrabold flex items-center gap-2 text-white">
           <CheckSquare size={16} className="text-zinc-400" />

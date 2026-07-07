@@ -18,6 +18,7 @@ import EngineCoreWidget from "@/components/ui/engine-core-widget";
 import ActiveRoomsWidget from "@/components/ui/active-rooms-widget";
 import GlobalChatWidget from "@/components/ui/global-chat-widget";
 import StudyChecklistWidget from "@/components/ui/study-checklist-widget";
+import StatCardsWidget from "@/components/ui/stat-cards-widget";
 
 export default function DashboardPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -211,17 +212,24 @@ export default function DashboardPage() {
   return (
     <main className="px-6 md:px-12 py-10 max-w-6xl mx-auto w-full z-20 relative">
 
-      <UserStatsHeader profile={profile} levelInfo={levelInfo} />
+      <UserStatsHeader profile={profile} />
       
-      <JoinRoomBar 
-        joinCode={joinCode} 
-        setJoinCode={setJoinCode} 
-        handleJoinByCode={handleJoinByCode} 
-        joinError={joinError} 
-      />
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-8 w-full">
+        <div className="w-full lg:flex-1">
+          <JoinRoomBar 
+            joinCode={joinCode} 
+            setJoinCode={setJoinCode} 
+            handleJoinByCode={handleJoinByCode} 
+            joinError={joinError} 
+          />
+        </div>
+        <div className="w-full lg:w-auto overflow-x-auto pb-2 lg:pb-0 hide-scrollbar">
+          <StatCardsWidget profile={profile} levelInfo={levelInfo} />
+        </div>
+      </div>
 
       {/* Bento Layout Grid */}
-      <section className="bento-grid gap-6">
+      <section className="grid grid-cols-1 md:grid-cols-12 gap-6">
         
         <ActiveRoomsWidget 
           rooms={rooms} 
@@ -232,8 +240,9 @@ export default function DashboardPage() {
 
         {/* Engine Core (Timer Widget) */}
         <EngineCoreWidget profile={profile} />
+        
         {/* Ambient Sound Mixer Panel */}
-        <div className="flex flex-col min-h-[340px] bg-white/5 border border-white/10 rounded-2xl relative group overflow-hidden shadow-sm hover:border-white/20 transition-colors col-span-12 lg:col-span-5 p-6">
+        <div className="flex flex-col min-h-[340px] bg-white/5 border border-white/10 rounded-2xl relative group overflow-hidden shadow-sm hover:border-white/20 transition-colors col-span-1 md:col-span-4 p-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-base font-extrabold flex items-center gap-2 text-white">
               <Music size={16} className="text-zinc-400" />
