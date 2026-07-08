@@ -57,7 +57,7 @@ Not a stripped-down timer — the complete Pomodoro workflow with full cycle sup
 
 Two chat layers working simultaneously — one for discovery, one for focused collaboration.
 
-- **Global Discovery Stream** — A lobby-wide chat visible from the dashboard. Find study partners, share resources, or just say hello.
+- **Global Chat Stream** — A lobby-wide chat visible from the dashboard. Find study partners, share resources, or just say hello.
 - **Room-Scoped Chat** — Private to each study room. Only participants can read and send messages. Powered by Realtime INSERT subscriptions with automatic refresh.
 
 ---

@@ -34,8 +34,8 @@
 > **Dev:** "Got it. Can a user view the **Dashboard** while they are a **Participant** in a **Room**?"
 > **Domain expert:** "Yes, navigating to the **Dashboard** does not disconnect them from the **Room**."
 
-## Flagged ambiguities
+## Resolved Ambiguities
 
-- **Room vs Station vs Classroom**: The UI previously referenced "ENTER STATION" and "synchronized classrooms", but the domain logic and `CONTEXT.md` clearly define this entity as a **Room**. Recommend strictly using **Room** across the UI and documentation.
-- **Dashboard vs Lobby vs Account Console**: The UI has links saying "RETURN TO LOBBY" and "ACCOUNT CONSOLE", but they point to the `/dashboard` and `/profile` routes respectively. We should standardize on **Dashboard** and **Profile**.
-- **Sessions vs Prisma**: You correctly replaced "Prisma" with "Sessions" in the hero component. "Prisma" was a placeholder from the UI library; **Sessions** is the canonical name of the app.
+- **Room vs Station vs Classroom**: The UI is now fully standardized on **Room**.
+- **Dashboard vs Lobby vs Account Console**: The UI now correctly relies on **Dashboard** and **Profile**.
+- **Sessions vs Prisma**: **Sessions** is the canonical name of the app and is implemented consistently.
