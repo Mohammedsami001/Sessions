@@ -41,6 +41,9 @@ export default function DashboardPage() {
     focus_duration: 1500, break_duration: 300, long_break_duration: 900, long_break_interval: 4,
   });
   const chatEndRef = useRef<HTMLDivElement>(null);
+  
+  const [chatSidebarOpen, setChatSidebarOpen] = useState(false);
+  const [roomsSidebarOpen, setRoomsSidebarOpen] = useState(false);
 
   const loadRooms = useCallback(async () => {
     const rs = await roomService.fetchPublicRooms();
@@ -228,94 +231,61 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Bento Layout Grid - Fills remaining height */}
-      <section className="flex flex-col gap-5 flex-1 min-h-0 pb-6">
+      {/* Sidebar Layout Grid - Fills remaining height */}
+      <section className="flex gap-5 flex-1 min-h-0 pb-6 relative overflow-hidden">
         
-        {/* Row 1 */}
-        <div className="flex gap-5 flex-1 min-h-0">
-        <ActiveRoomsWidget 
-          rooms={rooms} 
-          participantCounts={participantCounts} 
-          handleQuickJoin={handleQuickJoin} 
-          setShowCreateModal={setShowCreateModal} 
-        />
-
-        {/* Engine Core (Timer Widget) */}
-        <EngineCoreWidget profile={profile} />
-        </div>
-        
-        {/* Row 2 */}
-        <div className="flex gap-5 h-[320px] shrink-0">
-          
-          {/* Ambient Sound Mixer Panel */}
-          <div className="flex-1 flex flex-col bg-[#0a0a0a] border border-white/10 rounded-2xl relative group overflow-hidden shadow-sm hover:border-white/20 transition-colors p-5">
-          <div className="flex justify-between items-center mb-6 z-20">
-            <h2 className="text-base font-extrabold flex items-center gap-2 text-white">
-              <Music size={16} className="text-zinc-400" />
-              Ambient Sound Deck
-            </h2>
-            <span className="text-[9px] bg-transparent border border-white/20 text-white font-bold px-2 py-0.5 rounded-sm tracking-widest uppercase">
-              PRO MODULE
-            </span>
-          </div>
-
-          <div className="flex-1 flex flex-col justify-center items-center text-center p-4 relative">
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
-               {/* Faint soundwave bars */}
-               <div className="flex items-center gap-1 h-12">
-                 {[1,2,3,5,2,4,7,3,1,2,4,6,3,1,5,2,1].map((h, i) => (
-                   <div key={i} className="w-1.5 bg-white rounded-full" style={{ height: `${h * 10}%` }}></div>
-                 ))}
-                 <div className="w-8 h-8 rounded-full bg-white/20 mx-2 flex items-center justify-center shrink-0">
-                   <Settings2 size={16} className="text-white" />
-                 </div>
-                 {[1,2,5,1,3,7,4,2,5,3,1,2,3,2,1].map((h, i) => (
-                   <div key={i} className="w-1.5 bg-white rounded-full" style={{ height: `${h * 10}%` }}></div>
-                 ))}
-               </div>
-            </div>
-            
-            <div className="flex flex-col items-center justify-center z-10 mt-16">
-              <p className="text-sm font-bold text-white tracking-wide mb-1">Ambient Audio Mixer</p>
-              <p className="text-[11px] text-zinc-400 max-w-[200px] leading-relaxed mb-6">
-                Custom rain, fire crackle, cafe, and lofi streams under Sessions Pro.
-              </p>
-              <button className="flex items-center gap-2 text-white text-[11px] font-bold tracking-widest uppercase hover:text-zinc-300 transition-colors bg-white/5 border border-white/10 px-4 py-2 rounded-lg">
-                <Crown size={14} className="text-white" />
-                Explore Pro Sounds →
-              </button>
-            </div>
-          </div>
-                <input type="range" disabled className="flex-1 h-1 bg-white/10 rounded-lg accent-white" />
-                <Volume2 size={14} className="text-zinc-500" />
-              </div>
-            </div>
+        {/* Left Sidebar: Active Rooms */}
+        <div className={`transition-all duration-300 ease-in-out shrink-0 overflow-hidden ${roomsSidebarOpen ? 'w-[320px] opacity-100' : 'w-0 opacity-0'}`}>
+          <div className="w-[320px] h-full">
+            <ActiveRoomsWidget 
+              rooms={rooms} 
+              participantCounts={participantCounts} 
+              handleQuickJoin={handleQuickJoin} 
+              setShowCreateModal={setShowCreateModal} 
+            />
           </div>
         </div>
 
-        <GlobalChatWidget 
-          chatMessages={messages} 
-          chatInput={chatInput} 
-          setChatInput={setChatInput} 
-          handleSendMessage={handleSendMessage} 
-          chatEndRef={chatEndRef} 
-        />
-
-          <StudyChecklistWidget 
-            tasks={tasks} 
-            newTaskTitle={newTodo} 
-            setNewTaskTitle={setNewTodo} 
-            handleAddTask={handleAddTask} 
-            toggleTaskCompletion={handleToggleTask} 
-            deleteTask={handleDeleteTask} 
-          />
+        {/* Central Area: Timer and Checklist */}
+        <div className="flex-1 flex flex-col gap-5 min-w-0 transition-all duration-300">
+           {/* Top controls: toggles for sidebars */}
+           <div className="flex justify-between items-center px-2">
+             <button onClick={() => setRoomsSidebarOpen(!roomsSidebarOpen)} className="flex items-center gap-2 text-white text-xs font-bold px-3 py-2 bg-white/5 border border-white/10 hover:bg-white/10 rounded-xl transition-colors shadow-sm">
+               <Users size={14}/> {roomsSidebarOpen ? 'Hide Rooms' : 'Show Rooms'}
+             </button>
+             <button onClick={() => setChatSidebarOpen(!chatSidebarOpen)} className="flex items-center gap-2 text-white text-xs font-bold px-3 py-2 bg-white/5 border border-white/10 hover:bg-white/10 rounded-xl transition-colors shadow-sm">
+               <MessageSquare size={14}/> {chatSidebarOpen ? 'Hide Chat' : 'Show Chat'}
+             </button>
+           </div>
+           
+           <div className="flex flex-col lg:flex-row gap-5 flex-1 min-h-0">
+             <div className="flex-1 min-w-0">
+               <EngineCoreWidget profile={profile} />
+             </div>
+             <div className="w-full lg:w-[400px] shrink-0 h-full flex flex-col">
+               <StudyChecklistWidget 
+                 tasks={tasks} 
+                 newTaskTitle={newTodo} 
+                 setNewTaskTitle={setNewTodo} 
+                 handleAddTask={handleAddTask} 
+                 toggleTaskCompletion={handleToggleTask} 
+                 deleteTask={handleDeleteTask} 
+               />
+             </div>
+           </div>
         </div>
-        
-        {/* Tiny Footer */}
-        <div className="w-full text-center shrink-0">
-          <p className="text-[11px] text-zinc-500 font-medium flex items-center justify-center gap-2">
-            <span>😊</span> Stay consistent, stay focused. <span>🌿</span>
-          </p>
+
+        {/* Right Sidebar: Global Chat */}
+        <div className={`transition-all duration-300 ease-in-out shrink-0 overflow-hidden ${chatSidebarOpen ? 'w-[320px] opacity-100' : 'w-0 opacity-0'}`}>
+          <div className="w-[320px] h-full flex flex-col">
+            <GlobalChatWidget 
+              chatMessages={messages} 
+              chatInput={chatInput} 
+              setChatInput={setChatInput} 
+              handleSendMessage={handleSendMessage} 
+              chatEndRef={chatEndRef} 
+            />
+          </div>
         </div>
 
       </section>
@@ -337,9 +307,9 @@ export default function DashboardPage() {
               <div>
                 <h3 className="text-lg md:text-xl font-bold tracking-tight text-text-white flex items-center gap-2">
                   <Sparkles size={18} className="text-gold animate-spin-slow" />
-                  Launch Shared Study Console
+                  Host a Room
                 </h3>
-                <p className="text-xs text-text-gray mt-1">Configure and synchronize a real-time intervals grid</p>
+                <p className="text-xs text-text-gray mt-1">Set up your shared focus space</p>
               </div>
               <button 
                 onClick={() => setShowCreateModal(false)} 
@@ -399,49 +369,69 @@ export default function DashboardPage() {
               <div className="border-t border-border/40 pt-4 mt-2">
                 <h4 className="text-[10px] text-text-muted font-bold tracking-wider uppercase mb-3">Sync Durations (Minutes)</h4>
                 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  <div className="flex flex-col gap-1">
-                    <span className="text-[9px] text-text-muted font-medium uppercase">Focus</span>
-                    <select 
-                      value={(createForm.focus_duration || 1500) / 60} 
-                      onChange={e => setCreateForm({ ...createForm, focus_duration: Number(e.target.value) * 60 })} 
-                      className="bg-black/40 border border-border px-2 py-2 rounded-md text-xs text-text-white cursor-pointer"
-                    >
-                      {[15, 20, 25, 30, 45, 60].map(m => <option key={m} value={m} className="bg-bg-surface">{m}m</option>)}
-                    </select>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-2">
+                    <span className="text-[9px] text-text-muted font-bold tracking-wider uppercase">Focus Duration</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {[15, 25, 45, 60].map(m => (
+                        <button
+                          key={m}
+                          type="button"
+                          onClick={() => setCreateForm({ ...createForm, focus_duration: m * 60 })}
+                          className={`flex-1 min-w-[40px] py-1.5 text-xs font-bold rounded-md transition-all border ${createForm.focus_duration === m * 60 ? 'bg-gold/20 text-gold border-gold/50' : 'bg-black/40 text-text-gray border-border hover:border-white/20 hover:text-white'}`}
+                        >
+                          {m}m
+                        </button>
+                      ))}
+                    </div>
                   </div>
                   
-                  <div className="flex flex-col gap-1">
-                    <span className="text-[9px] text-text-muted font-medium uppercase">Short Break</span>
-                    <select 
-                      value={(createForm.break_duration || 300) / 60} 
-                      onChange={e => setCreateForm({ ...createForm, break_duration: Number(e.target.value) * 60 })} 
-                      className="bg-black/40 border border-border px-2 py-2 rounded-md text-xs text-text-white cursor-pointer"
-                    >
-                      {[3, 5, 10, 15].map(m => <option key={m} value={m} className="bg-bg-surface">{m}m</option>)}
-                    </select>
+                  <div className="flex flex-col gap-2">
+                    <span className="text-[9px] text-text-muted font-bold tracking-wider uppercase">Short Break</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {[3, 5, 10, 15].map(m => (
+                        <button
+                          key={m}
+                          type="button"
+                          onClick={() => setCreateForm({ ...createForm, break_duration: m * 60 })}
+                          className={`flex-1 min-w-[40px] py-1.5 text-xs font-bold rounded-md transition-all border ${createForm.break_duration === m * 60 ? 'bg-gold/20 text-gold border-gold/50' : 'bg-black/40 text-text-gray border-border hover:border-white/20 hover:text-white'}`}
+                        >
+                          {m}m
+                        </button>
+                      ))}
+                    </div>
                   </div>
 
-                  <div className="flex flex-col gap-1">
-                    <span className="text-[9px] text-text-muted font-medium uppercase">Long Break</span>
-                    <select 
-                      value={(createForm.long_break_duration || 900) / 60} 
-                      onChange={e => setCreateForm({ ...createForm, long_break_duration: Number(e.target.value) * 60 })} 
-                      className="bg-black/40 border border-border px-2 py-2 rounded-md text-xs text-text-white cursor-pointer"
-                    >
-                      {[10, 15, 20, 30].map(m => <option key={m} value={m} className="bg-bg-surface">{m}m</option>)}
-                    </select>
+                  <div className="flex flex-col gap-2">
+                    <span className="text-[9px] text-text-muted font-bold tracking-wider uppercase">Long Break</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {[10, 15, 20, 30].map(m => (
+                        <button
+                          key={m}
+                          type="button"
+                          onClick={() => setCreateForm({ ...createForm, long_break_duration: m * 60 })}
+                          className={`flex-1 min-w-[40px] py-1.5 text-xs font-bold rounded-md transition-all border ${createForm.long_break_duration === m * 60 ? 'bg-gold/20 text-gold border-gold/50' : 'bg-black/40 text-text-gray border-border hover:border-white/20 hover:text-white'}`}
+                        >
+                          {m}m
+                        </button>
+                      ))}
+                    </div>
                   </div>
 
-                  <div className="flex flex-col gap-1">
-                    <span className="text-[9px] text-text-muted font-medium uppercase">Interval</span>
-                    <select 
-                      value={createForm.long_break_interval || 4} 
-                      onChange={e => setCreateForm({ ...createForm, long_break_interval: Number(e.target.value) })} 
-                      className="bg-black/40 border border-border px-2 py-2 rounded-md text-xs text-text-white cursor-pointer"
-                    >
-                      {[2, 3, 4, 5, 6].map(n => <option key={n} value={n} className="bg-bg-surface">{n} cyc</option>)}
-                    </select>
+                  <div className="flex flex-col gap-2">
+                    <span className="text-[9px] text-text-muted font-bold tracking-wider uppercase">Interval Cycles</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {[2, 3, 4, 5].map(n => (
+                        <button
+                          key={n}
+                          type="button"
+                          onClick={() => setCreateForm({ ...createForm, long_break_interval: n })}
+                          className={`flex-1 min-w-[40px] py-1.5 text-xs font-bold rounded-md transition-all border ${createForm.long_break_interval === n ? 'bg-gold/20 text-gold border-gold/50' : 'bg-black/40 text-text-gray border-border hover:border-white/20 hover:text-white'}`}
+                        >
+                          {n}x
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
