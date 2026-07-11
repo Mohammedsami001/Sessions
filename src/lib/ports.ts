@@ -9,9 +9,10 @@ export interface IProfileRepository {
 }
 
 export interface ITaskRepository {
-  fetchTasks(roomId: string | null): Promise<Task[]>;
-  createTask(text: string, userId: string, roomId: string | null): Promise<Task | null>;
+  fetchTasks(roomId: string | null, scope?: 'global' | 'room'): Promise<Task[]>;
+  createTask(task: Omit<Task, 'id' | 'created_at' | 'completed'>): Promise<Task | null>;
   toggleTask(taskId: string, completed: boolean): Promise<boolean>;
+  updateTask(taskId: string, updates: Partial<Task>): Promise<boolean>;
   deleteTask(taskId: string): Promise<boolean>;
 }
 

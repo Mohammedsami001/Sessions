@@ -196,7 +196,12 @@ export default function RoomPage() {
     else setGlobalTasks(prev => [...prev, optTask]);
     
     setNewTask("");
-    await taskService.createTask(optTask.text, currentUserId, targetRoom);
+    await taskService.createTask({
+      text: optTask.text, 
+      user_id: currentUserId, 
+      room_id: targetRoom,
+      scope: 'room'
+    });
     await loadTasks();
   };
 

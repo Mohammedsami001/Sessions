@@ -50,12 +50,23 @@ export interface Message {
   created_at: string;
 }
 
+export interface SubTask {
+  id: string;
+  text: string;
+  completed: boolean;
+}
+
 export interface Task {
   id: string;
   user_id: string;
   room_id: string | null;
+  scope: 'global' | 'room';
   text: string;
   completed: boolean;
+  priority?: 'low' | 'medium' | 'high';
+  dueDate?: string | null;
+  tags?: string[];
+  subTasks?: SubTask[];
   created_at: string;
 }
 

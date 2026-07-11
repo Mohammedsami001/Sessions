@@ -24,10 +24,11 @@ vi.mock('../lib/container', () => ({
     updateUserStatus: vi.fn()
   },
   taskService: {
-    getStudyTasks: vi.fn().mockResolvedValue([]),
-    saveStudyTask: vi.fn(),
-    deleteStudyTask: vi.fn(),
-    toggleStudyTask: vi.fn(),
+    fetchTasks: vi.fn().mockResolvedValue([]),
+    createTask: vi.fn(),
+    deleteTask: vi.fn(),
+    toggleTask: vi.fn(),
+    updateTask: vi.fn()
   },
   roomService: {
     fetchPublicRooms: vi.fn().mockResolvedValue([]),

@@ -3,16 +3,21 @@ import type { ITaskRepository } from '../ports';
 import type { Task } from '../types';
 
 export class SupabaseTaskRepository implements ITaskRepository {
-  async fetchTasks(roomId: string | null): Promise<Task[]> {
+  async fetchTasks(roomId: string | null, scope?: 'global' | 'room'): Promise<Task[]> {
     let query = supabase
       .from('tasks')
       .select('*')
       .order('created_at', { ascending: true });
 
-    if (roomId) {
-      query = query.eq('room_id', roomId);
-    } else {
-      query = query.is('room_id', null);
+    if (roomId !== undefined) {
+      if (roomId) {
+        query = query.eq('room_id', roomId);
+      } else {
+        query = query.is('room_id', null);
+      }
+    }
+    if (scope) {
+      query = query.eq('scope', scope);
     }
 
     const { data, error } = await query;
@@ -24,14 +29,13 @@ export class SupabaseTaskRepository implements ITaskRepository {
     return data || [];
   }
 
-  async createTask(text: string, userId: string, roomId: string | null): Promise<Task | null> {
-    if (!text.trim() || !userId) return null;
+  async createTask(taskData: Omit<Task, 'id' | 'created_at' | 'completed'>): Promise<Task | null> {
+    if (!taskData.text?.trim() || !taskData.user_id) return null;
     const { data, error } = await supabase
       .from('tasks')
       .insert({
-        text: text.trim(),
-        user_id: userId,
-        room_id: roomId,
+        ...taskData,
+        text: taskData.text.trim(),
         completed: false,
       })
       .select()
@@ -52,6 +56,19 @@ export class SupabaseTaskRepository implements ITaskRepository {
 
     if (error) {
       console.error('Failed to toggle task:', error.message);
+      return false;
+    }
+    return true;
+  }
+
+  async updateTask(taskId: string, updates: Partial<Task>): Promise<boolean> {
+    const { error } = await supabase
+      .from('tasks')
+      .update(updates)
+      .eq('id', taskId);
+
+    if (error) {
+      console.error('Failed to update task:', error.message);
       return false;
     }
     return true;

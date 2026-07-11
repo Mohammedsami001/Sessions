@@ -143,7 +143,12 @@ export default function DashboardPage() {
     setTasks(prev => [...prev, optimisticTask]);
     setNewTodo('');
     
-    const savedTask = await taskService.createTask(optimisticTask.text, profile.id, null);
+    const savedTask = await taskService.createTask({
+      text: optimisticTask.text, 
+      user_id: profile.id, 
+      room_id: null,
+      scope: 'global'
+    });
     if (savedTask) {
       setTasks(prev => prev.map(t => t.id === tempId ? savedTask : t));
     } else {

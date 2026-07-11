@@ -45,10 +45,10 @@ describe('Repository Domain Logic (Moved from Services)', () => {
   describe('TaskRepository.createTask', () => {
     it('trims whitespace and returns null if empty', async () => {
       const repo = new InMemoryTaskRepository();
-      const t1 = await repo.createTask('   ', 'user1', null);
+      const t1 = await repo.createTask({ text: '   ', user_id: 'user1', room_id: null, scope: 'global' });
       expect(t1).toBeNull();
 
-      const t2 = await repo.createTask('  hello  ', 'user1', null);
+      const t2 = await repo.createTask({ text: '  hello  ', user_id: 'user1', room_id: null, scope: 'global' });
       expect(t2?.text).toBe('hello');
     });
   });
