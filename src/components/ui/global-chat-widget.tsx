@@ -14,7 +14,7 @@ export default function GlobalChatWidget({
   chatInput: string,
   setChatInput: React.Dispatch<React.SetStateAction<string>>,
   handleSendMessage: (e: React.FormEvent) => void,
-  chatEndRef: React.RefObject<HTMLDivElement>
+  chatEndRef: React.RefObject<HTMLDivElement | null>
 }) {
   return (
     <div className="flex flex-col h-full bg-[#0a0a0a] border border-white/10 rounded-2xl relative group p-5 shadow-sm hover:border-white/20 transition-colors w-full flex-1 min-h-[300px]">
