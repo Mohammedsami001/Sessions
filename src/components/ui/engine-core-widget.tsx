@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Target, Flame, Play, Pause } from "lucide-react";
 
-export default function EngineCoreWidget({ profile, onSessionComplete }: { profile: any, onSessionComplete?: (minutes: number) => void }) {
+import type { Profile } from "../../lib/types";
+
+export default function EngineCoreWidget({ profile, onSessionComplete }: { profile: Profile | null, onSessionComplete?: (minutes: number) => void }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [timeLeft, setTimeLeft] = useState(25 * 60); // 25 minutes in seconds
 

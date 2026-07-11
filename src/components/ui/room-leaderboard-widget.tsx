@@ -1,8 +1,9 @@
 import React from "react";
 import { Trophy, Crown } from "lucide-react";
+import type { Profile } from "../../lib/types";
 
-export default function RoomLeaderboardWidget({ participants }: { participants: any[] }) {
-  const sortedParticipants = [...participants].sort((a, b) => (b.profile?.exp || 0) - (a.profile?.exp || 0));
+export default function RoomLeaderboardWidget({ participants }: { participants: (Profile | null)[] }) {
+  const sortedParticipants = [...participants].sort((a, b) => (b?.exp || 0) - (a?.exp || 0));
 
   return (
     <div className="flex flex-col h-full bg-[#0a0a0a] border border-white/10 rounded-2xl relative group p-5 shadow-sm hover:border-white/20 transition-colors w-full flex-1 min-h-[300px]" data-testid="room-leaderboard-widget">
