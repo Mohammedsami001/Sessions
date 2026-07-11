@@ -14,6 +14,9 @@ import {
 } from "lucide-react";
 import { Footer } from "@/components/ui/footer";
 import { GooeyLoader } from "@/components/ui/loader-10";
+import ComplexTaskTrackerWidget from "@/components/ui/complex-task-tracker-widget";
+import RoomLeaderboardWidget from "@/components/ui/room-leaderboard-widget";
+import GlobalChatWidget from "@/components/ui/global-chat-widget";
 
 export default function RoomPage() {
   const params = useParams();
@@ -23,7 +26,6 @@ export default function RoomPage() {
   const [messages, setMessages] = useState<MessageWithProfile[]>([]);
   const [globalTasks, setGlobalTasks] = useState<Task[]>([]);
   const [roomTasks, setRoomTasks] = useState<Task[]>([]);
-  const [taskTab, setTaskTab] = useState<"global" | "room">("room");
   const [chatInput, setChatInput] = useState("");
   const [newTask, setNewTask] = useState("");
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
@@ -53,11 +55,12 @@ export default function RoomPage() {
   }, [roomId]);
 
   const loadTasks = useCallback(async () => {
-    const g = await taskService.fetchTasks(null);
-    setGlobalTasks(g);
+    const allTasks = await taskService.fetchTasks(null);
+    setGlobalTasks(allTasks.filter((t: Task) => t.scope === 'global'));
+    
     if (roomId) {
-      const r = await taskService.fetchTasks(roomId);
-      setRoomTasks(r);
+      const rTasks = await taskService.fetchTasks(roomId);
+      setRoomTasks(rTasks.filter((t: Task) => t.scope === 'room'));
     }
   }, [roomId]);
 
@@ -169,49 +172,66 @@ export default function RoomPage() {
     if (ok) window.location.href = "/dashboard";
     setShowDeleteConfirm(false);
   };
-  const handleSend = async () => {
-    if (!chatInput.trim() || !currentUserId) return;
-    await chatService.sendMessage(chatInput, currentUserId, roomId);
-    setChatInput("");
-    await loadMessages();
-  };
-  
-  const handleAddTask = async (e: React.FormEvent) => {
+  const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newTask.trim() || !currentUserId) return;
-    
-    // Optimistic
-    const tempId = `temp-${Date.now()}`;
-    const targetRoom = taskTab === "room" ? roomId : null;
-    const optTask = {
-      id: tempId,
-      text: newTask.trim(),
+    if (!chatInput.trim() || !profile) return;
+    const msg = await chatService.sendMessage(chatInput, profile.id, roomId);
+    if (msg) {
+      setChatInput("");
+      await loadMessages();
+      if (chatEndRef.current) {
+        chatEndRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
+
+  const handleAddTask = async (taskData: Partial<Task>) => {
+    if (!taskData.text?.trim() || !profile) return;
+    const targetRoom = taskData.scope === 'room' ? roomId : null;
+    const optimisticTask: Task = {
+      ...taskData,
+      id: `temp-${Date.now()}`,
+      text: taskData.text.trim(),
       completed: false,
-      user_id: currentUserId,
+      user_id: profile.id,
       room_id: targetRoom,
+      scope: taskData.scope || 'global',
       created_at: new Date().toISOString()
-    };
+    } as Task;
+
+    if (taskData.scope === 'room') setRoomTasks(prev => [...prev, optimisticTask]);
+    else setGlobalTasks(prev => [...prev, optimisticTask]);
     
-    if (targetRoom) setRoomTasks(prev => [...prev, optTask]);
-    else setGlobalTasks(prev => [...prev, optTask]);
-    
-    setNewTask("");
     await taskService.createTask({
-      text: optTask.text, 
-      user_id: currentUserId, 
+      text: optimisticTask.text, 
+      user_id: profile.id, 
       room_id: targetRoom,
-      scope: 'room'
+      scope: optimisticTask.scope,
+      priority: optimisticTask.priority,
+      tags: optimisticTask.tags,
+      dueDate: optimisticTask.dueDate
     });
     await loadTasks();
   };
 
   const handleToggleTask = async (taskId: string, completed: boolean) => {
+    setGlobalTasks(prev => prev.map(t => t.id === taskId ? { ...t, completed } : t));
+    setRoomTasks(prev => prev.map(t => t.id === taskId ? { ...t, completed } : t));
     await taskService.toggleTask(taskId, completed);
     await loadTasks();
   };
 
   const handleDeleteTask = async (taskId: string) => {
+    setGlobalTasks(prev => prev.filter(t => t.id !== taskId));
+    setRoomTasks(prev => prev.filter(t => t.id !== taskId));
     await taskService.deleteTask(taskId);
+    await loadTasks();
+  };
+
+  const handleUpdateTask = async (taskId: string, updates: Partial<Task>) => {
+    setGlobalTasks(prev => prev.map(t => t.id === taskId ? { ...t, ...updates } : t));
+    setRoomTasks(prev => prev.map(t => t.id === taskId ? { ...t, ...updates } : t));
+    await taskService.updateTask(taskId, updates);
     await loadTasks();
   };
 
@@ -344,14 +364,25 @@ export default function RoomPage() {
         </div>
       </header>
 
-      {/* Room layout bento grid */}
-      <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      {/* 3-Column Cockpit Layout Grid */}
+      <section className="flex gap-5 flex-1 min-h-[500px] pb-6 relative overflow-hidden">
         
-        {/* Left Column: Pomodoro Circle and Hosts panels */}
-        <div className="lg:col-span-5 flex flex-col gap-6 w-full">
+        {/* Left Column: Planning (Tasks) */}
+        <div data-testid="left-column-tasks" className="w-[320px] shrink-0 h-full hidden lg:block">
+          <ComplexTaskTrackerWidget 
+            tasks={[...globalTasks, ...roomTasks]}
+            currentRoomId={roomId}
+            onAddTask={handleAddTask}
+            onToggleTask={handleToggleTask}
+            onDeleteTask={handleDeleteTask}
+            onUpdateTask={handleUpdateTask}
+          />
+        </div>
+
+        {/* Center Column: Execution (Timer) */}
+        <div data-testid="center-column-execution" className="flex-1 flex flex-col gap-5 min-w-0 transition-all duration-300">
           
-          {/* Synchronized Pomodoro card */}
-          <div className="bento-card flex flex-col justify-center items-center text-center bg-gradient-to-b from-bg-card to-bg-card/85 relative overflow-hidden min-h-[460px] p-6 shadow-md border border-border rounded-2xl group">
+          <div className="bento-card flex flex-col justify-center items-center text-center bg-gradient-to-b from-bg-card to-bg-card/85 relative overflow-hidden h-full p-6 shadow-md border border-border rounded-2xl group">
             <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-orange/50 via-gold/50 to-transparent"></div>
             
             {/* Mode headers switcher teaser */}
@@ -375,11 +406,6 @@ export default function RoomPage() {
                           ? "bg-black/30 border-border text-text-gray hover:border-border-hover cursor-pointer"
                           : "bg-transparent border-transparent text-text-muted cursor-default opacity-50"
                     }`}
-                    title={
-                      isClickable
-                        ? `Switch interval to ${mode.replace("_", " ")}`
-                        : "Start/pause the timer core to adjust interval mode"
-                    }
                   >
                     {mode.replace("_", " ")}
                   </button>
@@ -466,189 +492,18 @@ export default function RoomPage() {
 
           </div>
 
-          {/* Active Participants card */}
-          <div className="bento-card bg-gradient-to-b from-bg-card to-bg-card/85 p-6 border border-border rounded-2xl">
-            <h2 className="text-sm font-extrabold text-text-white tracking-widest uppercase flex items-center gap-2 mb-4">
-              <Users size={16} className="text-gold" />
-              PARTICIPANTS ({participants.length})
-            </h2>
-            <div className="flex flex-wrap gap-2.5 max-h-[140px] overflow-y-auto scrollbar-thin scrollbar-thumb-glass pr-1">
-              {participants.map((p: any) => (
-                <div 
-                  key={p.id} 
-                  className="bg-glass border border-border hover:border-border-hover py-2 px-3.5 rounded-xl flex items-center gap-2 shadow-sm transition-colors group"
-                >
-                  <span className="relative flex h-2 w-2 shrink-0">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green"></span>
-                  </span>
-                  
-                  <span 
-                    className="text-xs font-bold tracking-wide"
-                    style={{ color: p.user_id === room.host_id ? "var(--gold)" : "var(--text-white)" }}
-                  >
-                    {p.profiles?.display_name || "Student"}
-                  </span>
-                  
-                  {p.user_id === room.host_id && (
-                    <span className="text-[8px] bg-gold-dim border border-gold-border/20 text-gold font-extrabold px-1.5 py-0.5 rounded flex items-center gap-0.5 tracking-wider uppercase ml-1">
-                      HOST
-                    </span>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
         </div>
 
-        {/* Right Column: Chat and Tasks Bento Split */}
-        <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-6 w-full">
-          
-          {/* Chat Stream card */}
-          <div className="bento-card flex flex-col bg-gradient-to-b from-bg-card to-bg-card/85 p-6 border border-border rounded-2xl min-h-[380px] lg:min-h-[400px]">
-            <div className="bento-header flex justify-between items-center mb-4">
-              <h2 className="bento-title text-base font-extrabold flex items-center gap-2">
-                <MessageSquare size={16} className="text-gold" />
-                Live Chat
-              </h2>
-            </div>
-
-            {/* Chat list */}
-            <div className="chat-stream flex-1 overflow-y-auto space-y-3 pr-1 mb-4 max-h-[220px] lg:max-h-[250px] scrollbar-thin scrollbar-thumb-glass">
-              {messages.length === 0 ? (
-                <div className="flex flex-col items-center justify-center text-center h-full opacity-60 py-10">
-                  <div className="text-2xl mb-2">💬</div>
-                  <p className="text-text-gray text-xs font-semibold">Study stream is quiet. Send a word of focus!</p>
-                </div>
-              ) : (
-                messages.map((msg) => (
-                  <div 
-                    key={msg.id} 
-                    className="chat-message bg-glass/40 border border-border/40 hover:border-border-hover/50 p-3 rounded-xl flex flex-col gap-0.5 transition-colors"
-                  >
-                    <div className="flex justify-between items-center">
-                      <span className="chat-user text-[11px] font-bold text-gold tracking-wide uppercase flex items-center gap-1">
-                        {msg.profiles?.display_name || "Anon"}
-                        {msg.user_id === room.host_id && (
-                          <span className="text-[7px] bg-gold-dim border border-gold-border/20 px-1 rounded text-gold font-bold tracking-wider">HOST</span>
-                        )}
-                      </span>
-                    </div>
-                    <span className="text-xs text-text-white/95 break-words font-medium mt-1">
-                      {msg.content}
-                    </span>
-                  </div>
-                ))
-              )}
-            </div>
-
-            {/* Chat Input */}
-            <div className="flex gap-2 border-t border-border/40 pt-4 mt-auto">
-              <input 
-                type="text" 
-                placeholder="TRANSMIT MESSAGE TO ROOM..." 
-                value={chatInput} 
-                onChange={(e) => setChatInput(e.target.value)} 
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") handleSend();
-                }} 
-                className="flex-1 bg-black/40 border border-border focus:border-gold/60 focus:ring-1 focus:ring-gold/30 px-3 py-2.5 rounded-lg text-xs text-text-white placeholder:text-text-muted outline-none transition-all"
-              />
-              <button 
-                onClick={handleSend} 
-                className="bg-gold hover:bg-white text-bg-deep px-4 py-2.5 rounded-lg cursor-pointer transition-colors duration-200 flex items-center justify-center shrink-0"
-              >
-                <Send size={13} />
-              </button>
-            </div>
-
-          </div>
-
-          {/* Tasks checklist card */}
-          <div className="bento-card flex flex-col bg-gradient-to-b from-bg-card to-bg-card/85 p-6 border border-border rounded-2xl min-h-[380px] lg:min-h-[400px]">
-            
-            {/* Tabs Header */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 w-full">
-              <h2 className="bento-title text-base font-extrabold flex items-center gap-2">
-                <CheckSquare size={16} className="text-orange" />
-                Interval Tasks Grid
-              </h2>
-              
-              <div className="flex gap-1.5 p-0.5 bg-glass border border-border/80 rounded-xl w-full sm:w-auto">
-                {(["room", "global"] as const).map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setTaskTab(tab)}
-                    className={`flex-1 sm:flex-none py-1.5 px-3 rounded-lg text-[9px] font-black tracking-widest uppercase cursor-pointer transition-all border border-transparent ${
-                      taskTab === tab
-                        ? "bg-orange-dim border-orange/20 text-orange"
-                        : "bg-transparent text-text-gray hover:text-text-white"
-                    }`}
-                  >
-                    {tab === "room" ? "ROOM INDEX" : "PERSONAL TASKS"}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Input field to add task */}
-            <form onSubmit={handleAddTask} className="flex gap-2 mb-4 w-full">
-              <input 
-                type="text" 
-                placeholder={`ADD NEURAL TASK FOR ${taskTab.toUpperCase()} BOARD...`} 
-                value={newTask} 
-                onChange={(e) => setNewTask(e.target.value)} 
-                className="flex-1 bg-black/40 border border-border focus:border-orange/60 focus:ring-1 focus:ring-orange/30 px-3 py-2.5 rounded-lg text-xs text-text-white placeholder:text-text-muted outline-none transition-all"
-              />
-              <button 
-                type="submit" 
-                className="bg-glass hover:bg-orange hover:text-white border border-border hover:border-orange px-4 rounded-lg text-xs font-bold cursor-pointer transition-all shrink-0"
-              >
-                +
-              </button>
-            </form>
-
-            {/* Checklist items */}
-            <div className="todo-list flex-1 overflow-y-auto space-y-2.5 max-h-[180px] lg:max-h-[210px] pr-1 scrollbar-thin scrollbar-thumb-glass">
-              {((taskTab === "room" ? roomTasks : globalTasks) || []).length === 0 ? (
-                <div className="flex flex-col items-center justify-center text-center h-28 opacity-60 py-6">
-                  <p className="text-text-gray text-xs font-medium">All tasks cleared. Good work!</p>
-                </div>
-              ) : (
-                (taskTab === "room" ? roomTasks : globalTasks).map((t) => (
-                  <div 
-                    key={t.id} 
-                    className={`todo-item bg-glass/20 border border-border/30 hover:border-border-hover/50 p-2.5 rounded-lg flex items-center justify-between gap-3 group transition-all duration-200 ${t.completed ? "opacity-40 line-through bg-black/10" : ""}`}
-                  >
-                    <label className="flex items-center gap-2.5 cursor-pointer flex-1 min-w-0">
-                      <input 
-                        type="checkbox" 
-                        checked={t.completed} 
-                        onChange={() => handleToggleTask(t.id, !t.completed)}
-                        className="accent-orange rounded cursor-pointer w-4 h-4 shrink-0"
-                      />
-                      <span className="text-xs text-text-white font-medium truncate leading-tight select-none">
-                        {t.text}
-                      </span>
-                    </label>
-                    
-                    <button 
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleDeleteTask(t.id);
-                      }} 
-                      className="bg-transparent border-0 text-text-muted hover:text-red cursor-pointer p-1 rounded opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity duration-200 shrink-0"
-                    >
-                      <Trash2 size={13} />
-                    </button>
-                  </div>
-                ))
-              )}
-            </div>
-
-          </div>
-
+        {/* Right Column: Community (Leaderboard & Chat) */}
+        <div data-testid="right-column-community" className="w-[320px] shrink-0 h-full hidden xl:flex flex-col gap-5">
+          <RoomLeaderboardWidget participants={participants} />
+          <GlobalChatWidget 
+            chatMessages={messages} 
+            chatInput={chatInput} 
+            setChatInput={setChatInput} 
+            handleSendMessage={handleSendMessage} 
+            chatEndRef={chatEndRef} 
+          />
         </div>
 
       </section>
