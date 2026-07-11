@@ -27,7 +27,8 @@ export default function RoomPage() {
   const [globalTasks, setGlobalTasks] = useState<Task[]>([]);
   const [roomTasks, setRoomTasks] = useState<Task[]>([]);
   const [chatInput, setChatInput] = useState("");
-  const [newTask, setNewTask] = useState("");
+  const [newTaskInput, setNewTaskInput] = useState("");
+  const chatEndRef = useRef<HTMLDivElement>(null);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [timerDisplay, setTimerDisplay] = useState({
