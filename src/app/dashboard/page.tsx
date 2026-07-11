@@ -19,6 +19,7 @@ import ActiveRoomsWidget from "@/components/ui/active-rooms-widget";
 import GlobalChatWidget from "@/components/ui/global-chat-widget";
 import StudyChecklistWidget from "@/components/ui/study-checklist-widget";
 import StatCardsWidget from "@/components/ui/stat-cards-widget";
+import ComplexTaskTrackerWidget from "@/components/ui/complex-task-tracker-widget";
 
 export default function DashboardPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -125,29 +126,32 @@ export default function DashboardPage() {
     }
   };
 
-  const handleAddTask = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newTodo.trim() || !profile) return;
+  const handleAddTask = async (taskData: Partial<Task>) => {
+    if (!taskData.text?.trim() || !profile) return;
     
     // Optimistic UI for tasks
     const tempId = `temp-${Date.now()}`;
     const optimisticTask = {
+      ...taskData,
       id: tempId,
-      text: newTodo.trim(),
+      text: taskData.text.trim(),
       completed: false,
       user_id: profile.id,
       room_id: null,
+      scope: taskData.scope || 'global',
       created_at: new Date().toISOString()
-    };
+    } as Task;
     
     setTasks(prev => [...prev, optimisticTask]);
-    setNewTodo('');
     
     const savedTask = await taskService.createTask({
       text: optimisticTask.text, 
       user_id: profile.id, 
       room_id: null,
-      scope: 'global'
+      scope: optimisticTask.scope,
+      priority: optimisticTask.priority,
+      tags: optimisticTask.tags,
+      dueDate: optimisticTask.dueDate
     });
     if (savedTask) {
       setTasks(prev => prev.map(t => t.id === tempId ? savedTask : t));
@@ -168,9 +172,14 @@ export default function DashboardPage() {
     const backup = [...tasks];
     setTasks(prev => prev.filter(t => t.id !== taskId));
     const success = await taskService.deleteTask(taskId);
-    if (!success) {
-      setTasks(backup);
-    }
+    if (!success) setTasks(backup);
+  };
+
+  const handleUpdateTask = async (taskId: string, updates: Partial<Task>) => {
+    const backup = [...tasks];
+    setTasks(prev => prev.map(t => t.id === taskId ? { ...t, ...updates } : t));
+    const success = await taskService.updateTask(taskId, updates);
+    if (!success) setTasks(backup);
   };
 
   const handleCreateRoom = async (e: React.FormEvent) => {
@@ -240,12 +249,15 @@ export default function DashboardPage() {
       <section className="flex gap-5 flex-1 min-h-0 pb-6 relative overflow-hidden">
         
         {/* Left Column: Planning (Tasks) */}
-        <div data-testid="left-column-tasks" className="w-[320px] shrink-0 h-full flex flex-col bg-black/40 border border-white/5 rounded-2xl p-4 hidden lg:flex">
-          <h2 className="text-sm font-bold text-white mb-4">Tasks</h2>
-          <div className="flex-1 overflow-y-auto">
-            {/* Ticket 3 will build Complex Task Tracker here */}
-            <p className="text-xs text-zinc-500">Complex Task Tracker Placeholder</p>
-          </div>
+        <div data-testid="left-column-tasks" className="w-[320px] shrink-0 h-full hidden lg:block">
+          <ComplexTaskTrackerWidget 
+            tasks={tasks}
+            currentRoomId={null}
+            onAddTask={handleAddTask}
+            onToggleTask={handleToggleTask}
+            onDeleteTask={handleDeleteTask}
+            onUpdateTask={handleUpdateTask}
+          />
         </div>
 
         {/* Center Column: Execution (Timer) */}
