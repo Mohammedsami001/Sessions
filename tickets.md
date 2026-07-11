@@ -1,46 +1,29 @@
-# Tickets: Dashboard UX Overhaul
+# Tickets: Dashboard Rearchitecture 3-Column Cockpit
 
-This work executes the Dashboard UX Overhaul specification, reducing cognitive load and aligning the interface with the "Expert Confidence" brand register.
-
-Work the **frontier**: any ticket whose blockers are all done. For a purely linear chain that means top to bottom.
-
-## Remove Dashboard Clutter (Sound Deck & Emojis)
-
-**What to build:** A cleaner, minimal dashboard view. The fake ambient sound widget and the emoji footer will be completely removed to ensure the dashboard feels serious and professional.
-
+## Ticket 1: Structural Shell & Base Layout
+**What to build:** The 3-column responsive grid layout in `page.tsx` with empty placeholders for Left, Center, and Right sidebars. The Engine Core timer is isolated into the center column.
 **Blocked by:** None — can start immediately
 
-- [ ] Remove the "Ambient Sound Deck" UI container and its fake soundwave bars from the dashboard page.
-- [ ] Remove the tiny footer containing emojis ("😊 Stay consistent...").
-- [ ] Ensure the remaining bento grid layout still flows correctly without these elements.
-
-## Implement Collapsible Sidebars for Chat & Rooms
-
-**What to build:** The user can toggle the Global Chat and Active Rooms in and out of view. This declutters the main focus area and eliminates "Bento Grid" overload, allowing the user to focus exclusively on the timer and their tasks.
-
-**Blocked by:** Remove Dashboard Clutter (Sound Deck & Emojis)
-
-- [ ] Wrap the `GlobalChatWidget` in a collapsible sidebar component (e.g., sliding in from the right).
-- [ ] Wrap the `ActiveRoomsWidget` in a collapsible sidebar component (e.g., sliding in from the left).
-- [ ] Add prominent, accessible toggle buttons to the main view to open/close these sidebars.
-- [ ] Ensure the central view (Timer and Task List) expands gracefully to fill the screen when sidebars are closed.
-
-## Redesign "Host a Room" Modal
-
-**What to build:** A streamlined, jargon-free room creation form named "Host a Room" that uses fast, selectable pill buttons instead of clunky native dropdown menus for setting focus and break durations.
-
+## Ticket 2: Task State Schema & Mock Store Update
+**What to build:** Updates the state layer and mocks the data providers for tasks to support `scope` (global/room), `dueDate`, `tags`, `priority`, and `subTasks`.
 **Blocked by:** None — can start immediately
 
-- [ ] Rename the modal title from "Launch Shared Study Console" to "Host a Room".
-- [ ] Replace the `<select>` inputs for Focus, Short Break, Long Break, and Interval with visually styled, selectable pill buttons (e.g., flex-row of buttons: [15m] [25m] [45m]).
-- [ ] Update the `createForm` state accurately when these pill buttons are clicked.
+## Ticket 3: Left Column - Complex Task Tracker Widget
+**What to build:** The fully interactive left sidebar where users can seamlessly toggle between global and room tasks, add sub-tasks, set priorities, and interact with their lists.
+**Blocked by:** Ticket 1, Ticket 2
 
-## Add Global Keyboard Shortcuts for Timer
+## Ticket 4: Right Column - Community Out-of-Room State
+**What to build:** The right sidebar displaying the list of active public rooms and the explicit "Join Global Chat" portal button.
+**Blocked by:** Ticket 1
 
-**What to build:** Power users can press `Spacebar` to instantly toggle the timer's play/pause state without using a mouse, maintaining their flow and efficiency.
+## Ticket 5: Right Column - Community In-Room State & Leaderboard
+**What to build:** The right sidebar variant for when a user is in a room. Shows the real-time room chat, visual member presence, and the localized leaderboard aggregating minutes focused and tasks completed.
+**Blocked by:** Ticket 1
 
-**Blocked by:** None — can start immediately
+## Ticket 6: Global Chat Isolation Portal
+**What to build:** The isolated view for Global Chat that is accessed via the portal button, ensuring global chatter doesn't bleed into the focused study dashboard.
+**Blocked by:** Ticket 4
 
-- [ ] Add a global `keydown` event listener for the `Space` key within the dashboard or `EngineCoreWidget`.
-- [ ] Ensure the shortcut toggles the timer state (Play/Pause).
-- [ ] Ensure the shortcut is ignored if the user is currently typing inside an input field or textarea (e.g., chat input or new task input).
+## Ticket 7: Engine Core & State Wiring
+**What to build:** Final integration connecting the central timer to the new layout and ensuring state flows smoothly (e.g., finishing a focus block updates the room leaderboard).
+**Blocked by:** Ticket 3, Ticket 4, Ticket 5, Ticket 6
