@@ -273,13 +273,16 @@ export default function DashboardPage() {
             handleQuickJoin={handleQuickJoin}
             setShowCreateModal={setShowCreateModal}
           />
-          <GlobalChatWidget 
-            chatMessages={messages} 
-            chatInput={chatInput} 
-            setChatInput={setChatInput} 
-            handleSendMessage={(e: any) => { e.preventDefault(); handleSendMessage(); }} 
-            chatEndRef={chatEndRef} 
-          />
+          <div className="flex flex-col bg-bg-card border border-border rounded-2xl p-5 shadow-sm hover:border-border-hover transition-colors min-h-[160px] justify-center items-center text-center group">
+            <h3 className="text-sm font-extrabold text-white mb-2 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
+              Global Network
+            </h3>
+            <p className="text-xs text-text-gray mb-4">Connect with students worldwide in the isolated global chat portal.</p>
+            <Link href="/global-chat" className="bg-gold/10 hover:bg-gold border border-gold/30 hover:border-gold text-gold hover:text-bg-deep px-4 py-2 rounded-xl text-xs font-bold tracking-widest uppercase transition-all duration-300">
+              Join Global Chat
+            </Link>
+          </div>
         </div>
 
       </section>
