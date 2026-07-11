@@ -45,18 +45,22 @@ vi.mock('../lib/container', () => ({
 
 describe('Dashboard Layout Rearchitecture', () => {
   it('renders the 3-column cockpit layout', async () => {
+    const { container } = render(<DashboardPage />);
+    
+    expect(await screen.findByTestId('left-column-tasks')).not.toBeNull();
+    expect(await screen.findByTestId('center-column-execution')).not.toBeNull();
+    expect(await screen.findByTestId('right-column-community')).not.toBeNull();
+  });
+
+  it('renders Active Rooms in the right column community section', async () => {
     render(<DashboardPage />);
-    
-    // We expect the main grid container to exist
-    const leftColumn = await screen.findByTestId('left-column-tasks');
+    const rightCol = await screen.findByTestId('right-column-community');
+    expect(rightCol.textContent).toContain('Active Rooms');
+  });  
+
+  it('verifies the EngineCoreWidget position', async () => {
+    render(<DashboardPage />);
     const centerColumn = await screen.findByTestId('center-column-execution');
-    const rightColumn = await screen.findByTestId('right-column-community');
-    
-    expect(leftColumn).not.toBeNull();
-    expect(centerColumn).not.toBeNull();
-    expect(rightColumn).not.toBeNull();
-    
-    // The EngineCoreWidget should be isolated in the center column
     const engineCore = screen.getByTestId('engine-core-widget');
     expect(centerColumn?.contains(engineCore)).toBe(true);
   });

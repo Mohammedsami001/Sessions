@@ -266,12 +266,20 @@ export default function DashboardPage() {
         </div>
 
         {/* Right Column: Community (Rooms & Chat) */}
-        <div data-testid="right-column-community" className="w-[320px] shrink-0 h-full flex flex-col bg-black/40 border border-white/5 rounded-2xl p-4 hidden xl:flex">
-           <h2 className="text-sm font-bold text-white mb-4">Community</h2>
-           <div className="flex-1 overflow-y-auto">
-             {/* Tickets 4 & 5 will build Community Sidebars here */}
-             <p className="text-xs text-zinc-500">Community Sidebar Placeholder</p>
-           </div>
+        <div data-testid="right-column-community" className="w-[320px] shrink-0 h-full hidden xl:flex flex-col gap-5">
+          <ActiveRoomsWidget 
+            rooms={rooms}
+            participantCounts={participantCounts}
+            handleQuickJoin={handleQuickJoin}
+            setShowCreateModal={setShowCreateModal}
+          />
+          <GlobalChatWidget 
+            chatMessages={messages} 
+            chatInput={chatInput} 
+            setChatInput={setChatInput} 
+            handleSendMessage={(e: any) => { e.preventDefault(); handleSendMessage(); }} 
+            chatEndRef={chatEndRef} 
+          />
         </div>
 
       </section>

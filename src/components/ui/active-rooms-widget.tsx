@@ -4,7 +4,7 @@ import { computeTimerRemaining } from "@/lib/types";
 
 export default function ActiveRoomsWidget({ rooms, participantCounts, handleQuickJoin, setShowCreateModal }: any) {
   return (
-    <div className="flex flex-col h-full bg-[#0a0a0a] border border-white/10 rounded-2xl relative group p-5 shadow-sm hover:border-white/20 transition-colors w-[60%] shrink-0">
+    <div className="flex flex-col h-full bg-[#0a0a0a] border border-white/10 rounded-2xl relative group p-5 shadow-sm hover:border-white/20 transition-colors w-full flex-1 min-h-[300px]">
       <div className="flex justify-between items-center mb-6">
         <div>
           <h2 className="text-base font-extrabold flex items-center gap-2 text-white">
