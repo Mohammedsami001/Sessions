@@ -27,7 +27,7 @@ export default function EngineCoreWidget({ profile }: { profile: any }) {
   }, []);
 
   return (
-    <div className="flex flex-col bg-[#0a0a0a] border border-white/10 p-5 rounded-2xl relative group h-full shadow-sm hover:border-white/20 transition-colors flex-1">
+    <div data-testid="engine-core-widget" className="flex flex-col bg-[#0a0a0a] border border-white/10 p-5 rounded-2xl relative group h-full shadow-sm hover:border-white/20 transition-colors flex-1">
       
       <div className="w-full flex flex-col z-10 h-full">
         <div className="flex justify-between items-center mb-8">

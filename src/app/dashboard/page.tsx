@@ -231,61 +231,30 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Sidebar Layout Grid - Fills remaining height */}
+      {/* 3-Column Cockpit Layout Grid */}
       <section className="flex gap-5 flex-1 min-h-0 pb-6 relative overflow-hidden">
         
-        {/* Left Sidebar: Active Rooms */}
-        <div className={`transition-all duration-300 ease-in-out shrink-0 overflow-hidden ${roomsSidebarOpen ? 'w-[320px] opacity-100' : 'w-0 opacity-0'}`}>
-          <div className="w-[320px] h-full">
-            <ActiveRoomsWidget 
-              rooms={rooms} 
-              participantCounts={participantCounts} 
-              handleQuickJoin={handleQuickJoin} 
-              setShowCreateModal={setShowCreateModal} 
-            />
+        {/* Left Column: Planning (Tasks) */}
+        <div data-testid="left-column-tasks" className="w-[320px] shrink-0 h-full flex flex-col bg-black/40 border border-white/5 rounded-2xl p-4 hidden lg:flex">
+          <h2 className="text-sm font-bold text-white mb-4">Tasks</h2>
+          <div className="flex-1 overflow-y-auto">
+            {/* Ticket 3 will build Complex Task Tracker here */}
+            <p className="text-xs text-zinc-500">Complex Task Tracker Placeholder</p>
           </div>
         </div>
 
-        {/* Central Area: Timer and Checklist */}
-        <div className="flex-1 flex flex-col gap-5 min-w-0 transition-all duration-300">
-           {/* Top controls: toggles for sidebars */}
-           <div className="flex justify-between items-center px-2">
-             <button onClick={() => setRoomsSidebarOpen(!roomsSidebarOpen)} className="flex items-center gap-2 text-white text-xs font-bold px-3 py-2 bg-white/5 border border-white/10 hover:bg-white/10 rounded-xl transition-colors shadow-sm">
-               <Users size={14}/> {roomsSidebarOpen ? 'Hide Rooms' : 'Show Rooms'}
-             </button>
-             <button onClick={() => setChatSidebarOpen(!chatSidebarOpen)} className="flex items-center gap-2 text-white text-xs font-bold px-3 py-2 bg-white/5 border border-white/10 hover:bg-white/10 rounded-xl transition-colors shadow-sm">
-               <MessageSquare size={14}/> {chatSidebarOpen ? 'Hide Chat' : 'Show Chat'}
-             </button>
-           </div>
-           
-           <div className="flex flex-col lg:flex-row gap-5 flex-1 min-h-0">
-             <div className="flex-1 min-w-0">
-               <EngineCoreWidget profile={profile} />
-             </div>
-             <div className="w-full lg:w-[400px] shrink-0 h-full flex flex-col">
-               <StudyChecklistWidget 
-                 tasks={tasks} 
-                 newTaskTitle={newTodo} 
-                 setNewTaskTitle={setNewTodo} 
-                 handleAddTask={handleAddTask} 
-                 toggleTaskCompletion={handleToggleTask} 
-                 deleteTask={handleDeleteTask} 
-               />
-             </div>
-           </div>
+        {/* Center Column: Execution (Timer) */}
+        <div data-testid="center-column-execution" className="flex-1 flex flex-col gap-5 min-w-0 transition-all duration-300">
+          <EngineCoreWidget profile={profile} />
         </div>
 
-        {/* Right Sidebar: Global Chat */}
-        <div className={`transition-all duration-300 ease-in-out shrink-0 overflow-hidden ${chatSidebarOpen ? 'w-[320px] opacity-100' : 'w-0 opacity-0'}`}>
-          <div className="w-[320px] h-full flex flex-col">
-            <GlobalChatWidget 
-              chatMessages={messages} 
-              chatInput={chatInput} 
-              setChatInput={setChatInput} 
-              handleSendMessage={handleSendMessage} 
-              chatEndRef={chatEndRef} 
-            />
-          </div>
+        {/* Right Column: Community (Rooms & Chat) */}
+        <div data-testid="right-column-community" className="w-[320px] shrink-0 h-full flex flex-col bg-black/40 border border-white/5 rounded-2xl p-4 hidden xl:flex">
+           <h2 className="text-sm font-bold text-white mb-4">Community</h2>
+           <div className="flex-1 overflow-y-auto">
+             {/* Tickets 4 & 5 will build Community Sidebars here */}
+             <p className="text-xs text-zinc-500">Community Sidebar Placeholder</p>
+           </div>
         </div>
 
       </section>
