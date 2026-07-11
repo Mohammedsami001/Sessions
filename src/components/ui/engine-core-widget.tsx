@@ -1,12 +1,37 @@
 import React, { useState, useEffect } from "react";
 import { Target, Flame, Play, Pause } from "lucide-react";
 
-export default function EngineCoreWidget({ profile }: { profile: any }) {
+export default function EngineCoreWidget({ profile, onSessionComplete }: { profile: any, onSessionComplete?: (minutes: number) => void }) {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(25 * 60); // 25 minutes in seconds
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isPlaying && timeLeft > 0) {
+      interval = setInterval(() => {
+        setTimeLeft(prev => {
+          if (prev <= 1) {
+            clearInterval(interval);
+            setIsPlaying(false);
+            if (onSessionComplete) {
+              onSessionComplete(25); // Hardcoded 25 minutes for now
+            }
+            return 25 * 60; // reset
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    } else if (!isPlaying && timeLeft !== 0) {
+      // paused
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isPlaying, timeLeft, onSessionComplete]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Toggle on Space, but ignore if typing in input
       if (e.code === 'Space') {
         const activeElement = document.activeElement;
         if (
@@ -17,7 +42,7 @@ export default function EngineCoreWidget({ profile }: { profile: any }) {
         ) {
           return;
         }
-        e.preventDefault(); // prevent scrolling down
+        e.preventDefault(); 
         setIsPlaying(prev => !prev);
       }
     };
@@ -25,6 +50,10 @@ export default function EngineCoreWidget({ profile }: { profile: any }) {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
+
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
+  const timeDisplay = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
   return (
     <div data-testid="engine-core-widget" className="flex flex-col bg-[#0a0a0a] border border-white/10 p-5 rounded-2xl relative group h-full shadow-sm hover:border-white/20 transition-colors flex-1">
@@ -48,7 +77,7 @@ export default function EngineCoreWidget({ profile }: { profile: any }) {
             
             <div className="flex flex-col items-center justify-center z-10 mt-1 cursor-pointer" onClick={() => setIsPlaying(!isPlaying)}>
               <div className="text-4xl font-black text-white tracking-tighter leading-none select-none font-sans">
-                25:00
+                {timeDisplay}
               </div>
               <div className="flex items-center justify-center gap-1 mt-2 text-zinc-400 hover:text-white transition-colors">
                 {isPlaying ? <Pause size={14} /> : <Play size={14} />}

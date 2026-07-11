@@ -94,4 +94,35 @@ export class SupabaseProfileRepository implements IProfileRepository {
       avatar_url: avatarUrl,
     });
   }
+
+  async addFocusSession(userId: string, minutes: number): Promise<Profile | null> {
+    const profile = await this.fetchProfile(userId);
+    if (!profile) return null;
+
+    const today = new Date().toISOString().split('T')[0];
+    let newStreak = profile.streak_days || 0;
+    
+    if (profile.last_active_date) {
+      const lastActive = new Date(profile.last_active_date);
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yesterdayStr = yesterday.toISOString().split('T')[0];
+
+      if (profile.last_active_date === yesterdayStr) {
+        newStreak += 1;
+      } else if (profile.last_active_date !== today) {
+        newStreak = 1;
+      }
+    } else {
+      newStreak = 1; // First time
+    }
+
+    return await this.updateProfile(userId, {
+      total_sessions: (profile.total_sessions || 0) + 1,
+      total_focus_seconds: (profile.total_focus_seconds || 0) + (minutes * 60),
+      exp: (profile.exp || 0) + (minutes * 10),
+      streak_days: newStreak,
+      last_active_date: today,
+    });
+  }
 }

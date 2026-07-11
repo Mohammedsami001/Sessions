@@ -114,6 +114,14 @@ export default function DashboardPage() {
 
   const handleSignOut = async () => { await supabase.auth.signOut(); window.location.href = "/"; };
 
+  const handleSessionComplete = async (minutes: number) => {
+    if (!profile) return;
+    const updatedProfile = await profileService.addFocusSession(profile.id, minutes);
+    if (updatedProfile) {
+      setProfile(updatedProfile);
+    }
+  };
+
   const handleSendMessage = async () => {
     if (!chatInput.trim() || !profile) return;
     setChatError("");
@@ -262,7 +270,7 @@ export default function DashboardPage() {
 
         {/* Center Column: Execution (Timer) */}
         <div data-testid="center-column-execution" className="flex-1 flex flex-col gap-5 min-w-0 transition-all duration-300">
-          <EngineCoreWidget profile={profile} />
+          <EngineCoreWidget profile={profile} onSessionComplete={handleSessionComplete} />
         </div>
 
         {/* Right Column: Community (Rooms & Chat) */}

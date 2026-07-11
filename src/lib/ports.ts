@@ -6,6 +6,7 @@ export interface IProfileRepository {
   updateProfile(userId: string, updates: Partial<Profile>): Promise<Profile | null>;
   ensureProfile(userId: string, email?: string, metadata?: Record<string, any>): Promise<Profile | null>;
   deleteAccount(userId: string): Promise<boolean>;
+  addFocusSession(userId: string, minutes: number): Promise<Profile | null>;
 }
 
 export interface ITaskRepository {
