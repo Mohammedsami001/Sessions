@@ -4,9 +4,9 @@ import RoomLeaderboardWidget from '../../components/ui/room-leaderboard-widget';
 
 describe('RoomLeaderboardWidget', () => {
   const mockParticipants = [
-    { id: '1', profile: { user_name: 'Alice', exp: 1200 }, role: 'host' },
-    { id: '2', profile: { user_name: 'Bob', exp: 800 }, role: 'member' },
-    { id: '3', profile: { user_name: 'Charlie', exp: 1500 }, role: 'member' },
+    { id: '1', profile: { display_name: 'Alice', exp: 1200 }, role: 'host' },
+    { id: '2', profile: { display_name: 'Bob', exp: 800 }, role: 'member' },
+    { id: '3', profile: { display_name: 'Charlie', exp: 1500 }, role: 'member' },
   ];
 
   it('renders leaderboard title', () => {

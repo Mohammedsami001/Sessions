@@ -30,7 +30,7 @@ export default function RoomLeaderboardWidget({ participants }: { participants: 
               </span>
               <div className="flex flex-col">
                 <span className="text-sm font-bold text-white flex items-center gap-1.5">
-                  {p.profile?.user_name || 'Unknown'}
+                  {p.profile?.display_name || 'Unknown'}
                   {p.role === 'host' && <span className="text-[9px] bg-red-950/50 text-red-400 px-1.5 py-0.5 rounded tracking-widest uppercase">HOST</span>}
                 </span>
                 <span className="text-[10px] text-zinc-500 font-semibold tracking-widest uppercase">

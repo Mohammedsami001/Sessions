@@ -12,7 +12,7 @@ vi.mock('../lib/supabase', () => ({
     from: vi.fn().mockReturnValue({
       select: vi.fn().mockReturnValue({
         eq: vi.fn().mockReturnValue({
-          single: vi.fn().mockResolvedValue({ data: { user_name: 'test' }, error: null })
+          single: vi.fn().mockResolvedValue({ data: { display_name: 'test' }, error: null })
         }),
         order: vi.fn().mockReturnValue({
           limit: vi.fn().mockReturnValue({
@@ -23,7 +23,7 @@ vi.mock('../lib/supabase', () => ({
       }),
       upsert: vi.fn().mockReturnValue({
         select: vi.fn().mockReturnValue({
-          single: vi.fn().mockResolvedValue({ data: { user_name: 'test' }, error: null })
+          single: vi.fn().mockResolvedValue({ data: { display_name: 'test' }, error: null })
         })
       })
     })

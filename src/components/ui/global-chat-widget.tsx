@@ -33,10 +33,10 @@ export default function GlobalChatWidget({
             <p className="text-xs text-zinc-500 font-semibold max-w-[200px]">Network is quiet. Send a message to the global stream.</p>
           </div>
         ) : (
-          chatMessages.map((msg: any) => (
+          chatMessages.map((msg) => (
             <div key={msg.id} className="flex flex-col">
               <div className="flex items-center gap-2 mb-1">
-                <span className="text-[10px] font-bold text-zinc-300">{msg.user_name}</span>
+                <span className="text-[10px] font-bold text-zinc-300">{msg.profiles?.display_name || 'Unknown'}</span>
                 <span className="text-[9px] text-zinc-600 font-medium">
                   {new Date(msg.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                 </span>
