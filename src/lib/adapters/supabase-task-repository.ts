@@ -26,7 +26,13 @@ export class SupabaseTaskRepository implements ITaskRepository {
       console.error('Failed to fetch tasks:', error.message);
       return [];
     }
-    return data || [];
+    
+    // Map db columns to frontend types
+    return (data || []).map((t: Record<string, unknown>) => ({
+      ...(t as Record<string, unknown>),
+      dueDate: t.due_date,
+      subTasks: t.sub_tasks
+    })) as Task[];
   }
 
   async createTask(taskData: Omit<Task, 'id' | 'created_at' | 'completed'>): Promise<Task | null> {
@@ -37,6 +43,11 @@ export class SupabaseTaskRepository implements ITaskRepository {
         ...taskData,
         text: taskData.text.trim(),
         completed: false,
+        scope: taskData.scope || 'global',
+        priority: taskData.priority || null,
+        due_date: taskData.dueDate || null,
+        tags: taskData.tags || [],
+        sub_tasks: taskData.subTasks || []
       })
       .select()
       .single();
@@ -45,7 +56,13 @@ export class SupabaseTaskRepository implements ITaskRepository {
       console.error('Failed to create task:', error.message);
       return null;
     }
-    return data;
+    
+    // Map db columns back to frontend camelCase
+    return {
+      ...data,
+      dueDate: data.due_date,
+      subTasks: data.sub_tasks
+    } as Task;
   }
 
   async toggleTask(taskId: string, completed: boolean): Promise<boolean> {
@@ -62,9 +79,19 @@ export class SupabaseTaskRepository implements ITaskRepository {
   }
 
   async updateTask(taskId: string, updates: Partial<Task>): Promise<boolean> {
+    const dbUpdates: Record<string, unknown> = { ...updates };
+    if ('dueDate' in updates) {
+      dbUpdates.due_date = updates.dueDate;
+      delete dbUpdates.dueDate;
+    }
+    if ('subTasks' in updates) {
+      dbUpdates.sub_tasks = updates.subTasks;
+      delete dbUpdates.subTasks;
+    }
+
     const { error } = await supabase
       .from('tasks')
-      .update(updates)
+      .update(dbUpdates)
       .eq('id', taskId);
 
     if (error) {

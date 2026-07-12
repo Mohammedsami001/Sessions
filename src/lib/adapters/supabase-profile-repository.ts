@@ -120,7 +120,7 @@ export class SupabaseProfileRepository implements IProfileRepository {
     return await this.updateProfile(userId, {
       total_sessions: (profile.total_sessions || 0) + 1,
       total_focus_seconds: (profile.total_focus_seconds || 0) + (minutes * 60),
-      exp: (profile.exp || 0) + (minutes * 10),
+      exp: (profile.exp || 0) + (100 + (minutes * 4)),
       streak_days: newStreak,
       last_active_date: today,
     });
