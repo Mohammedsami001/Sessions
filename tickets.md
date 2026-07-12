@@ -52,3 +52,23 @@
 **Blocked by:** None — can start immediately
 
 - [ ] Stop `EngineCoreWidget` from manually updating EXP if the user is in a room. Or better, rely on the DB trigger entirely for rooms. Since `EngineCoreWidget` only runs on the dashboard (solo), we might just need to verify the room page doesn't call it. Wait, `EngineCoreWidget` is on the dashboard. The room page uses its own timer logic. But if `EngineCoreWidget` is used on the dashboard, it calls `addFocusSession`. We need to ensure `addFocusSession` works correctly for solo sessions. Wait, what if the user starts a solo session, and `EngineCoreWidget` ends, it calls `addFocusSession`. That's correct. What if they are in a room? `room/[id]/page.tsx` does NOT render `EngineCoreWidget`, it has a separate timer. When the room timer ends, it triggers the DB trigger. So where is the double EXP coming from? Ah, maybe the user *thinks* they get double EXP because they had dashboard open in another tab? Or maybe we need to double check the trigger logic. We will investigate this in Ticket 10.
+
+# Tickets: Frontend Complex Tasks
+
+## Ticket 11: Complex Task Creation Form & Badges
+**What to build:** Upgrades the main "Add a new task..." form to include a date picker for `dueDate` and a text input for `tags`. Formats and displays the due date as a badge in the task list.
+**Blocked by:** None — can start immediately
+
+- [ ] Add date picker input for `dueDate`
+- [ ] Add text input for `tags` (comma separated)
+- [ ] Pass `dueDate` and `tags` to `onAddTask`
+- [ ] Render `dueDate` badge in the task list item
+
+## Ticket 12: Interactive Sub-Tasks Checklist
+**What to build:** Adds an "Expand" button to each task in the list. When expanded, reveals a checklist of sub-tasks for that specific item. Users can check off individual sub-tasks and add new ones.
+**Blocked by:** None — can start immediately
+
+- [ ] Add an expand/collapse state to task list items
+- [ ] Render a nested checklist for `subTasks` when expanded
+- [ ] Add a mini form to append a new sub-task to the array
+- [ ] Update `onUpdateTask` to handle sub-task completion toggles and additions
