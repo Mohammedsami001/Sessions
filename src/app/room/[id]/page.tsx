@@ -290,7 +290,7 @@ export default function RoomPage() {
 
   return (
     <div className="min-h-screen flex flex-col justify-between">
-      <main className="flex-1 w-full bg-bg-deep px-4 md:px-8 py-8 relative overflow-hidden text-text-white font-sans max-w-7xl mx-auto z-20">
+      <main className="flex-1 w-full bg-bg-deep px-6 xl:px-10 py-6 relative overflow-hidden text-text-white font-sans z-20">
       
       {/* Absolute background accent glow */}
       <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-orange/3 rounded-full blur-[160px] pointer-events-none"></div>
@@ -366,10 +366,10 @@ export default function RoomPage() {
       </header>
 
       {/* 3-Column Cockpit Layout Grid */}
-      <section className="flex gap-5 flex-1 min-h-[500px] pb-6 relative overflow-hidden">
+      <section className="flex gap-6 2xl:gap-8 flex-1 min-h-[500px] pb-6 relative overflow-hidden">
         
         {/* Left Column: Planning (Tasks) */}
-        <div data-testid="left-column-tasks" className="w-[320px] shrink-0 h-full hidden lg:block">
+        <div data-testid="left-column-tasks" className="w-[340px] 2xl:w-[400px] shrink-0 h-full hidden lg:block">
           <ComplexTaskTrackerWidget 
             tasks={[...globalTasks, ...roomTasks]}
             currentRoomId={roomId}
@@ -381,7 +381,7 @@ export default function RoomPage() {
         </div>
 
         {/* Center Column: Execution (Timer) */}
-        <div data-testid="center-column-execution" className="flex-1 flex flex-col gap-5 min-w-0 transition-all duration-300">
+        <div data-testid="center-column-execution" className="flex-1 flex flex-col gap-6 2xl:gap-8 min-w-0 transition-all duration-300">
           
           <div className="bento-card flex flex-col justify-center items-center text-center bg-gradient-to-b from-bg-card to-bg-card/85 relative overflow-hidden h-full p-6 shadow-md border border-border rounded-2xl group">
             <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-orange/50 via-gold/50 to-transparent"></div>
@@ -496,7 +496,7 @@ export default function RoomPage() {
         </div>
 
         {/* Right Column: Community (Leaderboard & Chat) */}
-        <div data-testid="right-column-community" className="w-[320px] shrink-0 h-full hidden xl:flex flex-col gap-5">
+        <div data-testid="right-column-community" className="w-[340px] 2xl:w-[400px] shrink-0 h-full hidden xl:flex flex-col gap-6 2xl:gap-8">
           <RoomLeaderboardWidget participants={participants} />
           <GlobalChatWidget 
             chatMessages={messages} 
