@@ -24,8 +24,8 @@ export default function ActiveRoomsWidget({ rooms, participantCounts, handleQuic
 
       <div className="flex-1 overflow-y-auto space-y-3 pr-2 scrollbar-thin scrollbar-thumb-white/10">
         {rooms.length === 0 ? (
-          <div className="flex flex-col items-center justify-center text-center h-full min-h-[240px] pb-4">
-            <div className="relative w-32 h-32 flex items-center justify-center mb-6">
+          <div className="flex flex-col items-center text-center h-full min-h-[240px] pb-2">
+            <div className="relative w-32 h-32 flex items-center justify-center mt-2 mb-8">
               <svg viewBox="0 0 100 100" className="w-full h-full overflow-visible">
                 <defs>
                   <radialGradient id="planet-grad" cx="50%" cy="50%" r="50%" fx="30%" fy="30%">
@@ -87,7 +87,7 @@ export default function ActiveRoomsWidget({ rooms, participantCounts, handleQuic
             <p className="text-zinc-500 text-xs font-medium max-w-[280px] mb-6">
               Be the pioneer and host a Room to start a deep focus session with others.
             </p>
-            <div className="flex justify-between items-center text-xs w-full max-w-[90%] pt-4 border-t border-white/5">
+            <div className="flex justify-between items-center text-xs w-full max-w-[90%] pt-4 border-t border-white/5 mt-auto">
               <span className="text-zinc-500 font-medium flex items-center gap-1.5">
                 <Globe size={12} /> Want to open a custom Room with friends?
               </span>
