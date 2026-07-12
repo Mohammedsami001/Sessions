@@ -24,7 +24,7 @@ export default function ActiveRoomsWidget({ rooms, participantCounts, handleQuic
 
       <div className="flex-1 overflow-y-auto space-y-3 pr-2 scrollbar-thin scrollbar-thumb-white/10">
         {rooms.length === 0 ? (
-          <div className="flex flex-col items-center justify-center text-center h-48 py-10">
+          <div className="flex flex-col items-center justify-center text-center h-full min-h-[240px] pb-4">
             <div className="relative w-32 h-32 flex items-center justify-center mb-6">
               <svg viewBox="0 0 100 100" className="w-full h-full overflow-visible">
                 <defs>
