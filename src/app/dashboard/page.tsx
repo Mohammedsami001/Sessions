@@ -235,7 +235,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <main className="px-8 py-6 max-w-[1600px] mx-auto w-full h-screen flex flex-col relative overflow-hidden z-20">
+    <main className="px-6 xl:px-10 py-6 w-full h-screen flex flex-col relative overflow-hidden z-20">
 
       <UserStatsHeader profile={profile} />
       
@@ -254,10 +254,10 @@ export default function DashboardPage() {
       </div>
 
       {/* 3-Column Cockpit Layout Grid */}
-      <section className="flex gap-5 flex-1 min-h-0 pb-6 relative overflow-hidden">
+      <section className="flex gap-6 2xl:gap-8 flex-1 min-h-0 pb-6 relative overflow-hidden">
         
         {/* Left Column: Planning (Tasks) */}
-        <div data-testid="left-column-tasks" className="w-[320px] shrink-0 h-full hidden lg:block">
+        <div data-testid="left-column-tasks" className="w-[340px] 2xl:w-[400px] shrink-0 h-full hidden lg:block">
           <ComplexTaskTrackerWidget 
             tasks={tasks}
             currentRoomId={null}
@@ -269,12 +269,12 @@ export default function DashboardPage() {
         </div>
 
         {/* Center Column: Execution (Timer) */}
-        <div data-testid="center-column-execution" className="flex-1 flex flex-col gap-5 min-w-0 transition-all duration-300">
+        <div data-testid="center-column-execution" className="flex-1 flex flex-col gap-6 2xl:gap-8 min-w-0 transition-all duration-300">
           <EngineCoreWidget profile={profile} onSessionComplete={handleSessionComplete} />
         </div>
 
         {/* Right Column: Community (Rooms & Chat) */}
-        <div data-testid="right-column-community" className="w-[320px] shrink-0 h-full hidden xl:flex flex-col gap-5">
+        <div data-testid="right-column-community" className="w-[340px] 2xl:w-[400px] shrink-0 h-full hidden xl:flex flex-col gap-6 2xl:gap-8">
           <ActiveRoomsWidget 
             rooms={rooms}
             participantCounts={participantCounts}
