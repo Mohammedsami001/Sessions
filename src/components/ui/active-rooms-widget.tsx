@@ -25,20 +25,62 @@ export default function ActiveRoomsWidget({ rooms, participantCounts, handleQuic
       <div className="flex-1 overflow-y-auto space-y-3 pr-2 scrollbar-thin scrollbar-thumb-white/10">
         {rooms.length === 0 ? (
           <div className="flex flex-col items-center justify-center text-center h-48 py-10">
-            <div className="relative w-24 h-24 flex items-center justify-center mb-4">
-              <svg viewBox="0 0 100 100" className="w-full h-full animate-pulse-slow">
-                <circle cx="50" cy="50" r="16" fill="url(#planet-grad)" />
-                <ellipse cx="50" cy="50" rx="35" ry="10" transform="rotate(-20 50 50)" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="0.5" />
-                <ellipse cx="50" cy="50" rx="35" ry="10" transform="rotate(20 50 50)" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="0.5" />
-                <circle cx="80" cy="30" r="1.5" fill="white" className="animate-ping" />
-                <circle cx="20" cy="70" r="1" fill="white" />
-                <circle cx="30" cy="20" r="1" fill="white" />
+            <div className="relative w-32 h-32 flex items-center justify-center mb-6">
+              <svg viewBox="0 0 100 100" className="w-full h-full overflow-visible">
                 <defs>
                   <radialGradient id="planet-grad" cx="50%" cy="50%" r="50%" fx="30%" fy="30%">
                     <stop offset="0%" stopColor="rgba(255,255,255,0.8)" />
                     <stop offset="100%" stopColor="rgba(255,255,255,0.1)" />
                   </radialGradient>
+                  <radialGradient id="glow-grad" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor="rgba(255,255,255,0.15)" />
+                    <stop offset="100%" stopColor="rgba(255,255,255,0)" />
+                  </radialGradient>
                 </defs>
+
+                {/* Central planet glow */}
+                <circle cx="50" cy="50" r="28" fill="url(#glow-grad)" className="animate-pulse" style={{ animationDuration: '4s' }} />
+                <circle cx="50" cy="50" r="14" fill="url(#planet-grad)" />
+
+                {/* Orbit 1 */}
+                <g transform="translate(50,50) rotate(-20)">
+                  <path d="M -35,0 A 35,10 0 1,1 35,0 A 35,10 0 1,1 -35,0" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="0.5" strokeDasharray="2 2" />
+                  
+                  {/* Revolving dot cluster */}
+                  <g>
+                    <animateMotion dur="4s" repeatCount="indefinite" path="M -35,0 A 35,10 0 1,1 35,0 A 35,10 0 1,1 -35,0" />
+                    <circle r="4" fill="rgba(255,255,255,0.2)" />
+                    <circle r="1.5" fill="#fff" />
+                  </g>
+                </g>
+
+                {/* Orbit 2 */}
+                <g transform="translate(50,50) rotate(20)">
+                  <path d="M -35,0 A 35,10 0 1,1 35,0 A 35,10 0 1,1 -35,0" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="0.5" strokeDasharray="1 3" />
+                  
+                  <g>
+                    <animateMotion dur="5.5s" repeatCount="indefinite" begin="-1s" path="M -35,0 A 35,10 0 1,1 35,0 A 35,10 0 1,1 -35,0" />
+                    <circle r="3" fill="rgba(225,224,204,0.2)" />
+                    <circle r="1" fill="#E1E0CC" />
+                  </g>
+                </g>
+
+                {/* Orbit 3 (Inner faster) */}
+                <g transform="translate(50,50) rotate(60)">
+                  <path d="M -22,0 A 22,6 0 1,1 22,0 A 22,6 0 1,1 -22,0" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="0.5" />
+                  
+                  <g>
+                    <animateMotion dur="2.5s" repeatCount="indefinite" begin="-0.5s" path="M -22,0 A 22,6 0 1,1 22,0 A 22,6 0 1,1 -22,0" />
+                    <circle r="2" fill="rgba(255,176,66,0.3)" />
+                    <circle r="1" fill="#FFB042" />
+                  </g>
+                </g>
+                
+                {/* Random ambient stars */}
+                <circle cx="85" cy="25" r="1.5" fill="rgba(255,255,255,0.4)" className="animate-pulse" style={{ animationDuration: '3s' }} />
+                <circle cx="15" cy="80" r="1" fill="rgba(255,255,255,0.6)" className="animate-ping" style={{ animationDuration: '2s' }} />
+                <circle cx="20" cy="20" r="0.5" fill="rgba(255,255,255,0.3)" />
+                <circle cx="75" cy="75" r="0.5" fill="rgba(255,255,255,0.2)" />
               </svg>
             </div>
             <p className="text-white text-sm font-bold mb-1">No active rooms right now.</p>
