@@ -37,10 +37,11 @@ export class SupabaseTaskRepository implements ITaskRepository {
 
   async createTask(taskData: Omit<Task, 'id' | 'created_at' | 'completed'>): Promise<Task | null> {
     if (!taskData.text?.trim() || !taskData.user_id) return null;
+    const { dueDate, subTasks, ...restTaskData } = taskData;
     const { data, error } = await supabase
       .from('tasks')
       .insert({
-        ...taskData,
+        ...restTaskData,
         text: taskData.text.trim(),
         completed: false,
         scope: taskData.scope || 'global',
