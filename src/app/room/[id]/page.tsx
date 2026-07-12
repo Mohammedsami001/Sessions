@@ -12,7 +12,7 @@ import {
   Trash2, ShieldAlert, Share2, Play, Pause, RotateCcw, 
   Activity, Crown, Plus, Check, Send, Sparkles, BookOpen, AlertTriangle
 } from "lucide-react";
-import { Footer } from "@/components/ui/footer";
+
 import { GooeyLoader } from "@/components/ui/loader-10";
 import ComplexTaskTrackerWidget from "@/components/ui/complex-task-tracker-widget";
 import RoomLeaderboardWidget from "@/components/ui/room-leaderboard-widget";
@@ -552,7 +552,7 @@ export default function RoomPage() {
       )}
       
       </main>
-      <Footer />
+
     </div>
   );
 }

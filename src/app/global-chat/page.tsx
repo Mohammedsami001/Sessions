@@ -6,7 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { supabase } from "../../lib/supabase";
 import { chatService, profileService } from "../../lib/container";
 import GlobalChatWidget from "../../components/ui/global-chat-widget";
-import { Footer } from "@/components/ui/footer";
+
 import type { Profile, MessageWithProfile } from "../../lib/types";
 
 export default function GlobalChatPage() {
@@ -72,7 +72,7 @@ export default function GlobalChatPage() {
           />
         </div>
       </main>
-      <Footer />
+
     </div>
   );
 }

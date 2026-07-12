@@ -6,7 +6,7 @@ import { supabase } from "../../lib/supabase";
 import { profileService } from "../../lib/container";
 import type { Profile } from "../../lib/types";
 import { computeLevelProgress, formatFocusHours } from "../../lib/types";
-import { Footer } from "@/components/ui/footer";
+
 import { GooeyLoader } from "@/components/ui/loader-10";
 
 export default function ProfilePage() {
@@ -148,7 +148,7 @@ export default function ProfilePage() {
         )}
       </div>
     </main>
-    <Footer />
+
   </div>
   );
 }
