@@ -33,15 +33,24 @@ beforeAll(() => {
 });
 
 describe('FeaturesSection', () => {
-  it('renders the system capabilities title', () => {
+  it('renders the interactive Synchronized Timers card', () => {
     render(<FeaturesSection />);
-    expect(screen.getByText(/System Capabilities/i)).toBeInTheDocument();
+    expect(screen.getByText('Synchronized Timers')).toBeInTheDocument();
+    const playButton = screen.getByRole('button', { name: /start timer/i });
+    expect(playButton).toBeInTheDocument();
   });
 
-  it('renders the three core modules', () => {
+  it('renders the interactive Atmospheric Control card', () => {
     render(<FeaturesSection />);
-    expect(screen.getByText('MOD_TIMER')).toBeInTheDocument();
-    expect(screen.getByText('MOD_AUDIO')).toBeInTheDocument();
-    expect(screen.getByText('MOD_STATS')).toBeInTheDocument();
+    expect(screen.getByText('Atmospheric Control')).toBeInTheDocument();
+    const audioToggle = screen.getByRole('button', { name: /toggle audio/i });
+    expect(audioToggle).toBeInTheDocument();
+  });
+
+  it('renders the interactive Performance Telemetry card', () => {
+    render(<FeaturesSection />);
+    expect(screen.getByText('Performance Telemetry')).toBeInTheDocument();
+    // E.g., we expect to see a mock chart or streak counter
+    expect(screen.getByTestId('stats-chart')).toBeInTheDocument();
   });
 });

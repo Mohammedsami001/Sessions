@@ -1,82 +1,103 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
-import { motion, useScroll, useTransform, useSpring, useInView } from "framer-motion";
-
-const modules = [
-  {
-    id: "MOD_TIMER",
-    title: "Synchronized Timers",
-    description:
-      "Join live rooms with synchronized Pomodoro intervals. Everyone works and breaks at the exact same time, enforcing collective accountability.",
-  },
-  {
-    id: "MOD_AUDIO",
-    title: "Atmospheric Control",
-    description:
-      "Curated lo-fi audio streams embedded directly in the environment to drown out distractions and induce state-dependent memory.",
-  },
-  {
-    id: "MOD_STATS",
-    title: "Performance Telemetry",
-    description:
-      "Track your focus sessions, maintain streaks, and visualize your deep work patterns over time with gamified analytics.",
-  },
-];
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Play, Pause, Headphones, Activity } from "lucide-react";
 
 export const FeaturesSection = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
-
-  // Calculate playhead height (0 to 100%)
-  const playheadHeight = useTransform(smoothProgress, [0, 1], ["0%", "100%"]);
-
   return (
-    <section ref={containerRef} className="relative w-full bg-black text-white font-sans py-20 md:py-32" id="features">
+    <section className="relative w-full bg-black text-white py-32" id="features">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row gap-12 md:gap-24 relative">
+        
+        {/* Header */}
+        <div className="flex flex-col items-center text-center mb-20">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-[10px] tracking-widest text-[#E1E0CC] uppercase mb-4 opacity-80 font-mono border border-white/10 px-3 py-1 rounded-full bg-white/5"
+          >
+            System Capabilities
+          </motion.div>
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight font-sans text-white mb-6"
+          >
+            Engineered for absolute flow.
+          </motion.h2>
+        </div>
+
+        {/* Bento Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           
-          {/* Left Sticky Sidebar */}
-          <div className="md:w-1/3 flex-shrink-0 relative">
-            <div className="sticky top-32 flex">
-              {/* Playhead Track */}
-              <div className="w-px h-64 bg-white/10 mr-6 relative overflow-hidden">
-                <motion.div 
-                  className="absolute top-0 left-0 w-full bg-[#E1E0CC]"
-                  style={{ height: playheadHeight }}
-                />
-              </div>
-              
-              <div>
-                <div className="text-[10px] tracking-widest text-[#E1E0CC] uppercase mb-4 opacity-80">
-                  Documentation
-                </div>
-                <h2 className="text-3xl md:text-5xl font-medium tracking-tight mb-6">
-                  System Capabilities
-                </h2>
-                <p className="text-[#a3a3a3] text-sm md:text-base leading-relaxed">
-                  A high-performance environment engineered to eliminate friction. 
-                  Every module serves a single purpose: absolute flow.
+          {/* Card 1: Synchronized Timers */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="col-span-1 lg:col-span-2 bg-white/5 border border-white/10 rounded-3xl p-8 overflow-hidden relative group hover:bg-white/[0.07] transition-colors"
+          >
+            <div className="absolute top-0 left-0 w-full h-[200px] bg-gradient-to-b from-[#E1E0CC]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+            
+            <div className="flex flex-col h-full justify-between z-10 relative">
+              <div className="mb-12">
+                <h3 className="text-2xl font-medium mb-3">Synchronized Timers</h3>
+                <p className="text-zinc-400 text-sm max-w-md">
+                  Join live rooms with synchronized Pomodoro intervals. Everyone works and breaks at the exact same time, enforcing collective accountability.
                 </p>
               </div>
-            </div>
-          </div>
 
-          {/* Right Scrolling Content */}
-          <div className="md:w-2/3 flex flex-col gap-32 pb-32 pt-16 md:pt-32">
-            {modules.map((mod, index) => (
-              <FeatureModule key={mod.id} mod={mod} index={index} />
-            ))}
-          </div>
+              {/* Interactive Sneak Peek: Mini Timer */}
+              <InteractiveTimer />
+            </div>
+          </motion.div>
+
+          {/* Card 2: Atmospheric Control */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="col-span-1 bg-white/5 border border-white/10 rounded-3xl p-8 overflow-hidden relative group hover:bg-white/[0.07] transition-colors"
+          >
+            <div className="flex flex-col h-full justify-between z-10 relative">
+              <div className="mb-12">
+                <h3 className="text-2xl font-medium mb-3">Atmospheric Control</h3>
+                <p className="text-zinc-400 text-sm">
+                  Curated lo-fi audio streams embedded directly to drown out distractions.
+                </p>
+              </div>
+
+              {/* Interactive Sneak Peek: Audio Toggle */}
+              <InteractiveAudio />
+            </div>
+          </motion.div>
+
+          {/* Card 3: Performance Telemetry */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="col-span-1 md:col-span-2 lg:col-span-3 bg-white/5 border border-white/10 rounded-3xl p-8 overflow-hidden relative group hover:bg-white/[0.07] transition-colors"
+          >
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center z-10 relative">
+                <div>
+                  <h3 className="text-2xl font-medium mb-3">Performance Telemetry</h3>
+                  <p className="text-zinc-400 text-sm max-w-md">
+                    Track your focus sessions, maintain streaks, and visualize your deep work patterns over time with gamified analytics.
+                  </p>
+                </div>
+                
+                {/* Interactive Sneak Peek: Stats Chart */}
+                <InteractiveStats />
+             </div>
+          </motion.div>
 
         </div>
       </div>
@@ -84,94 +105,101 @@ export const FeaturesSection = () => {
   );
 };
 
-const FeatureModule = ({ mod, index }: { mod: any; index: number }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { margin: "-20% 0px -20% 0px" });
+/* --- Interactive Micro-components --- */
+
+const InteractiveTimer = () => {
+  const [isRunning, setIsRunning] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(1500); // 25 mins
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isRunning && timeLeft > 0) {
+      interval = setInterval(() => setTimeLeft((t) => t - 1), 1000);
+    }
+    return () => clearInterval(interval);
+  }, [isRunning, timeLeft]);
+
+  const mins = Math.floor(timeLeft / 60).toString().padStart(2, "0");
+  const secs = (timeLeft % 60).toString().padStart(2, "0");
 
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-10%" }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className={`border-t border-white/10 pt-8 transition-opacity duration-700 ${
-        isInView ? "opacity-100" : "opacity-40"
-      }`}
-    >
-      <div className="flex flex-col gap-4">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-mono text-[#E1E0CC]/70 border border-[#E1E0CC]/20 px-2 py-1 rounded-sm">
-            {mod.id}
-          </span>
-          <span className="text-white/20 font-mono text-sm">
-            0{index + 1}
-          </span>
-        </div>
-        
-        <h3 className="text-2xl md:text-4xl font-medium tracking-tight mt-4">
-          {mod.title}
-        </h3>
-        
-        <p className="text-[#a3a3a3] md:text-lg leading-relaxed mt-2 max-w-xl">
-          {mod.description}
-        </p>
-
-        {/* Abstract Visualization Box */}
-        <div className="mt-8 h-48 md:h-64 w-full bg-white/5 border border-white/10 rounded-lg flex items-center justify-center overflow-hidden relative">
-          {mod.id === "MOD_TIMER" && <TimerVis isActive={isInView} />}
-          {mod.id === "MOD_AUDIO" && <AudioVis isActive={isInView} />}
-          {mod.id === "MOD_STATS" && <StatsVis isActive={isInView} />}
-        </div>
+    <div className="flex items-center gap-6 bg-black/40 border border-white/5 p-4 rounded-2xl w-fit backdrop-blur-md">
+      <div className="text-4xl font-mono tracking-tighter text-[#E1E0CC] w-32">
+        {mins}:{secs}
       </div>
-    </motion.div>
+      <button
+        aria-label="start timer"
+        onClick={() => setIsRunning(!isRunning)}
+        className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 transition-transform active:scale-95"
+      >
+        {isRunning ? <Pause size={20} className="fill-black" /> : <Play size={20} className="fill-black ml-1" />}
+      </button>
+    </div>
   );
 };
 
-const TimerVis = ({ isActive }: { isActive: boolean }) => (
-  <div className="flex items-center gap-2">
-    {[...Array(4)].map((_, i) => (
-      <motion.div
-        key={i}
-        initial={{ height: 8 }}
-        animate={{ height: isActive ? (i === 3 ? 16 : 48) : 8 }}
-        transition={{ duration: 0.8, delay: i * 0.1, ease: "easeOut" }}
-        className={`w-1 rounded-full ${i === 3 ? "bg-white/30" : "bg-[#E1E0CC]"}`}
-      />
-    ))}
-  </div>
-);
+const InteractiveAudio = () => {
+  const [isPlaying, setIsPlaying] = useState(false);
 
-const AudioVis = ({ isActive }: { isActive: boolean }) => (
-  <div className="flex items-center gap-1.5 h-16">
-    {[...Array(12)].map((_, i) => (
-      <motion.div
-        key={i}
-        animate={isActive ? {
-          height: ["20%", "100%", "40%", "80%", "20%"],
-        } : { height: "10%" }}
-        transition={{
-          duration: 1.5,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: i * 0.1,
-        }}
-        className="w-1.5 bg-[#E1E0CC]/60 rounded-full"
-      />
-    ))}
-  </div>
-);
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex items-end gap-1 h-12 px-2">
+        {[...Array(8)].map((_, i) => (
+          <motion.div
+            key={i}
+            animate={isPlaying ? { height: ["20%", "100%", "30%", "80%", "20%"] } : { height: "15%" }}
+            transition={isPlaying ? { duration: 1.2, repeat: Infinity, delay: i * 0.1, ease: "easeInOut" } : { duration: 0.3 }}
+            className="w-2 bg-[#E1E0CC]/80 rounded-t-sm"
+          />
+        ))}
+      </div>
+      <button
+        aria-label="toggle audio"
+        onClick={() => setIsPlaying(!isPlaying)}
+        className="flex items-center gap-3 bg-black/40 border border-white/5 px-4 py-3 rounded-xl w-fit hover:bg-white/10 transition-colors"
+      >
+        <Headphones size={18} className="text-[#E1E0CC]" />
+        <span className="text-sm font-medium">{isPlaying ? "Pause Lo-Fi" : "Play Lo-Fi"}</span>
+      </button>
+    </div>
+  );
+};
 
-const StatsVis = ({ isActive }: { isActive: boolean }) => (
-  <div className="grid grid-cols-7 gap-1.5">
-    {[...Array(28)].map((_, i) => (
-      <motion.div
-        key={i}
-        initial={{ opacity: 0.1 }}
-        animate={{ opacity: isActive ? (Math.random() > 0.5 ? 0.8 : 0.3) : 0.1 }}
-        transition={{ duration: 0.5, delay: i * 0.02 }}
-        className="w-3 h-3 md:w-4 md:h-4 bg-[#E1E0CC] rounded-sm"
-      />
-    ))}
-  </div>
-);
+const InteractiveStats = () => {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  
+  // Fake chart data
+  const data = [40, 65, 30, 85, 55, 90, 100, 70, 45, 80];
+
+  return (
+    <div data-testid="stats-chart" className="flex items-end gap-2 h-32 w-full bg-black/40 border border-white/5 rounded-2xl p-6 relative">
+      {data.map((val, i) => (
+        <div 
+          key={i} 
+          className="flex-1 flex flex-col items-center gap-2 group relative"
+          onMouseEnter={() => setHoveredIndex(i)}
+          onMouseLeave={() => setHoveredIndex(null)}
+        >
+          {/* Tooltip */}
+          {hoveredIndex === i && (
+            <motion.div 
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="absolute -top-10 bg-white text-black text-xs font-bold py-1 px-2 rounded"
+            >
+              {val}m
+            </motion.div>
+          )}
+          {/* Bar */}
+          <motion.div
+            initial={{ height: "10%" }}
+            whileInView={{ height: `${val}%` }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: i * 0.05, ease: "easeOut" }}
+            className={`w-full rounded-t-sm transition-colors duration-300 ${hoveredIndex === i ? 'bg-[#E1E0CC]' : 'bg-white/20'}`}
+          />
+        </div>
+      ))}
+    </div>
+  );
+};

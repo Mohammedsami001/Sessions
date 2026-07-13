@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { SessionsHero } from "@/components/ui/sessions-hero";
 import { FeaturesSection } from "@/components/ui/features-section";
-import { InkRevealFooter } from "@/components/ui/ink-reveal-footer";
+import { MinimalFooter } from "@/components/ui/minimal-footer";
 import { supabase } from "@/lib/supabase";
 
 export default function Home() {
@@ -42,7 +42,7 @@ export default function Home() {
     <main className="min-h-screen bg-black">
       <SessionsHero />
       <FeaturesSection />
-      <InkRevealFooter />
+      <MinimalFooter />
     </main>
   );
 }
