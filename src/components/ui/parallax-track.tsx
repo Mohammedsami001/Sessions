@@ -25,7 +25,7 @@ export const ParallaxTrack = ({ children }: { children: React.ReactNode }) => {
       
       {/* Scroll Progress Indicator - Brutalist style */}
       <motion.div 
-        className="fixed top-0 left-0 h-2 bg-[#E1E0CC] z-50 transform origin-left"
+        className="fixed top-0 left-0 w-full h-2 bg-[#E1E0CC] z-50 transform origin-left"
         style={{ scaleX: scrollYProgress }}
       />
 

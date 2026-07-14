@@ -15,6 +15,8 @@ export const ParallaxIdentity = () => {
   // Brutalist typography transforms
   const scaleText = useTransform(scrollYProgress, [0, 1], [0.8, 1]);
   const opacityText = useTransform(scrollYProgress, [0, 0.8, 1], [0, 1, 1]);
+  const opacityBg = useTransform(opacityText, v => v * 0.05);
+  const yContent = useTransform(scrollYProgress, [0, 1], ["50%", "0%"]);
 
   return (
     <section ref={ref} className="relative min-h-screen flex items-center justify-center bg-black overflow-hidden z-20 pb-32">
@@ -22,7 +24,7 @@ export const ParallaxIdentity = () => {
       {/* Background massive branding */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden select-none">
         <motion.div 
-          style={{ scale: scaleText, opacity: useTransform(opacityText, v => v * 0.05) }}
+          style={{ scale: scaleText, opacity: opacityBg }}
           className="text-[20vw] font-black text-white whitespace-nowrap"
         >
           SESSIONS
@@ -31,7 +33,7 @@ export const ParallaxIdentity = () => {
 
       <div className="relative z-10 flex flex-col items-center justify-center text-center p-8">
         <motion.div 
-          style={{ y: useTransform(scrollYProgress, [0, 1], ["50%", "0%"]), opacity: opacityText }}
+          style={{ y: yContent, opacity: opacityText }}
           className="flex flex-col items-center"
         >
           <div className="text-[10px] tracking-[0.3em] text-[#E1E0CC] mb-6 uppercase border border-[#E1E0CC] px-2 py-1 w-fit bg-black">
