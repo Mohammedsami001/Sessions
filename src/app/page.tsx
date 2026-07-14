@@ -2,8 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { SessionsHero } from "@/components/ui/sessions-hero";
-import { FeaturesSection } from "@/components/ui/features-section";
+import { ParallaxEngineCore } from "@/components/ui/parallax-engine-core";
+import { ParallaxNetwork } from "@/components/ui/parallax-network";
+import { ParallaxData } from "@/components/ui/parallax-data";
+import { ParallaxIdentity } from "@/components/ui/parallax-identity";
 import { MinimalFooter } from "@/components/ui/minimal-footer";
+import { ParallaxTrack } from "@/components/ui/parallax-track";
 import { supabase } from "@/lib/supabase";
 
 export default function Home() {
@@ -41,8 +45,13 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-black">
       <SessionsHero />
-      <FeaturesSection />
-      <MinimalFooter />
+      <ParallaxTrack>
+        <ParallaxEngineCore />
+        <ParallaxNetwork />
+        <ParallaxData />
+        <ParallaxIdentity />
+        <MinimalFooter />
+      </ParallaxTrack>
     </main>
   );
 }
