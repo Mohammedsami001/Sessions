@@ -39,7 +39,7 @@ export const ParallaxIdentity = () => {
           <div className="text-[10px] tracking-[0.3em] text-[#E1E0CC] mb-6 uppercase border border-[#E1E0CC] px-2 py-1 w-fit bg-black">
             End of Line
           </div>
-          <h2 className="text-6xl md:text-9xl font-black uppercase tracking-tighter leading-none mb-6">
+          <h2 className="text-6xl md:text-9xl font-playfair font-black italic uppercase tracking-tighter leading-none mb-6">
             System Ready
           </h2>
           <p className="max-w-xl text-zinc-400 font-mono text-sm leading-relaxed mb-12">
