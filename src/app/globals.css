@@ -89,6 +89,10 @@
   --shadow-glow-orange: 0 0 20px rgba(255, 107, 44, 0.2);
 }
 
+.text-glow-gold {
+  text-shadow: 0 0 30px rgba(225, 224, 204, 0.4);
+}
+
 body {
   background-color: var(--bg-deep);
   color: var(--text-white);

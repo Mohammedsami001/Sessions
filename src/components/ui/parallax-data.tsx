@@ -38,7 +38,7 @@ export const ParallaxData = () => {
           <div className="text-[10px] tracking-[0.3em] text-[#E1E0CC] mb-6 uppercase border border-[#E1E0CC] px-2 py-1 w-fit bg-black">
             Layer 03
           </div>
-          <h2 className="text-6xl md:text-8xl font-playfair font-black italic uppercase tracking-tighter leading-none mb-4">
+          <h2 className="text-6xl md:text-8xl font-playfair font-black italic uppercase tracking-tighter leading-none mb-4 text-glow-gold">
             The Data
           </h2>
           <h3 className="text-2xl md:text-4xl font-light uppercase tracking-widest text-[#E1E0CC] mb-8 border-l-4 border-[#E1E0CC] pl-4">
