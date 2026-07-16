@@ -45,13 +45,15 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-black">
       <SessionsHero />
-      <ParallaxTrack>
-        <ParallaxEngineCore />
-        <ParallaxNetwork />
-        <ParallaxData />
-        <ParallaxIdentity />
-        <MinimalFooter />
-      </ParallaxTrack>
+      <div id="features">
+        <ParallaxTrack>
+          <ParallaxEngineCore />
+          <ParallaxNetwork />
+          <ParallaxData />
+          <ParallaxIdentity />
+          <MinimalFooter />
+        </ParallaxTrack>
+      </div>
     </main>
   );
 }

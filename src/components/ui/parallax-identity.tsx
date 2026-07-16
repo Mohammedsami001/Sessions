@@ -49,7 +49,7 @@ export const ParallaxIdentity = () => {
             Everything you need to focus, track your progress, and stay accountable. Join the community and get started.
           </p>
           
-          <Link href="/auth/signup">
+          <Link href="/signup">
             <button className="group relative border-2 border-white bg-white text-black font-black uppercase text-lg md:text-xl px-8 py-4 hover:bg-black hover:text-white transition-all duration-300 flex items-center gap-3 rounded-md">
               <span>SIGN UP</span>
               <ArrowRight size={24} className="group-hover:translate-x-2 transition-transform duration-300" />
