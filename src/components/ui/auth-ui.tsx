@@ -372,7 +372,9 @@ export function AuthUI({ initialIsSignIn = true }: AuthUIProps) {
                alt="Study background" 
                fill
                priority
-               className="object-cover opacity-60 mix-blend-luminosity transition-all duration-700 text-transparent" 
+               sizes="(max-width: 768px) 0vw, 50vw"
+               quality={75}
+               className="object-cover opacity-70 transition-all duration-700 text-transparent" 
              />
           </div>
           
