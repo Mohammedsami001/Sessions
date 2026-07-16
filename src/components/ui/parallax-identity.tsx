@@ -50,9 +50,9 @@ export const ParallaxIdentity = () => {
           </p>
           
           <Link href="/auth/signup">
-            <button className="group relative border-4 border-white bg-white text-black font-black uppercase text-2xl md:text-4xl px-12 py-6 hover:bg-black hover:text-white transition-all duration-300 flex items-center gap-4 rounded-md">
+            <button className="group relative border-2 border-white bg-white text-black font-black uppercase text-lg md:text-xl px-8 py-4 hover:bg-black hover:text-white transition-all duration-300 flex items-center gap-3 rounded-md">
               <span>SIGN UP</span>
-              <ArrowRight size={36} className="group-hover:translate-x-4 transition-transform duration-300" />
+              <ArrowRight size={24} className="group-hover:translate-x-2 transition-transform duration-300" />
             </button>
           </Link>
         </motion.div>
