@@ -368,12 +368,11 @@ export function AuthUI({ initialIsSignIn = true }: AuthUIProps) {
         <div className="hidden md:flex md:w-[45%] relative m-3 rounded-[1.5rem] overflow-hidden bg-black flex-col justify-between p-10">
           <div className="absolute inset-0 z-0 bg-black">
              <Image 
-               src={isSignIn ? "/study_login_bg.png" : "/study_signup_bg.png"} 
+               src={isSignIn ? "/study_login_bg.webp" : "/study_signup_bg.webp"} 
                alt="Study background" 
                fill
                priority
-               sizes="(max-width: 768px) 0vw, 50vw"
-               quality={75}
+               unoptimized={true}
                className="object-cover opacity-70 transition-all duration-700 text-transparent" 
              />
           </div>
