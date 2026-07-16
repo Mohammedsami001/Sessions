@@ -88,9 +88,6 @@
   --shadow-glow-gold: 0 0 20px rgba(240, 192, 64, 0.15);
   --shadow-glow-orange: 0 0 20px rgba(255, 107, 44, 0.2);
 }
-
-.text-glow-gold {
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3), 0 0 25px rgba(255, 215, 0, 0.15);
 }
 
 body {

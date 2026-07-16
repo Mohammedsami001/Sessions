@@ -30,7 +30,10 @@ export const ParallaxEngineCore = () => {
           <div className="text-[10px] tracking-[0.3em] text-[#E1E0CC] mb-6 uppercase border border-[#E1E0CC] px-2 py-1 w-fit bg-black">
             Layer 01
           </div>
-          <h2 className="text-6xl md:text-8xl font-playfair font-black italic uppercase tracking-tighter leading-none mb-4 text-glow-gold">
+          <h2 
+            className="text-6xl md:text-8xl font-playfair font-black italic uppercase tracking-tighter leading-none mb-4"
+            style={{ textShadow: '0 0 12px rgba(255, 215, 0, 0.6), 0 0 30px rgba(255, 215, 0, 0.3)' }}
+          >
             The Engine Core
           </h2>
           <h3 className="text-2xl md:text-4xl font-light uppercase tracking-widest text-[#E1E0CC] mb-8 border-l-4 border-[#E1E0CC] pl-4">
