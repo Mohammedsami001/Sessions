@@ -19,8 +19,8 @@ export const ParallaxEngineCore = () => {
   const scaleVisuals = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8]);
 
   return (
-    <section ref={ref} className="relative min-h-[150vh] flex items-center justify-center border-b-[4px] border-[#333]">
-      <div className="sticky top-0 h-screen w-full flex flex-col md:flex-row items-center justify-center p-8 gap-16">
+    <section ref={ref} className="relative min-h-[150vh] flex items-center justify-center border-b-[4px] border-[#333] bg-[#050505] overflow-hidden">
+      <div className="sticky top-0 h-screen w-full flex flex-col md:flex-row items-center justify-center p-8 gap-16 z-10">
         
         {/* Left Side: Brutalist Typography */}
         <motion.div 
