@@ -42,7 +42,7 @@ export const ParallaxData = () => {
             className="text-6xl md:text-8xl font-playfair font-black italic uppercase tracking-tighter leading-none mb-4"
             style={{ textShadow: '0 0 12px rgba(255, 215, 0, 0.6), 0 0 30px rgba(255, 215, 0, 0.3)' }}
           >
-            The Data
+            The Metrics
           </h2>
           <h3 className="text-2xl md:text-4xl font-light uppercase tracking-widest text-[#E1E0CC] mb-8 border-l-4 border-[#E1E0CC] pl-4">
             Performance Telemetry

@@ -37,21 +37,21 @@ export const ParallaxIdentity = () => {
           className="flex flex-col items-center"
         >
           <div className="text-[10px] tracking-[0.3em] text-[#E1E0CC] mb-6 uppercase border border-[#E1E0CC] px-2 py-1 w-fit bg-black">
-            End of Line
+            Onboarding
           </div>
           <h2 
             className="text-6xl md:text-9xl font-playfair font-black italic uppercase tracking-tighter leading-none mb-6"
             style={{ textShadow: '0 0 12px rgba(255, 215, 0, 0.6), 0 0 30px rgba(255, 215, 0, 0.3)' }}
           >
-            System Ready
+            Start Working
           </h2>
           <p className="max-w-xl text-zinc-400 font-mono text-sm leading-relaxed mb-12">
-            The infrastructure is built. The network is active. Your dashboard is waiting. Establish your profile and enter the ecosystem.
+            Everything you need to focus, track your progress, and stay accountable. Join the community and get started.
           </p>
           
           <Link href="/auth/signup">
             <button className="group relative border-4 border-white bg-white text-black font-black uppercase text-2xl md:text-4xl px-12 py-6 hover:bg-black hover:text-white transition-all duration-300 flex items-center gap-4">
-              <span>INITIALIZE</span>
+              <span>SIGN UP</span>
               <ArrowRight size={36} className="group-hover:translate-x-4 transition-transform duration-300" />
             </button>
           </Link>

@@ -45,7 +45,7 @@ export const ParallaxNetwork = () => {
             The Network
           </h2>
           <h3 className="text-2xl md:text-4xl font-light uppercase tracking-widest text-[#E1E0CC] mb-8 border-r-4 border-[#E1E0CC] pr-4">
-            Global Sync
+            Shared Sessions
           </h3>
           <p className="max-w-md text-zinc-400 font-mono text-sm leading-relaxed">
             Connect across the globe. Join active study rooms, challenge peers on the leaderboard, and communicate through high-efficiency raw chat streams.

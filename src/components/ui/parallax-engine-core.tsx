@@ -34,13 +34,13 @@ export const ParallaxEngineCore = () => {
             className="text-6xl md:text-8xl font-playfair font-black italic uppercase tracking-tighter leading-none mb-4"
             style={{ textShadow: '0 0 12px rgba(255, 215, 0, 0.6), 0 0 30px rgba(255, 215, 0, 0.3)' }}
           >
-            The Engine Core
+            The Workspace
           </h2>
           <h3 className="text-2xl md:text-4xl font-light uppercase tracking-widest text-[#E1E0CC] mb-8 border-l-4 border-[#E1E0CC] pl-4">
-            Synchronized Focus
+            Your Environment
           </h3>
           <p className="max-w-md text-zinc-400 font-mono text-sm leading-relaxed">
-            A mechanical heartbeat for your productivity. Deep work is synchronized across the network. Audio environments are engineered to drown out the noise.
+            The essential tools for deep work. Sync your focus timer, put on your headphones, and tune out the noise. The system is built for pure productivity.
           </p>
         </motion.div>
 
