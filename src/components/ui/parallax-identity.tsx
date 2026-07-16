@@ -36,7 +36,7 @@ export const ParallaxIdentity = () => {
           style={{ y: yContent, opacity: opacityText }}
           className="flex flex-col items-center"
         >
-          <div className="text-[10px] tracking-[0.3em] text-[#E1E0CC] mb-6 uppercase border border-[#E1E0CC] px-2 py-1 w-fit bg-black">
+          <div className="text-[10px] tracking-[0.3em] text-[#E1E0CC] mb-6 uppercase border border-[#E1E0CC] px-3 py-1 w-fit bg-black rounded-full">
             Onboarding
           </div>
           <h2 
@@ -50,7 +50,7 @@ export const ParallaxIdentity = () => {
           </p>
           
           <Link href="/auth/signup">
-            <button className="group relative border-4 border-white bg-white text-black font-black uppercase text-2xl md:text-4xl px-12 py-6 hover:bg-black hover:text-white transition-all duration-300 flex items-center gap-4">
+            <button className="group relative border-4 border-white bg-white text-black font-black uppercase text-2xl md:text-4xl px-12 py-6 hover:bg-black hover:text-white transition-all duration-300 flex items-center gap-4 rounded-full">
               <span>SIGN UP</span>
               <ArrowRight size={36} className="group-hover:translate-x-4 transition-transform duration-300" />
             </button>

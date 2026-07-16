@@ -35,7 +35,7 @@ export const ParallaxNetwork = () => {
           style={{ x: xText, opacity: opacityText }}
           className="flex-1 flex flex-col items-end text-right"
         >
-          <div className="text-[10px] tracking-[0.3em] text-[#E1E0CC] mb-6 uppercase border border-[#E1E0CC] px-2 py-1 w-fit bg-black">
+          <div className="text-[10px] tracking-[0.3em] text-[#E1E0CC] mb-6 uppercase border border-[#E1E0CC] px-3 py-1 w-fit bg-black rounded-full">
             Layer 02
           </div>
           <h2 
@@ -58,8 +58,8 @@ export const ParallaxNetwork = () => {
           className="flex-1 flex flex-col gap-6 w-full max-w-lg relative"
         >
           {/* Chat Mod */}
-          <div className="border-4 border-[#333] bg-black p-6 relative ml-12 z-20 hover:-translate-y-2 transition-transform duration-500">
-            <div className="absolute -top-3 left-4 px-2 font-mono font-bold text-black bg-white uppercase text-xs">
+          <div className="border-4 border-[#333] bg-black p-6 relative ml-12 z-20 hover:-translate-y-2 transition-transform duration-500 rounded-3xl">
+            <div className="absolute -top-3 left-6 px-3 font-mono font-bold text-black bg-white uppercase text-xs rounded-full">
               CHAT_MOD
             </div>
             <div className="flex flex-col gap-3 mt-4">
@@ -75,16 +75,16 @@ export const ParallaxNetwork = () => {
           </div>
 
           {/* Rooms Mod */}
-          <div className="border-4 border-[#333] bg-black p-6 relative mr-12 z-10 -mt-10 hover:-translate-y-2 transition-transform duration-500">
-            <div className="absolute -top-3 right-4 px-2 font-mono font-bold text-[#333] bg-[#E1E0CC] uppercase text-xs">
+          <div className="border-4 border-[#333] bg-black p-6 relative mr-12 z-10 -mt-10 hover:-translate-y-2 transition-transform duration-500 rounded-3xl">
+            <div className="absolute -top-3 right-6 px-3 font-mono font-bold text-[#333] bg-[#E1E0CC] uppercase text-xs rounded-full">
               ROOMS_MOD
             </div>
             <div className="grid grid-cols-2 gap-4 mt-4">
-              <div className="border border-white/20 p-4 flex flex-col gap-2">
+              <div className="border border-white/20 p-4 flex flex-col gap-2 rounded-2xl">
                 <span className="font-mono text-xs text-zinc-400">GLOBAL_01</span>
                 <span className="font-black text-xl">124 ON</span>
               </div>
-              <div className="border border-white/20 p-4 flex flex-col gap-2 bg-white/5">
+              <div className="border border-white/20 p-4 flex flex-col gap-2 bg-white/5 rounded-2xl">
                 <span className="font-mono text-xs text-zinc-400">PRIVATE_XY</span>
                 <span className="font-black text-xl">4 ON</span>
               </div>
