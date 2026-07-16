@@ -16,7 +16,7 @@ vi.mock('framer-motion', async () => {
 describe('ParallaxData', () => {
   it('renders brutalist typography for The Data', () => {
     render(<ParallaxData />);
-    expect(screen.getByText(/THE DATA/i)).toBeDefined();
+    expect(screen.getByText(/THE METRICS/i)).toBeDefined();
     expect(screen.getByText(/PERFORMANCE TELEMETRY/i)).toBeDefined();
   });
 

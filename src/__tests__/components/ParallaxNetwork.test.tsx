@@ -17,7 +17,7 @@ describe('ParallaxNetwork', () => {
   it('renders brutalist typography for The Network', () => {
     render(<ParallaxNetwork />);
     expect(screen.getByText(/THE NETWORK/i)).toBeDefined();
-    expect(screen.getByText(/GLOBAL SYNC/i)).toBeDefined();
+    expect(screen.getByText(/SHARED SESSIONS/i)).toBeDefined();
   });
 
   it('renders chat and room visual elements', () => {

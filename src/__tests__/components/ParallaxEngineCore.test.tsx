@@ -14,10 +14,10 @@ vi.mock('framer-motion', async () => {
 });
 
 describe('ParallaxEngineCore', () => {
-  it('renders brutalist typography for Engine Core', () => {
+  it("renders typography elements", () => {
     render(<ParallaxEngineCore />);
-    expect(screen.getByText(/THE ENGINE CORE/i)).toBeDefined();
-    expect(screen.getByText(/SYNCHRONIZED FOCUS/i)).toBeDefined();
+    expect(screen.getByText(/THE WORKSPACE/i)).toBeDefined();
+    expect(screen.getByText(/YOUR ENVIRONMENT/i)).toBeDefined();
   });
 
   it('renders timer and audio elements', () => {

@@ -16,7 +16,7 @@ vi.mock('framer-motion', async () => {
 describe('ParallaxIdentity', () => {
   it('renders massive brutalist typography for Identity CTA', () => {
     render(<ParallaxIdentity />);
-    expect(screen.getByText(/SYSTEM READY/i)).toBeDefined();
-    expect(screen.getByText(/INITIALIZE/i)).toBeDefined();
+    expect(screen.getByText(/START WORKING/i)).toBeDefined();
+    expect(screen.getByText(/SIGN UP/i)).toBeDefined();
   });
 });
