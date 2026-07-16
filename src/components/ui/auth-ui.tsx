@@ -307,7 +307,7 @@ function AuthFormContainer({ isSignIn, onToggle }: { isSignIn: boolean; onToggle
             {isSignIn ? <SignInForm /> : <SignUpForm />}
             <div className="text-center text-xs mt-8 font-medium text-gray-400">
                 {isSignIn ? "Don't have an account?" : "Already have an account?"}{" "}
-                <button type="button" className="font-bold text-white hover:underline" onClick={onToggle}>
+                <button type="button" className="font-bold text-white hover:underline cursor-pointer" onClick={onToggle}>
                     {isSignIn ? "Sign Up" : "Sign In"}
                 </button>
             </div>
