@@ -90,7 +90,7 @@
 }
 
 .text-glow-gold {
-  text-shadow: 0 0 30px rgba(225, 224, 204, 0.4);
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3), 0 0 25px rgba(255, 215, 0, 0.15);
 }
 
 body {
