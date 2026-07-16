@@ -4,6 +4,7 @@ import { motion, useInView } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useRef } from "react";
 
+
 /* ---------------- WordsPullUp ---------------- */
 interface WordsPullUpProps {
   text: string;
@@ -92,7 +93,7 @@ const navItems = [
   { label: "Create Account", href: "/signup" }
 ];
 
-const SessionsHero = () => {
+const SessionsHero = ({ sessionActive = false }: { sessionActive?: boolean }) => {
   return (
     <section className="h-screen w-full bg-black">
       <div className="relative h-full w-full overflow-hidden rounded-2xl md:rounded-[2rem]">
@@ -149,7 +150,7 @@ const SessionsHero = () => {
                 transition={{ duration: 0.8, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
               >
                 <Link
-                  href="/dashboard"
+                  href={sessionActive ? "/dashboard" : "/login"}
                   className="group inline-flex items-center gap-3 self-start rounded-full bg-white py-2 pl-6 pr-2 text-base font-medium text-black transition-all hover:gap-4 sm:text-lg lg:py-3 lg:pl-8 lg:pr-3 lg:text-xl"
                 >
                   Launch Study OS

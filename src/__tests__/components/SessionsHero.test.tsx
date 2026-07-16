@@ -41,7 +41,7 @@ describe('SessionsHero Navigation', () => {
     expect(paragraph).toBeDefined();
     
     const ctaButton = screen.getByRole('link', { name: /launch study os/i });
-    expect(ctaButton.getAttribute('href')).toBe('/dashboard');
+    expect(ctaButton.getAttribute('href')).toBe('/login');
   });
 
   it('renders the VideoBackground', () => {

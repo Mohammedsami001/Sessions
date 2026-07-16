@@ -44,7 +44,7 @@ export default function Home() {
   // but for now let's just render the component as requested.
   return (
     <main className="min-h-screen bg-black">
-      <SessionsHero />
+      <SessionsHero sessionActive={sessionActive} />
       <div id="features">
         <ParallaxTrack>
           <ParallaxEngineCore />
