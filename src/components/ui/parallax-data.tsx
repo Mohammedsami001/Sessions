@@ -35,7 +35,7 @@ export const ParallaxData = () => {
           style={{ y: yText, opacity: opacityText }}
           className="flex-1 flex flex-col"
         >
-          <div className="text-[10px] tracking-[0.3em] text-[#E1E0CC] mb-6 uppercase border border-[#E1E0CC] px-3 py-1 w-fit bg-black rounded-full">
+          <div className="text-[10px] tracking-[0.3em] text-[#E1E0CC] mb-6 uppercase border border-[#E1E0CC] px-3 py-1 w-fit bg-black rounded-md">
             Layer 03
           </div>
           <h2 
@@ -58,8 +58,8 @@ export const ParallaxData = () => {
           className="flex-1 flex flex-col gap-8 w-full max-w-lg relative"
         >
           {/* Leaderboard Mod */}
-          <div className="border-4 border-[#333] bg-black p-6 relative hover:border-white transition-colors duration-300 rounded-3xl">
-            <div className="absolute -top-3 right-6 px-3 font-mono font-bold text-black bg-white uppercase text-xs rounded-full">
+          <div className="border-4 border-[#333] bg-black p-6 relative hover:border-white transition-colors duration-300 rounded-xl">
+            <div className="absolute -top-3 right-6 px-3 font-mono font-bold text-black bg-white uppercase text-xs rounded-md">
               LEADERBOARD_MOD
             </div>
             <div className="flex flex-col gap-4 mt-4">
@@ -80,8 +80,8 @@ export const ParallaxData = () => {
           </div>
 
           {/* Tasks Mod */}
-          <div className="border-4 border-[#333] bg-[#E1E0CC] p-6 relative ml-12 text-black hover:bg-white transition-colors duration-300 rounded-3xl">
-            <div className="absolute -top-3 left-6 px-3 font-mono font-bold text-white bg-black uppercase text-xs rounded-full">
+          <div className="border-4 border-[#333] bg-[#E1E0CC] p-6 relative ml-12 text-black hover:bg-white transition-colors duration-300 rounded-xl">
+            <div className="absolute -top-3 left-6 px-3 font-mono font-bold text-white bg-black uppercase text-xs rounded-md">
               TASKS_MOD
             </div>
             <div className="flex flex-col gap-3 mt-4 font-mono font-bold">

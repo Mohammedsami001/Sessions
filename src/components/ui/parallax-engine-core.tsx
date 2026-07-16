@@ -27,7 +27,7 @@ export const ParallaxEngineCore = () => {
           style={{ y: yText, opacity: opacityText }}
           className="flex-1 flex flex-col"
         >
-          <div className="text-[10px] tracking-[0.3em] text-[#E1E0CC] mb-6 uppercase border border-[#E1E0CC] px-3 py-1 w-fit bg-black rounded-full">
+          <div className="text-[10px] tracking-[0.3em] text-[#E1E0CC] mb-6 uppercase border border-[#E1E0CC] px-3 py-1 w-fit bg-black rounded-md">
             Layer 01
           </div>
           <h2 
@@ -50,14 +50,14 @@ export const ParallaxEngineCore = () => {
           className="flex-1 flex flex-col gap-8 w-full max-w-lg"
         >
           {/* Brutalist Timer */}
-          <div className="border-4 border-[#333] bg-black p-8 relative overflow-hidden group rounded-3xl">
-            <div className="absolute top-4 right-4 px-3 py-1 text-xs font-mono text-[#333] bg-[#E1E0CC] rounded-full">TIMER_MOD</div>
+          <div className="border-4 border-[#333] bg-black p-8 relative overflow-hidden group rounded-xl">
+            <div className="absolute top-4 right-4 px-3 py-1 text-xs font-mono text-[#333] bg-[#E1E0CC] rounded-md">TIMER_MOD</div>
             <InteractiveBrutalistTimer />
           </div>
 
           {/* Brutalist Audio */}
-          <div className="border-4 border-[#333] bg-black p-8 relative overflow-hidden rounded-3xl">
-            <div className="absolute top-4 right-4 px-3 py-1 text-xs font-mono text-black bg-white rounded-full">AUDIO_MOD</div>
+          <div className="border-4 border-[#333] bg-black p-8 relative overflow-hidden rounded-xl">
+            <div className="absolute top-4 right-4 px-3 py-1 text-xs font-mono text-black bg-white rounded-md">AUDIO_MOD</div>
             <InteractiveBrutalistAudio />
           </div>
         </motion.div>
@@ -91,7 +91,7 @@ const InteractiveBrutalistTimer = () => {
       </div>
       <button
         onClick={() => setIsRunning(!isRunning)}
-        className="border-2 border-white text-white font-black uppercase py-4 hover:bg-white hover:text-black transition-colors flex justify-center items-center gap-2 rounded-full"
+        className="border-2 border-white text-white font-black uppercase py-4 hover:bg-white hover:text-black transition-colors flex justify-center items-center gap-2 rounded-md"
       >
         {isRunning ? "HALT" : "IGNITE"}
       </button>
@@ -116,7 +116,7 @@ const InteractiveBrutalistAudio = () => {
       </div>
       <button
         onClick={() => setIsPlaying(!isPlaying)}
-        className="flex items-center justify-between border-2 border-white px-6 py-3 font-mono font-bold uppercase hover:bg-white hover:text-black transition-colors rounded-full"
+        className="flex items-center justify-between border-2 border-white px-6 py-3 font-mono font-bold uppercase hover:bg-white hover:text-black transition-colors rounded-md"
       >
         <span>{isPlaying ? "MUTE ENVIRONMENT" : "ACTIVATE ENVIRONMENT"}</span>
         <Headphones size={20} />
