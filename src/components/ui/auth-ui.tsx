@@ -268,6 +268,9 @@ function SignUpForm() {
 
       if (signUpError) {
         setError(signUpError.message);
+      } else if (signUpData?.user?.identities && signUpData.user.identities.length === 0) {
+        // Supabase returns an empty identities array if the email already exists (email enumeration protection)
+        setError("This email is already registered. If you used Google or GitHub to create this account, please click the corresponding button below to log in. Otherwise, double check your password.");
       } else if (signUpData?.session) {
         // Account successfully created and logged in! Redirect to dashboard.
         window.location.href = "/dashboard";
