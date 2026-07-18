@@ -229,11 +229,13 @@ function SignInForm() {
 
 function SignUpForm() {
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSignUp = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
+    setSuccess("");
     setLoading(true);
 
     const formData = new FormData(event.currentTarget);
@@ -242,7 +244,7 @@ function SignUpForm() {
     const name = formData.get("name") as string;
 
     try {
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -252,8 +254,12 @@ function SignUpForm() {
 
       if (error) {
         setError(error.message);
-      } else {
+      } else if (data?.session) {
         window.location.href = "/dashboard";
+      } else {
+        setSuccess("Account created! Please check your email for a confirmation link.");
+        // Clear the form
+        (event.target as HTMLFormElement).reset();
       }
     } catch (err: any) {
       setError(err.message || "An unexpected error occurred during sign up.");
@@ -276,6 +282,12 @@ function SignUpForm() {
       {error && (
         <div className="bg-red-500/15 text-red-400 border border-red-500/20 text-sm rounded-md p-3 text-center">
           {error}
+        </div>
+      )}
+
+      {success && (
+        <div className="bg-emerald-500/15 text-emerald-400 border border-emerald-500/20 text-sm rounded-md p-3 text-center">
+          {success}
         </div>
       )}
 
