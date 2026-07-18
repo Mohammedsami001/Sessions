@@ -244,7 +244,21 @@ function SignUpForm() {
     const name = formData.get("name") as string;
 
     try {
-      const { data, error } = await supabase.auth.signUp({
+      // Step 1: Check if the user's email already exists by attempting to log them in
+      const { data: signInData } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (signInData?.session) {
+        // User exists and password is correct! Redirect to dashboard.
+        window.location.href = "/dashboard";
+        return;
+      }
+
+      // Step 2: If we get here, either the account doesn't exist, or the password was wrong.
+      // Let's create the account in the database.
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -252,14 +266,15 @@ function SignUpForm() {
         }
       });
 
-      if (error) {
-        setError(error.message);
-      } else if (data?.session) {
+      if (signUpError) {
+        setError(signUpError.message);
+      } else if (signUpData?.session) {
+        // Account successfully created and logged in! Redirect to dashboard.
         window.location.href = "/dashboard";
       } else {
-        setSuccess("Account created! Please check your email for a confirmation link.");
-        // Clear the form
-        (event.target as HTMLFormElement).reset();
+        // Account created, but Supabase didn't provide a session. 
+        // This ALWAYS means "Confirm Email" is still enabled in the Supabase Dashboard.
+        setError("⚠️ ERROR: You MUST go to your Supabase Dashboard -> Authentication -> Providers -> Email and turn OFF 'Confirm email'. I cannot bypass this backend security setting for you!");
       }
     } catch (err: any) {
       setError(err.message || "An unexpected error occurred during sign up.");
