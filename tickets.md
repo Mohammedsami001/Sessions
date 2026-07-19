@@ -72,3 +72,26 @@
 - [ ] Render a nested checklist for `subTasks` when expanded
 - [ ] Add a mini form to append a new sub-task to the array
 - [ ] Update `onUpdateTask` to handle sub-task completion toggles and additions
+
+# Tickets: Wayfinder Map - Auth OTP Fallback
+
+## Destination
+Replace the generic password failure on the Sign In form with an OTP (One-Time Password) fallback flow, allowing Google/GitHub users to securely log in cross-device without passwords.
+
+## Notes
+- Users must receive a 6-digit code in their email, which they then type into the same browser they requested it from.
+- We must handle Supabase's `signInWithOtp` for the code generation and verification.
+
+## Decisions so far
+*(Empty)*
+
+## Not yet specified
+- Do we want to eventually remove the password field entirely and go fully passwordless, or keep the password field for users who explicitly signed up with a password?
+
+## Ticket 13: Handle OTP Fallback UI State
+**What to build:** Modify the `SignInForm` in `auth-ui.tsx` to detect an "Invalid login credentials" error. Instead of just showing the error, reveal a "Send me a login code instead" button. When clicked, toggle the UI into an OTP input mode.
+**Blocked by:** None
+
+## Ticket 14: Wire Supabase signInWithOtp and verifyOtp
+**What to build:** Connect the new OTP UI state to Supabase. When the user clicks "Send me a login code instead", call `supabase.auth.signInWithOtp({ email, options: { shouldCreateUser: false }})` (or similar). When they enter the 6 digits and submit, call `supabase.auth.verifyOtp()`.
+**Blocked by:** Ticket 13
