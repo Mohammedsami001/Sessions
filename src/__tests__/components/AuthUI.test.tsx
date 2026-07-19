@@ -63,3 +63,54 @@ describe('AuthUI Navigation and Toggle', () => {
     expect(video?.getAttribute('src')).toBe('https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_170732_8a9ccda6-5cff-4628-b164-059c500a2b41.mp4');
   });
 });
+
+import { vi } from 'vitest';
+import { supabase } from '@/lib/supabase';
+
+vi.mock('@/lib/supabase', () => ({
+  supabase: {
+    auth: {
+      signInWithPassword: vi.fn(),
+      signUp: vi.fn(),
+      signInWithOtp: vi.fn(),
+      verifyOtp: vi.fn(),
+    }
+  }
+}));
+
+describe('AuthUI OTP Fallback (Ticket 13 & 14)', () => {
+  it('shows OTP fallback button on invalid credentials and toggles to OTP form', async () => {
+    // Mock the sign in to fail with Invalid login credentials
+    vi.mocked(supabase.auth.signInWithPassword).mockResolvedValueOnce({
+      data: { user: null, session: null },
+      error: { message: 'Invalid login credentials', name: 'AuthError', status: 400 } as any
+    });
+    
+    // Mock the OTP send to succeed
+    vi.mocked(supabase.auth.signInWithOtp).mockResolvedValueOnce({
+      data: {} as any,
+      error: null
+    });
+
+    render(<AuthUI initialIsSignIn={true} />);
+    
+    // Submit the login form
+    fireEvent.change(screen.getByLabelText(/^email$/i), { target: { value: 'test@example.com' } });
+    fireEvent.change(screen.getByPlaceholderText(/enter your password/i), { target: { value: 'wrongpass' } });
+    
+    const signInButton = screen.getByRole('button', { name: /^sign in$/i });
+    fireEvent.click(signInButton);
+
+    // Wait for error state
+    const otpButton = await screen.findByRole('button', { name: /send me a login code instead/i });
+    expect(otpButton).toBeDefined();
+
+    // Click the OTP fallback button
+    fireEvent.click(otpButton);
+
+    // Should now show OTP input mode
+    expect(await screen.findByText(/enter the 6-digit code sent to your email/i)).toBeDefined();
+    expect(screen.getByLabelText(/6-digit code/i)).toBeDefined();
+    expect(screen.getByRole('button', { name: /verify code/i })).toBeDefined();
+  });
+});

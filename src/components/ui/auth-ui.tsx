@@ -156,11 +156,15 @@ function SocialAuth() {
 function SignInForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [otpMode, setOtpMode] = useState(false);
+  const [showOtpFallback, setShowOtpFallback] = useState(false);
+  const [emailToVerify, setEmailToVerify] = useState("");
 
   const handleSignIn = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
     setLoading(true);
+    setShowOtpFallback(false);
 
     const formData = new FormData(event.currentTarget);
     const email = formData.get("email") as string;
@@ -174,6 +178,10 @@ function SignInForm() {
 
       if (error) {
         setError(error.message);
+        if (error.message.toLowerCase().includes('invalid login credentials')) {
+          setShowOtpFallback(true);
+          setEmailToVerify(email);
+        }
       } else {
         window.location.href = "/dashboard";
       }
@@ -183,6 +191,78 @@ function SignInForm() {
       setLoading(false);
     }
   };
+
+  const handleSendOtp = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const { error } = await supabase.auth.signInWithOtp({ email: emailToVerify });
+      if (error) throw error;
+      setOtpMode(true);
+      setShowOtpFallback(false);
+    } catch (err: any) {
+      setError(err.message || "Failed to send code.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyOtp = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setLoading(true);
+    setError("");
+    const formData = new FormData(event.currentTarget);
+    const token = formData.get("token") as string;
+    
+    try {
+      const { error } = await supabase.auth.verifyOtp({
+        email: emailToVerify,
+        token,
+        type: 'email'
+      });
+      if (error) throw error;
+      window.location.href = "/dashboard";
+    } catch (err: any) {
+      setError(err.message || "Invalid code.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (otpMode) {
+    return (
+      <form onSubmit={handleVerifyOtp} autoComplete="off" className="flex flex-col gap-6 w-full max-w-[360px] mx-auto">
+        <div className="flex flex-col items-center gap-2 text-center mb-2">
+          <div className="flex items-center gap-2 mb-6 text-white">
+            <span className="font-semibold text-lg tracking-tight">Sessions</span>
+          </div>
+          <h1 className="text-4xl font-serif tracking-tight text-white">Verify Code</h1>
+          <p className="text-sm text-gray-400 mt-1">Enter the 6-digit code sent to your email</p>
+        </div>
+        
+        {error && (
+          <div className="bg-red-500/15 text-red-400 border border-red-500/20 text-sm rounded-md p-3 text-center">
+            {error}
+          </div>
+        )}
+
+        <div className="grid gap-5">
+          <div className="grid gap-2">
+            <Label htmlFor="token" className="text-xs font-semibold text-gray-300">6-Digit Code</Label>
+            <Input id="token" name="token" type="text" placeholder="123456" required className="bg-gray-900/50 border border-gray-800 rounded-xl shadow-none text-white placeholder:text-gray-500 focus-visible:ring-gray-700 text-center tracking-widest text-lg" />
+          </div>
+          
+          <Button type="submit" className="mt-2 bg-white text-black rounded-xl h-12 hover:bg-gray-200 font-semibold text-sm transition-all cursor-pointer" disabled={loading}>
+            {loading ? "Verifying..." : "Verify Code"}
+          </Button>
+          
+          <button type="button" onClick={() => { setOtpMode(false); setError(""); }} className="text-xs font-medium text-gray-400 hover:text-white transition-colors cursor-pointer text-center">
+            Back to Password Login
+          </button>
+        </div>
+      </form>
+    );
+  }
 
   return (
     <form onSubmit={handleSignIn} autoComplete="on" className="flex flex-col gap-6 w-full max-w-[360px] mx-auto">
@@ -196,8 +276,18 @@ function SignInForm() {
       </div>
       
       {error && (
-        <div className="bg-red-500/15 text-red-400 border border-red-500/20 text-sm rounded-md p-3 text-center">
-          {error}
+        <div className="bg-red-500/15 text-red-400 border border-red-500/20 text-sm rounded-md p-3 text-center flex flex-col gap-2">
+          <span>{error}</span>
+          {showOtpFallback && (
+            <button 
+              type="button" 
+              onClick={handleSendOtp}
+              disabled={loading}
+              className="text-xs font-bold text-white hover:underline cursor-pointer transition-all"
+            >
+              {loading ? "Sending..." : "Send me a login code instead"}
+            </button>
+          )}
         </div>
       )}
 
