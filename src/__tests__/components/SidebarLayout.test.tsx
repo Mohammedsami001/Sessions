@@ -71,4 +71,23 @@ describe('SidebarLayout', () => {
     fireEvent.keyDown(window, { key: '\\', metaKey: true });
     expect(screen.getByTestId('is-collapsed').textContent).toBe('false');
   });
+
+  it('toggles mobile drawer when hamburger button is clicked', () => {
+    const { container } = render(
+      <SidebarLayout>
+        <div>Content</div>
+      </SidebarLayout>
+    );
+
+    // Initially mobile open is false
+    expect(screen.getByTestId('is-mobile-open').textContent).toBe('false');
+
+    // Find the hamburger button (it's the only button directly in the layout container that is md:hidden)
+    const hamburgerBtn = container.querySelector('button.md\\:hidden');
+    expect(hamburgerBtn).toBeTruthy();
+    
+    fireEvent.click(hamburgerBtn!);
+    
+    expect(screen.getByTestId('is-mobile-open').textContent).toBe('true');
+  });
 });
