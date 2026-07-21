@@ -372,9 +372,11 @@ function SignUpForm() {
         // Account successfully created and logged in! Redirect to dashboard.
         window.location.href = "/dashboard";
       } else {
-        // Account created, but Supabase didn't provide a session. 
-        // This ALWAYS means "Confirm Email" is still enabled in the Supabase Dashboard.
-        setError("⚠️ ERROR: You MUST go to your Supabase Dashboard -> Authentication -> Providers -> Email and turn OFF 'Confirm email'. I cannot bypass this backend security setting for you!");
+        // Account created, but Supabase didn't provide a session because "Confirm Email" is required.
+        // Let's seamlessly transition them to the OTP input UI!
+        setSuccess("Account created! We've sent a verification code to your email.");
+        setEmailToVerify(email);
+        setOtpMode(true);
       }
     } catch (err: any) {
       setError(err.message || "An unexpected error occurred during sign up.");
