@@ -212,13 +212,13 @@ function SignInForm() {
     setLoading(true);
     setError("");
     const formData = new FormData(event.currentTarget);
-    const token = formData.get("token") as string;
+    const token = (formData.get("token") as string).replace(/\s/g, "");
     
     try {
       const { error } = await supabase.auth.verifyOtp({
         email: emailToVerify,
         token,
-        type: 'magiclink'
+        type: 'email'
       });
       if (error) throw error;
       window.location.href = "/dashboard";
@@ -403,13 +403,13 @@ function SignUpForm() {
     setLoading(true);
     setError("");
     const formData = new FormData(event.currentTarget);
-    const token = formData.get("token") as string;
+    const token = (formData.get("token") as string).replace(/\s/g, "");
     
     try {
       const { error } = await supabase.auth.verifyOtp({
         email: emailToVerify,
         token,
-        type: 'magiclink'
+        type: 'email'
       });
       if (error) throw error;
       window.location.href = "/dashboard";
