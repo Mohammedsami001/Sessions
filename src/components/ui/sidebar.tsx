@@ -116,8 +116,7 @@ export default function Sidebar({
       <div className={`mt-6 shrink-0 flex items-center ${isCollapsed ? 'justify-center flex-col gap-4' : 'pl-1'}`}>
         {!isCollapsed && (
           <div className="text-[10px] text-zinc-600 font-medium">
-            <p>© Sessions Study OS</p>
-            <p>v1.0.0</p>
+            <p>© Sessions</p>            
           </div>
         )}
       </div>
