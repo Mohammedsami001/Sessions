@@ -218,7 +218,7 @@ function SignInForm() {
       const { error } = await supabase.auth.verifyOtp({
         email: emailToVerify,
         token,
-        type: 'email'
+        type: 'magiclink'
       });
       if (error) throw error;
       window.location.href = "/dashboard";
@@ -237,7 +237,7 @@ function SignInForm() {
             <span className="font-semibold text-lg tracking-tight">Sessions</span>
           </div>
           <h1 className="text-4xl font-serif tracking-tight text-white">Verify Code</h1>
-          <p className="text-sm text-gray-400 mt-1">Enter the 6-digit code sent to your email</p>
+          <p className="text-sm text-gray-400 mt-1">Enter the Verification Code sent to your email</p>
         </div>
         
         {error && (
@@ -248,8 +248,8 @@ function SignInForm() {
 
         <div className="grid gap-5">
           <div className="grid gap-2">
-            <Label htmlFor="token" className="text-xs font-semibold text-gray-300">6-Digit Code</Label>
-            <Input id="token" name="token" type="text" placeholder="123456" required className="bg-gray-900/50 border border-gray-800 rounded-xl shadow-none text-white placeholder:text-gray-500 focus-visible:ring-gray-700 text-center tracking-widest text-lg" />
+            <Label htmlFor="token" className="text-xs font-semibold text-gray-300">Verification Code</Label>
+            <Input id="token" name="token" type="text" placeholder="Code" required className="bg-gray-900/50 border border-gray-800 rounded-xl shadow-none text-white placeholder:text-gray-500 focus-visible:ring-gray-700 text-center tracking-widest text-lg" />
           </div>
           
           <Button type="submit" className="mt-2 bg-white text-black rounded-xl h-12 hover:bg-gray-200 font-semibold text-sm transition-all cursor-pointer" disabled={loading}>
@@ -409,7 +409,7 @@ function SignUpForm() {
       const { error } = await supabase.auth.verifyOtp({
         email: emailToVerify,
         token,
-        type: 'email'
+        type: 'magiclink'
       });
       if (error) throw error;
       window.location.href = "/dashboard";
@@ -428,7 +428,7 @@ function SignUpForm() {
             <span className="font-semibold text-lg tracking-tight">Sessions</span>
           </div>
           <h1 className="text-4xl font-serif tracking-tight text-white">Verify Code</h1>
-          <p className="text-sm text-gray-400 mt-1">Enter the 6-digit code sent to your email</p>
+          <p className="text-sm text-gray-400 mt-1">Enter the Verification Code sent to your email</p>
         </div>
         
         {error && (
@@ -439,8 +439,8 @@ function SignUpForm() {
 
         <div className="grid gap-5">
           <div className="grid gap-2">
-            <Label htmlFor="token" className="text-xs font-semibold text-gray-300">6-Digit Code</Label>
-            <Input id="token" name="token" type="text" placeholder="123456" required className="bg-gray-900/50 border border-gray-800 rounded-xl shadow-none text-white placeholder:text-gray-500 focus-visible:ring-gray-700 text-center tracking-widest text-lg" />
+            <Label htmlFor="token" className="text-xs font-semibold text-gray-300">Verification Code</Label>
+            <Input id="token" name="token" type="text" placeholder="Code" required className="bg-gray-900/50 border border-gray-800 rounded-xl shadow-none text-white placeholder:text-gray-500 focus-visible:ring-gray-700 text-center tracking-widest text-lg" />
           </div>
           
           <Button type="submit" className="mt-2 bg-white text-black rounded-xl h-12 hover:bg-gray-200 font-semibold text-sm transition-all cursor-pointer" disabled={loading}>
