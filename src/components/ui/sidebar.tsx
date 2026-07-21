@@ -20,23 +20,17 @@ export default function Sidebar({
       
       {/* Brand / Logo */}
       <div className={`flex items-center gap-3 mb-8 shrink-0 ${isCollapsed ? 'justify-center pl-0' : 'pl-2 justify-between w-full'}`}>
-        <div className="flex items-center gap-3">
-          <Hexagon className="text-white fill-white/10 shrink-0" size={24} />
-          {!isCollapsed && (
-            <div className="flex flex-col">
-              <span className="text-white font-bold tracking-tight text-sm">
-                Sessions
-              </span>
-              <span className="text-zinc-500 text-[10px]">Study OS</span>
-            </div>
-          )}
-        </div>
+        {!isCollapsed && (
+          <span className="text-white font-bold tracking-tight text-sm">
+            Sessions
+          </span>
+        )}
         
         {/* Toggle Button */}
         <button 
           data-testid="sidebar-toggle-btn"
           onClick={onToggleCollapse}
-          className={`hidden md:flex p-1.5 rounded-lg bg-zinc-900/50 border border-white/5 text-zinc-400 hover:text-white hover:bg-white/5 transition-colors ${isCollapsed ? 'mt-4' : ''}`}
+          className="hidden md:flex p-1.5 rounded-lg bg-zinc-900/50 border border-white/5 text-zinc-400 hover:text-white hover:bg-white/5 transition-colors"
           title="Toggle Sidebar (Cmd+\)"
         >
           {isCollapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
