@@ -109,8 +109,8 @@ describe('AuthUI OTP Fallback (Ticket 13 & 14)', () => {
     fireEvent.click(otpButton);
 
     // Should now show OTP input mode
-    expect(await screen.findByText(/enter the 6-digit code sent to your email/i)).toBeDefined();
-    expect(screen.getByLabelText(/6-digit code/i)).toBeDefined();
+    expect(await screen.findByText(/enter the verification code sent to your email/i)).toBeDefined();
+    expect(screen.getByLabelText(/verification code/i)).toBeDefined();
     expect(screen.getByRole('button', { name: /verify code/i })).toBeDefined();
   });
 });
