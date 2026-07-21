@@ -19,16 +19,28 @@ export default function Sidebar({
     <aside className={`fixed left-0 top-0 h-screen bg-zinc-950 border-r border-zinc-900 flex flex-col p-6 z-50 overflow-y-auto hide-scrollbar transition-all duration-300 ${isCollapsed ? 'w-[72px] items-center px-2' : 'w-[250px]'} ${isMobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
       
       {/* Brand / Logo */}
-      <div className={`flex items-center gap-3 mb-8 shrink-0 ${isCollapsed ? 'justify-center pl-0' : 'pl-2'}`}>
-        <Hexagon className="text-white fill-white/10 shrink-0" size={24} />
-        {!isCollapsed && (
-          <div className="flex flex-col">
-            <span className="text-white font-bold tracking-tight text-sm">
-              Sessions
-            </span>
-            <span className="text-zinc-500 text-[10px]">Study OS</span>
-          </div>
-        )}
+      <div className={`flex items-center gap-3 mb-8 shrink-0 ${isCollapsed ? 'justify-center pl-0' : 'pl-2 justify-between w-full'}`}>
+        <div className="flex items-center gap-3">
+          <Hexagon className="text-white fill-white/10 shrink-0" size={24} />
+          {!isCollapsed && (
+            <div className="flex flex-col">
+              <span className="text-white font-bold tracking-tight text-sm">
+                Sessions
+              </span>
+              <span className="text-zinc-500 text-[10px]">Study OS</span>
+            </div>
+          )}
+        </div>
+        
+        {/* Toggle Button */}
+        <button 
+          data-testid="sidebar-toggle-btn"
+          onClick={onToggleCollapse}
+          className={`hidden md:flex p-1.5 rounded-lg bg-zinc-900/50 border border-white/5 text-zinc-400 hover:text-white hover:bg-white/5 transition-colors ${isCollapsed ? 'mt-4' : ''}`}
+          title="Toggle Sidebar (Cmd+\)"
+        >
+          {isCollapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
+        </button>
       </div>
 
       {/* Navigation */}
@@ -106,22 +118,14 @@ export default function Sidebar({
 
       </div>
 
-      {/* Collapse Toggle & Footer */}
-      <div className={`mt-6 shrink-0 flex items-center ${isCollapsed ? 'justify-center flex-col gap-4' : 'justify-between pl-1'}`}>
+      {/* Footer */}
+      <div className={`mt-6 shrink-0 flex items-center ${isCollapsed ? 'justify-center flex-col gap-4' : 'pl-1'}`}>
         {!isCollapsed && (
           <div className="text-[10px] text-zinc-600 font-medium">
             <p>© Sessions Study OS</p>
             <p>v1.0.0</p>
           </div>
         )}
-        <button 
-          data-testid="sidebar-toggle-btn"
-          onClick={onToggleCollapse}
-          className="hidden md:flex p-1.5 rounded-lg bg-zinc-900 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/5 transition-colors"
-          title="Toggle Sidebar (Cmd+\)"
-        >
-          {isCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
-        </button>
       </div>
 
     </aside>
