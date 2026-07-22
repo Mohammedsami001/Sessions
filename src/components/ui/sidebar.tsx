@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { LayoutDashboard, User, Globe, Settings, Hexagon, CheckCircle, Crown, ChevronLeft, ChevronRight } from "lucide-react";
+import { LayoutDashboard, User, Globe, Settings, Kanban, Crown, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface SidebarProps {
   isCollapsed?: boolean;
@@ -58,12 +58,12 @@ export default function Sidebar({
         </Link>
         
         <Link 
-          href="/tasks"
+          href="/dashboard/kanban"
           className={`flex items-center gap-3 py-2.5 rounded-lg text-zinc-400 hover:text-white hover:bg-white/5 font-medium text-sm transition-colors ${isCollapsed ? 'justify-center px-0' : 'px-4'}`}
-          title={isCollapsed ? "Global Tasks" : undefined}
+          title={isCollapsed ? "Kanban Board" : undefined}
         >
-          <CheckCircle size={18} className="shrink-0" />
-          {!isCollapsed && <span>Global Tasks</span>}
+          <Kanban size={18} className="shrink-0" />
+          {!isCollapsed && <span>Kanban Board</span>}
         </Link>
 
         <Link 
