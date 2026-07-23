@@ -22,7 +22,7 @@ describe("Sidebar Component", () => {
     // Check for navigation links
     expect(screen.getByText(/Dashboard/i)).toBeInTheDocument();
     expect(screen.getByText(/Profile/i)).toBeInTheDocument();
-    expect(screen.getByText(/Kanban Board/i)).toBeInTheDocument();
+    expect(screen.getByText(/Global Tasks/i)).toBeInTheDocument();
     expect(screen.getByText(/Browse Rooms/i)).toBeInTheDocument();
     expect(screen.getByText(/Settings/i)).toBeInTheDocument();
   });
